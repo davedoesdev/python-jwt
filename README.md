@@ -1,6 +1,6 @@
 # python-jwt&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/davedoesdev/python-jwt.png)](https://travis-ci.org/davedoesdev/python-jwt) [![Coverage Status](https://coveralls.io/repos/davedoesdev/python-jwt/badge.png?branch=master)](https://coveralls.io/r/davedoesdev/python-jwt?branch=master) [![PyPI version](https://badge.fury.io/py/jwt.png)](http://badge.fury.io/py/jwt)
 
-Module for generating and verifying JSON Web Tokens.
+Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
 - Uses [jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__ and __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) signature algorithms.
