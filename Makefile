@@ -7,7 +7,7 @@ all: lint test
 docs: build_docs
 
 build_docs:
-	cd docs && make html && find . -name '*.html' -exec sed -i -r 's/((src)|(href))="((_static)|(_sources))/\1="http:\/\/sphinx-doc.org\/\4/g' {} \;
+	cd docs && make html && find . -name '*.html' -exec sed -i -r 's/((src)|(href))="(_static)/\1="http:\/\/sphinx-doc.org\/\4/g' {} \;
 
 lint:
 	pylint jwt test bench
