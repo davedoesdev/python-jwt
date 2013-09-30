@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>jwt module &mdash; python-jwt 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="python-jwt 0.1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">python-jwt 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-jwt">
+<span id="jwt-module"></span><h1>jwt module<a class="headerlink" href="#module-jwt" title="Permalink to this headline">¶</a></h1>
+<p>Functions for generating and verifying JSON Web Tokens.</p>
+<dl class="exception">
+<dt id="jwt.JWTError">
+<em class="property">exception </em><tt class="descclassname">jwt.</tt><tt class="descname">JWTError</tt><a class="headerlink" href="#jwt.JWTError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised by <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if a claim doesn&#8217;t pass.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="jwt.generate_jwt">
+<tt class="descclassname">jwt.</tt><tt class="descname">generate_jwt</tt><big>(</big><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em><big>)</big><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a JSON Web Token.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>claims</strong> (<em>dict</em>) &#8211; The claims you want included in the signature.</li>
+<li><strong>priv_key</strong> (<a class="reference external" href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html">_RSAobj</a>, <a class="reference external" href="https://github.com/warner/python-ecdsa">SigningKey</a> or str) &#8211; The private key to be used to sign the token. Note: if you pass <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> then the token will be returned with an invalid cryptographic signature (it will have the value <tt class="docutils literal"><span class="pre">`*`</span></tt>). Use <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> when you&#8217;re not using a public key infrastructure to authenticate your data.</li>
+<li><strong>algorithm</strong> (<em>str</em>) &#8211; The algorithm to use for generating the signature. <tt class="docutils literal"><span class="pre">RS256</span></tt>, <tt class="docutils literal"><span class="pre">RS384</span></tt>, <tt class="docutils literal"><span class="pre">RS512</span></tt>, <tt class="docutils literal"><span class="pre">PS256</span></tt>, <tt class="docutils literal"><span class="pre">PS384</span></tt>, <tt class="docutils literal"><span class="pre">PS512</span></tt>, <tt class="docutils literal"><span class="pre">ES256</span></tt>, <tt class="docutils literal"><span class="pre">ES384</span></tt>, <tt class="docutils literal"><span class="pre">ES512</span></tt>, <tt class="docutils literal"><span class="pre">HS256</span></tt>, <tt class="docutils literal"><span class="pre">HS384</span></tt> and <tt class="docutils literal"><span class="pre">HS512</span></tt> are supported.</li>
+<li><strong>lifetime</strong> (<em>datetime.timedelta</em>) &#8211; How long the token is valid for.</li>
+<li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <tt class="xref py py-obj docutils literal"><span class="pre">lifetime</span></tt> isn&#8217;t specified)</li>
+<li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> is passed).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the <a class="reference external" href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">JWT spec</a>:</p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><strong>exp</strong> (<em>IntDate</em>) &#8211; The UTC expiry date and time of the token, in number of seconds from 1970-01-01T0:0:0Z UTC.</li>
+<li><strong>iat</strong> (<em>IntDate</em>) &#8211; The UTC date and time at which the token was generated.</li>
+<li><strong>nbf</strong> (<em>IntDate</em>) &#8211; The UTC valid-from date and time of the token.</li>
+<li><strong>jti</strong> (<em>str</em>) &#8211; A unique identifier for the token.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="jwt.process_jwt">
+<tt class="descclassname">jwt.</tt><tt class="descname">process_jwt</tt><big>(</big><em>jwt</em><big>)</big><a class="headerlink" href="#jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a JSON Web Token without verifying it. Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jwt</strong> (<em>str</em>) &#8211; The JSON Web Token to verify.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="jwt.verify_jwt">
+<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify a JSON Web Token.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jwt</strong> (<em>str</em>) &#8211; The JSON Web Token to verify.</li>
+<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
+<li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></tt> if the token was verified successfully. The token must pass the following tests:</p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Its signature must verify using the public key.</li>
+<li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
+<li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
+<li>Its claims must contian a property <strong>nbf</strong> which represents a date in the past.</li>
+<li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body">If the token failed to verify.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">jwt module</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">python-jwt 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, David Halls.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
