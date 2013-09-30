@@ -17,7 +17,7 @@ header, claims = jwt.verify_jwt(token, key)
 for k in payload: assert claims[k] == payload[k]
 ```
 
-The API is described [here](http://htmlpreview.github.io/?https://github.com/davedoesdev/python-jwt/blob/master/docs/_build/html/index.html)
+The API is described [here](https://rawgithub.com/davedoesdev/python-jwt/master/docs/_build/html/index.html).
 
 ## Installation
 

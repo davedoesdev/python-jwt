@@ -6,6 +6,11 @@
 jwt module
 ==========
 
+.. autosummary::
+   jwt.generate_jwt
+   jwt.process_jwt
+   jwt.verify_jwt
+
 .. automodule:: jwt
    :members:
 

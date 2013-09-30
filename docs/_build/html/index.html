@@ -44,15 +44,26 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-jwt">
-<span id="jwt-module"></span><h1>jwt module<a class="headerlink" href="#module-jwt" title="Permalink to this headline">¶</a></h1>
-<p>Functions for generating and verifying JSON Web Tokens.</p>
-<dl class="exception">
-<dt id="jwt.JWTError">
-<em class="property">exception </em><tt class="descclassname">jwt.</tt><tt class="descname">JWTError</tt><a class="headerlink" href="#jwt.JWTError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception raised by <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if a claim doesn&#8217;t pass.</p>
-</dd></dl>
-
+  <div class="section" id="jwt-module">
+<h1>jwt module<a class="headerlink" href="#jwt-module" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.generate_jwt" title="jwt.generate_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.generate_jwt</span></tt></a>(claims[,&nbsp;priv_key,&nbsp;...])</td>
+<td>Generate a JSON Web Token.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></tt></a>(jwt)</td>
+<td>Process a JSON Web Token without verifying it.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;iat_skew])</td>
+<td>Verify a JSON Web Token.</td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
 <dl class="function">
 <dt id="jwt.generate_jwt">
 <tt class="descclassname">jwt.</tt><tt class="descname">generate_jwt</tt><big>(</big><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em><big>)</big><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
@@ -90,7 +101,8 @@
 <dl class="function">
 <dt id="jwt.process_jwt">
 <tt class="descclassname">jwt.</tt><tt class="descname">process_jwt</tt><big>(</big><em>jwt</em><big>)</big><a class="headerlink" href="#jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Process a JSON Web Token without verifying it. Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
+<dd><p>Process a JSON Web Token without verifying it.</p>
+<p>Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

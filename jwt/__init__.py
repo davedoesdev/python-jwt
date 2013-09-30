@@ -8,10 +8,9 @@ from base64 import urlsafe_b64encode
 from os import urandom
 import jws
 
-class JWTError(Exception):
-    """
-    Exception raised by :func:`verify_jwt` if a claim doesn't pass.
-    """
+class _JWTError(Exception):
+    """ Exception raised if claim doesn't pass. Private to this module because
+        jws throws many exceptions too. """
     pass
 
 def generate_jwt(claims, priv_key=None,
@@ -109,22 +108,24 @@ def verify_jwt(jwt, pub_key=None, iat_skew=timedelta()):
     now = timegm(utcnow.utctimetuple())
 
     if header['typ'] != 'JWT':
-        raise JWTError('type is not JWT')
+        raise _JWTError('type is not JWT')
 
     if claims['iat'] > timegm((utcnow + iat_skew).utctimetuple()):
-        raise JWTError('issued in the future')
+        raise _JWTError('issued in the future')
 
     if claims['nbf'] > now:
-        raise JWTError('not yet valid')
+        raise _JWTError('not yet valid')
 
     if claims['exp'] <= now:
-        raise JWTError('expired')
+        raise _JWTError('expired')
 
     return header, claims
 
 def process_jwt(jwt):
     """
-    Process a JSON Web Token without verifying it. Call this before :func:`verify_jwt` if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.
+    Process a JSON Web Token without verifying it.
+    
+    Call this before :func:`verify_jwt` if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.
 
     :param jwt: The JSON Web Token to verify.
     :type jwt: str
