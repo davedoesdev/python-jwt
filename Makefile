@@ -20,7 +20,7 @@ run_test:
 coverage: run_coverage
 
 run_coverage:
-	$(PYVOWS) --cover --cover-package jwt --cover-report coverage/coverage.xml test
+	$(PYVOWS) --cover --cover-package jwt --cover-report coverage/coverage.xml test && sed -r -i 's/(<head>)/\1<base href="http:\/\/nedbatchelder.com\/code\/coverage\/sample_html\/">/g' coverage/html/index.html
 
 bench: run_bench
 
