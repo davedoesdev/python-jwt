@@ -17,7 +17,7 @@ header, claims = jwt.verify_jwt(token, key)
 for k in payload: assert claims[k] == payload[k]
 ```
 
-The API is described [here](http://htmlpreview.github.io/?https://github.com/davedoesdev/python-jwt/blob/master/docs/_build/html/index.html).
+The API is described [here](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html).
 
 
 ## Installation
@@ -65,7 +65,7 @@ make lint
 make coverage
 ```
 
-[coverage.py](http://nedbatchelder.com/code/coverage/) results are available [here](http://htmlpreview.github.io/?https://github.com/davedoesdev/python-jwt/blob/master/coverage/html/index.html).
+[coverage.py](http://nedbatchelder.com/code/coverage/) results are available [here](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/coverage/html/index.html).
 
 Coveralls page is [here](https://coveralls.io/r/davedoesdev/python-jwt).
 

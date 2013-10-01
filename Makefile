@@ -7,7 +7,7 @@ all: lint test
 docs: build_docs
 
 build_docs:
-	cd docs && make html && find . -name '*.html' -exec sed -i -r 's/((src)|(href))="(_static)/\1="http:\/\/sphinx-doc.org\/\4/g' {} \;
+	cd docs && make html
 
 lint:
 	pylint jwt test bench
@@ -20,7 +20,7 @@ run_test:
 coverage: run_coverage
 
 run_coverage:
-	$(PYVOWS) --cover --cover-package jwt --cover-report coverage/coverage.xml test && cd coverage && find . -name '*.html' -exec sed -i -r "s/(src=')/\1http:\/\/nedbatchelder.com\/code\/coverage\/sample_html\//g" {} \;
+	$(PYVOWS) --cover --cover-package jwt --cover-report coverage/coverage.xml test
 
 bench: run_bench
 
