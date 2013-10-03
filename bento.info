@@ -1,0 +1,13 @@
+Name: python_jwt
+Version: 0.1.0
+Summary: Module for generating and verifying JSON Web Tokens
+Url: https://github.com/davedoesdev/python-jwt
+Author: David Halls
+AuthorEmail: dave@davedoesdev.com
+License: MIT
+
+Library:
+    Packages:
+        jwt
+    InstallRequires:
+        jws-pss==0.1.0

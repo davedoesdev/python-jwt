@@ -1,2 +1,5 @@
 *.pyc
 node_modules
+.bentomaker.py-*
+egg/build
+egg/*.egg

@@ -32,3 +32,13 @@ bench_gfm:
 
 dev_deps:
 	mkdir -p node_modules && npm install jsjws sinon
+
+egg: build_egg
+
+build_egg:
+	rm -f egg/*.egg	
+	./egg/bentomaker.py --build-directory=egg/build \
+                            build_egg \
+                            --output-dir=egg && \
+        zip -j egg/*.egg bento.info egg/bentomaker.py egg/setup.py && \
+        cd egg && zip *.egg EGG-INFO/dependency_links.txt
