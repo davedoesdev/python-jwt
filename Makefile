@@ -1,6 +1,5 @@
 
 export PYTHONPATH=.
-PYVOWS = ./test/pyvows.sh
 
 all: lint test
 
@@ -15,12 +14,12 @@ lint:
 test: run_test
 
 run_test:
-	$(PYVOWS) test
+	./test/run/run_pyvows.py test
 
 coverage: run_coverage
 
 run_coverage:
-	$(PYVOWS) --cover --cover-package jwt --cover-report coverage/coverage.xml test
+	./test/run/run_pyvows.py --cover --cover-package jwt --cover-report coverage/coverage.xml test
 
 bench: run_bench
 
@@ -42,3 +41,6 @@ build_egg:
                             --output-dir=egg && \
         zip -j egg/*.egg bento.info egg/bentomaker.py egg/setup.py && \
         cd egg && zip *.egg EGG-INFO/dependency_links.txt
+
+travis_test: lint
+	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows test
