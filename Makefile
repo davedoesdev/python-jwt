@@ -30,7 +30,7 @@ run_bench:
 bench_gfm: 
 	for b in ./bench/*_bench.py; do $$b --gfm; done
 
-dev_deps:
+node_deps:
 	mkdir -p node_modules && npm install jsjws sinon
 
 egg: build_egg

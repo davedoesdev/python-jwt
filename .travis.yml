@@ -6,7 +6,7 @@ node_js:
 before_install:
   - sudo apt-get update
   - sudo apt-get install pylint
-  - make dev_deps
+  - make node_deps
 install:
   - pip install -r requirements.txt --use-mirrors
 script:
