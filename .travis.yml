@@ -4,6 +4,8 @@ python:
 node_js:
   - "0.10"
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install pylint
   - make dev_deps
 install:
   - pip install -r requirements.txt --use-mirrors
