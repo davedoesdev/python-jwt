@@ -124,7 +124,7 @@ def verify_jwt(jwt, pub_key=None, iat_skew=timedelta()):
 def process_jwt(jwt):
     """
     Process a JSON Web Token without verifying it.
-    
+
     Call this before :func:`verify_jwt` if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.
 
     :param jwt: The JSON Web Token to verify.

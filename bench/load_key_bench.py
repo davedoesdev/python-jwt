@@ -21,7 +21,7 @@ class LoadKeyBenchmark(Benchmark):
     def bench_RSA(self):
         """ Import key """
         RSA.importKey(priv_pem)
-        
+
 if __name__ == "__main__":
     #pylint: disable=W0402
     import string

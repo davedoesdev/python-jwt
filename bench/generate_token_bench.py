@@ -33,7 +33,7 @@ for alg in algs:
     f = make_bench_generate_token(alg)
     f.__name__ = name
     setattr(GenerateTokenBenchmark, name, f)
-        
+
 if __name__ == "__main__":
     #pylint: disable=W0402
     import string

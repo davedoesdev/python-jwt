@@ -20,7 +20,7 @@ class GenerateKeyBenchmark(Benchmark):
     def bench_RSA(self):
         """ Generate key """
         RSA.generate(2048)
-        
+
 if __name__ == "__main__":
     #pylint: disable=W0402
     import string

@@ -35,7 +35,7 @@ for alg in algs:
     f = make_bench_verify_token(alg)
     f.__name__ = name
     setattr(VerifyTokenBenchmark, name, f)
-        
+
 if __name__ == "__main__":
     #pylint: disable=W0402
     import string
