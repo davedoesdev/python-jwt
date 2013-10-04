@@ -18,16 +18,6 @@ def _get_dependency_links(self):
 
 bento.commands.egg_utils.EggInfo.get_dependency_links = _get_dependency_links
 
-# silence install-headers warning
-
-_orig_finalize_options = bento.distutils.commands.install.install.finalize_options
-
-def _finalize_options(self):
-    self.install_headers = None
-    _orig_finalize_options(self)
-
-bento.distutils.commands.install.install.finalize_options = _finalize_options
-
 # copy .egg-info to install directory and write it to install record
 
 _orig_resolve_paths_with_destdir = bento.installed_package_description.BuildManifest.resolve_paths_with_destdir

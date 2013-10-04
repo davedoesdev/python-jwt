@@ -40,7 +40,7 @@ build_egg:
 	./egg/bentomaker.py --build-directory=egg/build \
                             build_egg \
                             --output-dir=egg && \
-        zip -j egg/*.egg bento.info egg/bentomaker.py egg/setup.py && \
+        zip -j egg/*.egg bento.info README.rst egg/bentomaker.py egg/setup.py && \
         cd egg && zip *.egg EGG-INFO/dependency_links.txt
 
 travis_test: lint
