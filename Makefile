@@ -1,6 +1,9 @@
 
 export PYTHONPATH=.
 
+name=$(shell grep Name: bento.info | awk '{print $$NF}')
+version=$(shell grep Version: bento.info | awk '{print $$NF}')
+
 all: lint test
 
 docs: build_docs
@@ -33,21 +36,23 @@ bench_gfm:
 node_deps:
 	mkdir -p node_modules && npm install jsjws sinon
 
-egg: build_egg
+dist: make_dist
 
-build_egg:
-	rm -f egg/*.egg	
-	./egg/bentomaker.py --build-directory=egg/build \
-                            build_egg \
-                            --output-dir=egg && \
-        zip -j egg/*.egg bento.info README.rst egg/bentomaker.py egg/setup.py && \
-        cd egg && zip *.egg EGG-INFO/dependency_links.txt
+make_dist:
+	rm -f dist/$(name)-$(version).tar.gz	
+	./dist/bentomaker.py --build-directory=dist/build \
+                             sdist \
+                             --output-dir=dist
+	gunzip dist/$(name)-$(version).tar.gz
+	tar --transform='s,^dist/,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar dist/setup.py dist/bentomaker.py dist/dependency_links.txt
+	tar --transform='s,^,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar README.rst
+	gzip dist/$(name)-$(version).tar
 
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows test
 
 register:
-	./egg/bentomaker.py --build-directory=egg/build register_pypi
+	./dist/bentomaker.py --build-directory=dist/build register_pypi
 
 upload:
-	./egg/bentomaker.py --build-directory=egg/build upload_pypi -t egg egg/*.egg
+	./dist/bentomaker.py --build-directory=dist/build upload_pypi -t source dist/$(name)-$(version).tar.gz

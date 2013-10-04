@@ -13,7 +13,7 @@ import bento
 # return dependency links
 
 def _get_dependency_links(self):
-    with open(path.join('EGG-INFO', 'dependency_links.txt')) as f:
+    with open('dependency_links.txt') as f:
         return f.read()
 
 bento.commands.egg_utils.EggInfo.get_dependency_links = _get_dependency_links

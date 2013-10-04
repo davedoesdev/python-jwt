@@ -1,6 +1,6 @@
 *.pyc
 node_modules
 .bentomaker.py-*
-egg/build
-egg/*.egg
+dist/build
+dist/*.tar.gz
 .coverage
