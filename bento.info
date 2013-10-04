@@ -11,3 +11,5 @@ Library:
         jwt
     InstallRequires:
         jws-pss==0.1.0
+
+DescriptionFromFile: README.rst

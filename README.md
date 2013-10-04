@@ -1,4 +1,4 @@
-# python-jwt&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/davedoesdev/python-jwt.png)](https://travis-ci.org/davedoesdev/python-jwt) [![Coverage Status](https://coveralls.io/repos/davedoesdev/python-jwt/badge.png?branch=master)](https://coveralls.io/r/davedoesdev/python-jwt?branch=master) [![PyPI version](https://badge.fury.io/py/jwt.png)](http://badge.fury.io/py/jwt)
+# python-jwt&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/davedoesdev/python-jwt.png)](https://travis-ci.org/davedoesdev/python-jwt) [![Coverage Status](https://coveralls.io/repos/davedoesdev/python-jwt/badge.png?branch=master)](https://coveralls.io/r/davedoesdev/python-jwt?branch=master) [![PyPI version](https://badge.fury.io/py/python_jwt.png)](http://badge.fury.io/py/python_jwt)
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
@@ -45,7 +45,7 @@ for k in payload: assert claims[k] == payload[k]
 
 ## Licence
 
-[MIT](LICENCE)
+[MIT](https://raw.github.com/davedoesdev/python-jwt/master/LICENCE)
 
 ## Tests
 

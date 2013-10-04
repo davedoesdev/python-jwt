@@ -7,6 +7,7 @@ docs: build_docs
 
 build_docs:
 	cd docs && make html
+	pandoc -t rst README.md | sed -e '1,1s/^[^\\]*//' -e '2d' > README.rst
 
 lint:
 	pylint jwt test bench
@@ -44,3 +45,9 @@ build_egg:
 
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows test
+
+register:
+	./egg/bentomaker.py --build-directory=egg/build register_pypi
+
+upload:
+	./egg/bentomaker.py --build-directory=egg/build upload_pypi -t egg egg/*.egg
