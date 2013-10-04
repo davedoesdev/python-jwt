@@ -23,7 +23,7 @@ The API is described [here](http://githubraw.herokuapp.com/davedoesdev/python-jw
 ## Installation
 
 ```shell
-pip install jwt
+pip install python_jwt
 ```
 
 ## Another Example
