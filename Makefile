@@ -3,6 +3,7 @@ export PYTHONPATH=.
 
 name=$(shell grep Name: bento.info | awk '{print $$NF}')
 version=$(shell grep Version: bento.info | awk '{print $$NF}')
+distfile=dist/$(name)-$(version).tar.gz	
 
 all: lint test
 
@@ -39,14 +40,10 @@ node_deps:
 dist: make_dist
 
 make_dist:
-	rm -f dist/$(name)-$(version).tar.gz	
+	rm -f $(distfile)
 	./dist/bentomaker.py --build-directory=dist/build \
                              sdist \
                              --output-dir=dist
-	gunzip dist/$(name)-$(version).tar.gz
-	tar --transform='s,^dist/,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar dist/setup.py dist/bentomaker.py
-	tar --transform='s,^,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar README.rst
-	gzip dist/$(name)-$(version).tar
 
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows test
@@ -55,4 +52,4 @@ register:
 	./dist/bentomaker.py --build-directory=dist/build register_pypi
 
 upload:
-	./dist/bentomaker.py --build-directory=dist/build upload_pypi -t source dist/$(name)-$(version).tar.gz
+	./dist/bentomaker.py --build-directory=dist/build upload_pypi -t source $(distfile)

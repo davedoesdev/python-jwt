@@ -1,4 +1,4 @@
-import bentomaker
+import dist.bentomaker
 import setuptools
 from bento.distutils.monkey_patch import monkey_patch
 monkey_patch()

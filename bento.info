@@ -1,6 +1,7 @@
 Name: python_jwt
 Version: 0.1.0
 Summary: Module for generating and verifying JSON Web Tokens
+DescriptionFromFile: README.rst
 Url: https://github.com/davedoesdev/python-jwt
 Author: David Halls
 AuthorEmail: dave@davedoesdev.com
@@ -14,4 +15,8 @@ Library:
     DependencyLinks:
         http://github.com/davedoesdev/python-jws/tarball/master#egg=jws-pss-0.1.0
 
-DescriptionFromFile: README.rst
+ExtraSourceFiles:
+    README.rst,
+    setup.py,
+    dist/__init__.py,
+    dist/bentomaker.py
