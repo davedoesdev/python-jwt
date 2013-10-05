@@ -1,1 +1,0 @@
-http://github.com/davedoesdev/python-jws/tarball/master#egg=jws-pss-0.1.0

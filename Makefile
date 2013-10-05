@@ -44,7 +44,7 @@ make_dist:
                              sdist \
                              --output-dir=dist
 	gunzip dist/$(name)-$(version).tar.gz
-	tar --transform='s,^dist/,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar dist/setup.py dist/bentomaker.py dist/dependency_links.txt
+	tar --transform='s,^dist/,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar dist/setup.py dist/bentomaker.py
 	tar --transform='s,^,$(name)-$(version)/,' -rf dist/$(name)-$(version).tar README.rst
 	gzip dist/$(name)-$(version).tar
 

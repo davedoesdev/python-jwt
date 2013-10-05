@@ -11,5 +11,7 @@ Library:
         jwt
     InstallRequires:
         jws-pss==0.1.0
+    DependencyLinks:
+        http://github.com/davedoesdev/python-jws/tarball/master#egg=jws-pss-0.1.0
 
 DescriptionFromFile: README.rst

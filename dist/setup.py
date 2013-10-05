@@ -10,14 +10,6 @@ from os import path
 import shutil
 import bento
 
-# return dependency links
-
-def _get_dependency_links(self):
-    with open('dependency_links.txt') as f:
-        return f.read()
-
-bento.commands.egg_utils.EggInfo.get_dependency_links = _get_dependency_links
-
 # copy .egg-info to install directory and write it to install record
 
 _orig_resolve_paths_with_destdir = bento.installed_package_description.BuildManifest.resolve_paths_with_destdir
