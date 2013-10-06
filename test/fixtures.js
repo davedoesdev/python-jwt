@@ -1,3 +1,5 @@
+/*jslint node: true */
+"use strict";
 
 var sinon = require('sinon'),
     jsjws = require('jsjws');
@@ -31,11 +33,11 @@ function verify(time, sjwt, iat_skew, key)
         key = jsjws.createPublicKey(key, 'utf8');
     }
 
-    var clock = sinon.useFakeTimers(time * 1000);
+    var clock = sinon.useFakeTimers(time * 1000), jwt;
 
     try
     {
-        var jwt = new jsjws.JWT();
+        jwt = new jsjws.JWT();
 
         jwt.verifyJWTByKey(sjwt, {iat_skew: iat_skew}, key);
 
