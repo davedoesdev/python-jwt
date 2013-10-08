@@ -74,7 +74,11 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
             def header_should_be_as_expected(self, token):
                 """ Check header """
                 header, _ = token
-                expect(header).to_equal({'alg': alg, 'typ': 'JWT'})
+                expect(header).to_equal(
+                {
+                    'alg': 'none' if keyless else alg,
+                    'typ': 'JWT'
+                })
 
         class VerifyJWTWithGeneratedKey(Vows.Context):
             """ Verify token doesn't sign with minted key """
@@ -88,7 +92,10 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
 
             def should_fail_to_verify(self, r):
                 """ Should fail to verify with minted key """
-                expect(r).to_be_an_error()
+                if keyless and expected:
+                    expect(r).to_be_instance_of(tuple)
+                else:
+                    expect(r).to_be_an_error()
 
         class VerifyJWT(Vows.Context):
             """ Verify token with public key passed in """
@@ -108,7 +115,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
                     try:
                         expect(r).to_be_instance_of(tuple)
                     except:
-                        print priv_type, pub_type
+                        print alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected
                         raise
                 else:
                     expect(r).to_be_an_error()

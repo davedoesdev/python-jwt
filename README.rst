@@ -9,8 +9,10 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    **RS512** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3>`__,
    `**PS256**, **PS384**,
    **PS512** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5>`__,
-   `**HS256**, **HS384** and
+   `**HS256**, **HS384**,
    **HS512** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2>`__
+   and
+   `**none** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6>`__
    signature algorithms.
 -  Unit tests, including tests for interoperability with
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
