@@ -3,8 +3,8 @@
 Module for generating and verifying `JSON Web
 Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
 
--  Uses `jws <https://github.com/brianloveswords/python-jws>`__ to do
-   the heavy lifting.
+-  Uses `python-jws <https://github.com/brianloveswords/python-jws>`__
+   to do the heavy lifting.
 -  Supports `**RS256**, **RS384**,
    **RS512** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3>`__,
    `**PS256**, **PS384**,

@@ -2,7 +2,7 @@
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
-- Uses [jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
+- Uses [python-jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
 - Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
 
