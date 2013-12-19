@@ -1,5 +1,5 @@
 Name: python_jwt
-Version: 0.2.0
+Version: 0.2.1
 Summary: Module for generating and verifying JSON Web Tokens
 DescriptionFromFile: README.rst
 Url: https://github.com/davedoesdev/python-jwt
@@ -13,7 +13,7 @@ Library:
     InstallRequires:
         jws-pss==0.1.0
     DependencyLinks:
-        http://github.com/davedoesdev/python-jws/tarball/master#egg=jws-pss-0.1.0
+        http://github.com/brianloveswords/python-jws/tarball/master#egg=jws-pss-0.1.0
 
 ExtraSourceFiles:
     README.rst,
