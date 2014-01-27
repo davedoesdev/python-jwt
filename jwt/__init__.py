@@ -108,16 +108,16 @@ def verify_jwt(jwt, pub_key=None, iat_skew=timedelta()):
     utcnow = datetime.utcnow()
     now = timegm(utcnow.utctimetuple())
 
-    if header['typ'] != 'JWT':
+    if header.get('typ') and header['typ'] != 'JWT':
         raise _JWTError('type is not JWT')
 
-    if claims['iat'] > timegm((utcnow + iat_skew).utctimetuple()):
+    if claims.get('iat') and claims['iat'] > timegm((utcnow + iat_skew).utctimetuple()):
         raise _JWTError('issued in the future')
 
-    if claims['nbf'] > now:
+    if claims.get('nbf') and claims['nbf'] > now:
         raise _JWTError('not yet valid')
 
-    if claims['exp'] <= now:
+    if claims.get('exp') and claims['exp'] <= now:
         raise _JWTError('expired')
 
     return header, claims
