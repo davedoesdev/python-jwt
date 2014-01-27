@@ -22,7 +22,7 @@ def generate_jwt(claims, priv_key=None,
     :param claims: The claims you want included in the signature.
     :type claims: dict
 
-    :param priv_key: The private key to be used to sign the token. Note: if you pass :obj:`None` then the token will be returned with an empty cryptographic signature and :obj:`algorithm` will be forced to the value ``none``.
+    :param priv_key: The private key to be used to sign the token. Note: if you pass ``None`` then the token will be returned with an empty cryptographic signature and :obj:`algorithm` will be forced to the value ``none``.
     :type priv_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_, `SigningKey <https://github.com/warner/python-ecdsa>`_ or str
 
     :param algorithm: The algorithm to use for generating the signature. ``RS256``, ``RS384``, ``RS512``, ``PS256``, ``PS384``, ``PS512``, ``ES256``, ``ES384``, ``ES512``, ``HS256``, ``HS384``, ``HS512`` and ``none`` are supported.
@@ -34,7 +34,7 @@ def generate_jwt(claims, priv_key=None,
     :param expires: When the token expires (if :obj:`lifetime` isn't specified)
     :type expires: datetime.datetime
 
-    :param not_before: When the token is valid from. Defaults to current time (if :obj:`None` is passed).
+    :param not_before: When the token is valid from. Defaults to current time (if ``None`` is passed).
     :type not_before: datetime.datetime
 
     :rtype: str
@@ -69,27 +69,37 @@ def generate_jwt(claims, priv_key=None,
         '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key)
     )
 
-def verify_jwt(jwt, pub_key=None, iat_skew=timedelta()):
+#pylint: disable=R0912
+
+def verify_jwt(jwt,
+               pub_key=None,
+               iat_skew=timedelta(),
+               checks_optional=False):
     """
     Verify a JSON Web Token.
 
     :param jwt: The JSON Web Token to verify.
     :type jwt: str
 
-    :param pub_key: The public key to be used to verify the token. Note: if you pass :obj:`None` then the token's signature will not be verified.
+    :param pub_key: The public key to be used to verify the token. Note: if you pass ``None`` then the token's signature will not be verified.
     :type pub_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_, `VerifyingKey <https://github.com/warner/python-ecdsa>`_, str or NoneType
 
     :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifiying that the token was generated in the past. Defaults to no leeway.
     :type iat_skew: datetime.timedelta
 
+    :param checks_optional: Whether the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
+    :type checks_optional: bool
+
     :rtype: tuple
     :returns: ``(header, claims)`` if the token was verified successfully. The token must pass the following tests:
 
     - Its signature must verify using the public key or its algorithm must be ``none``.
-    - Its header must contain a property **typ** with the value ``JWT``.
-    - Its claims must contain a property **iat** which represents a date in the past (taking into account :obj:`iat_skew`).
-    - Its claims must contian a property **nbf** which represents a date in the past.
-    - Its claims must contain a property **exp** which represents a date in the future.
+    - If the corresponding property is present or **checks_optional** is ``False``:
+
+      - Its header must contain a property **typ** with the value ``JWT``.
+      - Its claims must contain a property **iat** which represents a date in the past (taking into account :obj:`iat_skew`).
+      - Its claims must contian a property **nbf** which represents a date in the past.
+      - Its claims must contain a property **exp** which represents a date in the future.
 
     :raises: If the token failed to verify.
     """
@@ -108,19 +118,37 @@ def verify_jwt(jwt, pub_key=None, iat_skew=timedelta()):
     utcnow = datetime.utcnow()
     now = timegm(utcnow.utctimetuple())
 
-    if header['typ'] != 'JWT':
+    typ = header.get('typ')
+    if typ is None:
+        if not checks_optional:
+            raise _JWTError('type not present')
+    elif typ != 'JWT':
         raise _JWTError('type is not JWT')
 
-    if claims['iat'] > timegm((utcnow + iat_skew).utctimetuple()):
+    iat = claims.get('iat')
+    if iat is None:
+        if not checks_optional:
+            raise _JWTError('iat claim not present')
+    elif iat > timegm((utcnow + iat_skew).utctimetuple()):
         raise _JWTError('issued in the future')
 
-    if claims['nbf'] > now:
+    nbf = claims.get('nbf')
+    if nbf is None:
+        if not checks_optional:
+            raise _JWTError('nbf claim not present')
+    elif nbf > now:
         raise _JWTError('not yet valid')
 
-    if claims['exp'] <= now:
+    exp = claims.get('exp')
+    if exp is None:
+        if not checks_optional:
+            raise _JWTError('exp claim not present')
+    elif exp <= now:
         raise _JWTError('expired')
 
     return header, claims
+
+#pylint: enable=R0912
 
 def process_jwt(jwt):
     """

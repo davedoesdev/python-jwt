@@ -58,7 +58,7 @@
 <tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></tt></a>(jwt)</td>
 <td>Process a JSON Web Token without verifying it.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;iat_skew])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;iat_skew,&nbsp;...])</td>
 <td>Verify a JSON Web Token.</td>
 </tr>
 </tbody>
@@ -74,11 +74,11 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>claims</strong> (<em>dict</em>) &#8211; The claims you want included in the signature.</li>
-<li><strong>priv_key</strong> (<a class="reference external" href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html">_RSAobj</a>, <a class="reference external" href="https://github.com/warner/python-ecdsa">SigningKey</a> or str) &#8211; The private key to be used to sign the token. Note: if you pass <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> then the token will be returned with an empty cryptographic signature and <tt class="xref py py-obj docutils literal"><span class="pre">algorithm</span></tt> will be forced to the value <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
+<li><strong>priv_key</strong> (<a class="reference external" href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html">_RSAobj</a>, <a class="reference external" href="https://github.com/warner/python-ecdsa">SigningKey</a> or str) &#8211; The private key to be used to sign the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token will be returned with an empty cryptographic signature and <tt class="xref py py-obj docutils literal"><span class="pre">algorithm</span></tt> will be forced to the value <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
 <li><strong>algorithm</strong> (<em>str</em>) &#8211; The algorithm to use for generating the signature. <tt class="docutils literal"><span class="pre">RS256</span></tt>, <tt class="docutils literal"><span class="pre">RS384</span></tt>, <tt class="docutils literal"><span class="pre">RS512</span></tt>, <tt class="docutils literal"><span class="pre">PS256</span></tt>, <tt class="docutils literal"><span class="pre">PS384</span></tt>, <tt class="docutils literal"><span class="pre">PS512</span></tt>, <tt class="docutils literal"><span class="pre">ES256</span></tt>, <tt class="docutils literal"><span class="pre">ES384</span></tt>, <tt class="docutils literal"><span class="pre">ES512</span></tt>, <tt class="docutils literal"><span class="pre">HS256</span></tt>, <tt class="docutils literal"><span class="pre">HS384</span></tt>, <tt class="docutils literal"><span class="pre">HS512</span></tt> and <tt class="docutils literal"><span class="pre">none</span></tt> are supported.</li>
 <li><strong>lifetime</strong> (<em>datetime.timedelta</em>) &#8211; How long the token is valid for.</li>
 <li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <tt class="xref py py-obj docutils literal"><span class="pre">lifetime</span></tt> isn&#8217;t specified)</li>
-<li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> is passed).</li>
+<li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <tt class="docutils literal"><span class="pre">None</span></tt> is passed).</li>
 </ul>
 </td>
 </tr>
@@ -119,7 +119,7 @@
 
 <dl class="function">
 <dt id="jwt.verify_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -127,8 +127,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>jwt</strong> (<em>str</em>) &#8211; The JSON Web Token to verify.</li>
-<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
+<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
+<li><strong>checks_optional</strong> (<em>bool</em>) &#8211; Whether the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
 </ul>
 </td>
 </tr>
@@ -142,10 +143,13 @@
 </table>
 <ul class="simple">
 <li>Its signature must verify using the public key or its algorithm must be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
+<li>If the corresponding property is present or <strong>checks_optional</strong> is <tt class="docutils literal"><span class="pre">False</span></tt>:<ul>
 <li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
 <li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
 <li>Its claims must contian a property <strong>nbf</strong> which represents a date in the past.</li>
 <li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>
+</ul>
+</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
