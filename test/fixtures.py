@@ -53,27 +53,27 @@ priv_key = RSA.importKey(priv_pem)
 pub_key = RSA.importKey(pub_pem)
 
 priv_keys = {
-    'HS256': { 'default': 'some random key' },
-    'HS384': { 'default': 'another one' },
-    'HS512': { 'default': 'keys keys keys!' },
-    'RS256': { 'python-jwt': priv_key },
-    'RS384': { 'python-jwt': priv_key },
-    'RS512': { 'python-jwt': priv_key },
-    'PS256': { 'python-jwt': priv_key },
-    'PS384': { 'python-jwt': priv_key },
-    'PS512': { 'python-jwt': priv_key }
+    'HS256': {'default': 'some random key'},
+    'HS384': {'default': 'another one'},
+    'HS512': {'default': 'keys keys keys!'},
+    'RS256': {'python-jwt': priv_key},
+    'RS384': {'python-jwt': priv_key},
+    'RS512': {'python-jwt': priv_key},
+    'PS256': {'python-jwt': priv_key},
+    'PS384': {'python-jwt': priv_key},
+    'PS512': {'python-jwt': priv_key}
 }
 
 pub_keys = {
-    'HS256': { 'default': priv_keys['HS256']['default'] },
-    'HS384': { 'default': priv_keys['HS384']['default'] },
-    'HS512': { 'default': priv_keys['HS512']['default'] },
-    'RS256': { 'python-jwt': pub_key },
-    'RS384': { 'python-jwt': pub_key },
-    'RS512': { 'python-jwt': pub_key },
-    'PS256': { 'python-jwt': pub_key },
-    'PS384': { 'python-jwt': pub_key },
-    'PS512': { 'python-jwt': pub_key }
+    'HS256': {'default': priv_keys['HS256']['default']},
+    'HS384': {'default': priv_keys['HS384']['default']},
+    'HS512': {'default': priv_keys['HS512']['default']},
+    'RS256': {'python-jwt': pub_key},
+    'RS384': {'python-jwt': pub_key},
+    'RS512': {'python-jwt': pub_key},
+    'PS256': {'python-jwt': pub_key},
+    'PS384': {'python-jwt': pub_key},
+    'PS512': {'python-jwt': pub_key}
 }
 
 generated_key = RSA.generate(2048)
