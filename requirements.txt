@@ -1,7 +1,8 @@
-git+https://github.com/brianloveswords/python-jws.git#egg=jws-pss
+jws>=0.1.2
 pyvows>=2.0.4
 pylint
 pycrypto>=2.6
 unitbench>=0.1
 coverage>=3.6
 coveralls
+mock
