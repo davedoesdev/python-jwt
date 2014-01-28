@@ -50,5 +50,6 @@ class GoogleJWTOAuth(Vows.Context):
                 u'iss': u'761326798069-r5mljlln1rd4lrbhg75efgigp36m78j5@developer.gserviceaccount.com',
                 u'scope': u'https://www.googleapis.com/auth/prediction',
                 u'aud': u'https://accounts.google.com/o/oauth2/token',
-                u'exp': 1328554385, u'iat': 1328550785
+                u'exp': 1328554385,
+                u'iat': 1328550785
             })
