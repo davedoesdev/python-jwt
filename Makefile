@@ -19,12 +19,12 @@ lint:
 test: run_test
 
 run_test:
-	./test/run/run_pyvows.py test
+	./test/run/run_pyvows.py -v test
 
 coverage: run_coverage
 
 run_coverage:
-	./test/run/run_pyvows.py --cover --cover-package jwt --cover-report coverage/coverage.xml test
+	./test/run/run_pyvows.py -v --cover --cover-package jwt --cover-report coverage/coverage.xml test
 
 bench: run_bench
 
@@ -46,7 +46,7 @@ make_dist:
                              --output-dir=dist
 
 travis_test: lint
-	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows test
+	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows -v test
 
 register:
 	./dist/bentomaker.py --build-directory=dist/build register_pypi
