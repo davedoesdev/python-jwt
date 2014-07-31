@@ -15,7 +15,8 @@ class _JWTError(Exception):
 
 def generate_jwt(claims, priv_key=None,
                  algorithm='PS512', lifetime=None, expires=None,
-                 not_before=None):
+                 not_before=None,
+                 jti_size=16):
     """
     Generate a JSON Web Token.
 
@@ -37,6 +38,9 @@ def generate_jwt(claims, priv_key=None,
     :param not_before: When the token is valid from. Defaults to current time (if ``None`` is passed).
     :type not_before: datetime.datetime
 
+    :param jti_size: Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or ``None`` to omit the JTI from the token.
+    :type jti_size: int
+
     :rtype: str
     :returns: The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the `JWT spec <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`_:
 
@@ -54,7 +58,9 @@ def generate_jwt(claims, priv_key=None,
 
     now = datetime.utcnow()
 
-    claims['jti'] = urlsafe_b64encode(urandom(128))
+    if jti_size:
+        claims['jti'] = urlsafe_b64encode(urandom(jti_size))
+
     claims['nbf'] = timegm((not_before or now).utctimetuple())
     claims['iat'] = timegm(now.utctimetuple())
 

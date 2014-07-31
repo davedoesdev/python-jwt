@@ -66,7 +66,7 @@
 <span class="target" id="module-jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
 <dl class="function">
 <dt id="jwt.generate_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">generate_jwt</tt><big>(</big><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em><big>)</big><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jwt.</tt><tt class="descname">generate_jwt</tt><big>(</big><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><big>)</big><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -79,6 +79,7 @@
 <li><strong>lifetime</strong> (<em>datetime.timedelta</em>) &#8211; How long the token is valid for.</li>
 <li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <tt class="xref py py-obj docutils literal"><span class="pre">lifetime</span></tt> isn&#8217;t specified)</li>
 <li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <tt class="docutils literal"><span class="pre">None</span></tt> is passed).</li>
+<li><strong>jti_size</strong> (<em>int</em>) &#8211; Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or <tt class="docutils literal"><span class="pre">None</span></tt> to omit the JTI from the token.</li>
 </ul>
 </td>
 </tr>
@@ -155,7 +156,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body">If the token failed to verify.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">If the token failed to verify.</td>
 </tr>
 </tbody>
 </table>
@@ -219,7 +220,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, David Halls.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

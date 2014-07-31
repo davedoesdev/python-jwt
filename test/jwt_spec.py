@@ -2,6 +2,7 @@
 from test.common import payload, pub_keys, priv_keys, algs, generated_keys, \
                         clock_tick, clock_load
 from datetime import timedelta, datetime
+from base64 import urlsafe_b64decode
 from pyvows import Vows, expect
 import jwt
 
@@ -9,7 +10,7 @@ keys = payload.keys()
 keys += ['exp', 'nbf', 'iat', 'jti']
 
 #pylint: disable=R0912
-def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
+def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expected):
     """ setup tests """
     privk = None if keyless else priv_keys[alg][priv_type]
     pubk = None if keyless else pub_keys[alg][pub_type]
@@ -28,7 +29,8 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
                 token = privk(payload, alg, lt, not_before=not_before)
             else:
                 token = jwt.generate_jwt(payload, privk, alg, lt,
-                                         not_before=not_before)
+                                         not_before=not_before,
+                                         jti_size=jti_size)
             yield clock_tick(timedelta(milliseconds=1500)), token
             now = datetime.utcnow()
             not_before = (now + timedelta(minutes=nbf)) if nbf else None
@@ -39,7 +41,8 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
             else:
                 token = jwt.generate_jwt(payload, privk, alg,
                                          expires=(now + lt),
-                                         not_before=not_before)
+                                         not_before=not_before,
+                                         jti_size=jti_size)
             yield clock_tick(timedelta(milliseconds=1500)), token
 
         class ProcessJWT(Vows.Context):
@@ -58,7 +61,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
 
                 def payload_keys_should_be_as_expected(self, claims):
                     """ Check keys """
-                    expect(claims.keys()).to_be_like(keys)
+                    expect(claims.keys()).to_be_like(keys if jti_size or callable(privk) else [key for key in keys if key != 'jti'])
 
                 def payload_values_should_match(self, claims):
                     """ Check values """
@@ -67,9 +70,15 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected):
 
                 def jtis_should_be_unique(self, claims):
                     """ Check jtis """
-                    expect(isinstance(claims['jti'], unicode)).to_be_true()
-                    expect(jtis).Not.to_include(claims['jti'])
-                    jtis[claims['jti']] = True
+                    if jti_size or callable(privk):
+                        expect(isinstance(claims['jti'], unicode)).to_be_true()
+                        expect(jtis).Not.to_include(claims['jti'])
+                        jtis[claims['jti']] = True
+
+                def jti_size_should_be_as_expected(self, claims):
+                    """ Check jti size """
+                    if jti_size and not callable(privk): # don't assume format of externally-generated JTIs
+                        expect(len(urlsafe_b64decode(claims['jti'].encode('utf-8')))).to_equal(jti_size)
 
             def header_should_be_as_expected(self, token):
                 """ Check header """
@@ -127,32 +136,33 @@ def setup(algs=algs):
         for priv_type in priv_keys[alg]:
             for pub_type in pub_keys[alg]:
                 for keyless in [False, True]:
-                    _setup(alg, priv_type, pub_type, 10, 0, None, keyless, True)
-                    _setup(alg, priv_type, pub_type, 1, 0, None, keyless, False)
+                    for jti_size in [16, 128, 0]:
+                        _setup(alg, priv_type, pub_type, 10, 0, None, jti_size, keyless, True)
+                        _setup(alg, priv_type, pub_type, 1, 0, None, jti_size, keyless, False)
 
-                    _setup(alg, priv_type, pub_type, 10, -10, None, keyless, False)
-                    _setup(alg, priv_type, pub_type, 1, -10, None, keyless, False)
+                        _setup(alg, priv_type, pub_type, 10, -10, None, jti_size, keyless, False)
+                        _setup(alg, priv_type, pub_type, 1, -10, None, jti_size, keyless, False)
 
-                    _setup(alg, priv_type, pub_type, 10, 10, None, keyless, True)
-                    _setup(alg, priv_type, pub_type, 1, 10, None, keyless, False)
-
-
-                    _setup(alg, priv_type, pub_type, 10, 0, 1, keyless, False)
-                    _setup(alg, priv_type, pub_type, 1, 0, 1, keyless, False)
-
-                    _setup(alg, priv_type, pub_type, 10, -10, 1, keyless, False)
-                    _setup(alg, priv_type, pub_type, 1, -10, 1, keyless, False)
-
-                    _setup(alg, priv_type, pub_type, 10, 10, 1, keyless, False)
-                    _setup(alg, priv_type, pub_type, 1, 10, 1, keyless, False)
+                        _setup(alg, priv_type, pub_type, 10, 10, None, jti_size, keyless, True)
+                        _setup(alg, priv_type, pub_type, 1, 10, None, jti_size, keyless, False)
 
 
-                    _setup(alg, priv_type, pub_type, 10, 0, -1, keyless, True)
-                    _setup(alg, priv_type, pub_type, 1, 0, -1, keyless, False)
+                        _setup(alg, priv_type, pub_type, 10, 0, 1, jti_size, keyless, False)
+                        _setup(alg, priv_type, pub_type, 1, 0, 1, jti_size, keyless, False)
 
-                    _setup(alg, priv_type, pub_type, 10, -10, -1, keyless, False)
-                    _setup(alg, priv_type, pub_type, 1, -10, -1, keyless, False)
+                        _setup(alg, priv_type, pub_type, 10, -10, 1, jti_size, keyless, False)
+                        _setup(alg, priv_type, pub_type, 1, -10, 1, jti_size, keyless, False)
 
-                    _setup(alg, priv_type, pub_type, 10, 10, -1, keyless, True)
-                    _setup(alg, priv_type, pub_type, 1, 10, -1, keyless, False)
+                        _setup(alg, priv_type, pub_type, 10, 10, 1, jti_size, keyless, False)
+                        _setup(alg, priv_type, pub_type, 1, 10, 1, jti_size, keyless, False)
+
+
+                        _setup(alg, priv_type, pub_type, 10, 0, -1, jti_size, keyless, True)
+                        _setup(alg, priv_type, pub_type, 1, 0, -1, jti_size, keyless, False)
+
+                        _setup(alg, priv_type, pub_type, 10, -10, -1, jti_size, keyless, False)
+                        _setup(alg, priv_type, pub_type, 1, -10, -1, jti_size, keyless, False)
+
+                        _setup(alg, priv_type, pub_type, 10, 10, -1, jti_size, keyless, True)
+                        _setup(alg, priv_type, pub_type, 1, 10, -1, jti_size, keyless, False)
 
