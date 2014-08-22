@@ -16,6 +16,8 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    signature algorithms.
 -  Unit tests, including tests for interoperability with
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
+-  Does *not* support Python 3 (gated on `python-jws support for Python
+   3 <https://github.com/brianloveswords/python-jws/issues/14>`__).
 
 Example:
 
