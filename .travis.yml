@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get install libevent-dev
   - make node_deps
 install:
-  - pip install -r requirements.txt --use-mirrors
+  - pip install -r requirements.txt
 script:
   - make travis_test
 after_success:
