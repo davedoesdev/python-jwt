@@ -83,8 +83,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
             def header_should_be_as_expected(self, token):
                 """ Check header """
                 header, _ = token
-                expect(header).to_equal(
-                {
+                expect(header).to_equal({
                     'alg': 'none' if keyless else alg,
                     'typ': 'JWT'
                 })

@@ -144,10 +144,11 @@
 </table>
 <ul class="simple">
 <li>Its signature must verify using the public key or its algorithm must be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
+<li>If you <strong>don&#8217;t</strong> pass <tt class="docutils literal"><span class="pre">None</span></tt> for the public key then the token&#8217;s algorithm must <strong>not</strong> be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
 <li>If the corresponding property is present or <strong>checks_optional</strong> is <tt class="docutils literal"><span class="pre">False</span></tt>:<ul>
 <li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
 <li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
-<li>Its claims must contian a property <strong>nbf</strong> which represents a date in the past.</li>
+<li>Its claims must contain a property <strong>nbf</strong> which represents a date in the past.</li>
 <li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>
 </ul>
 </li>

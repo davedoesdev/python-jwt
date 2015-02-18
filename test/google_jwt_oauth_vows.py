@@ -40,13 +40,11 @@ class GoogleJWTOAuth(Vows.Context):
             """ Should verify and match expected claims """
             expect(r).to_be_instance_of(tuple)
             header, claims = r
-            expect(header).to_equal(
-            {
+            expect(header).to_equal({
                 u'alg': u'RS256',
                 u'typ': u'JWT'
             })
-            expect(claims).to_equal(
-            {
+            expect(claims).to_equal({
                 u'iss': u'761326798069-r5mljlln1rd4lrbhg75efgigp36m78j5@developer.gserviceaccount.com',
                 u'scope': u'https://www.googleapis.com/auth/prediction',
                 u'aud': u'https://accounts.google.com/o/oauth2/token',

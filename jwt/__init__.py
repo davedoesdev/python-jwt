@@ -100,11 +100,12 @@ def verify_jwt(jwt,
     :returns: ``(header, claims)`` if the token was verified successfully. The token must pass the following tests:
 
     - Its signature must verify using the public key or its algorithm must be ``none``.
+    - If you **don't** pass ``None`` for the public key then the token's algorithm must **not** be ``none``.
     - If the corresponding property is present or **checks_optional** is ``False``:
 
       - Its header must contain a property **typ** with the value ``JWT``.
       - Its claims must contain a property **iat** which represents a date in the past (taking into account :obj:`iat_skew`).
-      - Its claims must contian a property **nbf** which represents a date in the past.
+      - Its claims must contain a property **nbf** which represents a date in the past.
       - Its claims must contain a property **exp** which represents a date in the future.
 
     :raises: If the token failed to verify.
@@ -115,7 +116,10 @@ def verify_jwt(jwt,
     parsed_header = jws.utils.from_json(header)
     claims = jws.utils.from_base64(claims)
 
-    if pub_key and parsed_header['alg'] != 'none':
+    if pub_key:
+        if parsed_header['alg'] == 'none':
+            raise _JWTError('key specified but alg is none')
+
         jws.verify(header, claims, sig, pub_key, True)
 
     header = parsed_header

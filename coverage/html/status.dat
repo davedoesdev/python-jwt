@@ -34,10 +34,10 @@ p18
 I1
 sS'n_branches'
 p19
-I32
+I34
 sS'n_statements'
 p20
-I61
+I63
 sS'n_excluded'
 p21
 I0
@@ -52,7 +52,7 @@ p24
 I11
 sbssS'hash'
 p25
-S'\xc6\xb1\x85\xc0\xe9\xa6\xd6S\x96Z\x88\x15\xd9Di\xe3'
+S'[b\x0fe;_\x18\x0b]\xb1\xdc\xe9\xa4\xfd\xf0\xfa'
 p26
 sssS'version'
 p27

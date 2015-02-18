@@ -21,7 +21,7 @@ class VerifyTokenBenchmark(Benchmark):
 
 #pylint: disable=W0621
 def make_bench_verify_token(alg):
-    """ Return function which will generate token for particular algorith """
+    """ Return function which will generate token for particular algorithm """
     privk = priv_keys[alg].get('default', priv_key)
     token = jwt.generate_jwt(payload, privk, alg, timedelta(days=1))
     def f(_):

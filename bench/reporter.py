@@ -8,6 +8,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--gfm', dest='gfm', action='store_true')
 gfm = parser.parse_args().gfm
 
+#pylint: disable=C0330
+
 class Reporter(unitbench.Reporter):
     """ Custom reporter """
 
