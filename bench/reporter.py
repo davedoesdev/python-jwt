@@ -8,8 +8,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--gfm', dest='gfm', action='store_true')
 gfm = parser.parse_args().gfm
 
-#pylint: disable=C0330
-
 class Reporter(unitbench.Reporter):
     """ Custom reporter """
 
@@ -21,20 +19,22 @@ class Reporter(unitbench.Reporter):
             self.stream.write("{0}|{1}|{2}|{3}\n".format(value, "user (ns)", "sys (ns)", "real (ns)"))
             self.stream.write(":--|--:|--:|--:\n")
             for r in results:
-                if (hasattr(r, "user_mean") and
-                    hasattr(r, "system_mean") and hasattr(r, "wall_mean")):
-                    self.stream.write("{0}|{1:,}|{2:,}|{3:,}\n".format(r.name,
-                        long(r.user_mean * 10**9),
-                        long(r.system_mean * 10**9),
+                if hasattr(r, "user_mean") and \
+                   hasattr(r, "system_mean") and \
+                   hasattr(r, "wall_mean"):
+                    self.stream.write("{0}|{1:,}|{2:,}|{3:,}\n".format(r.name, \
+                        long(r.user_mean * 10**9), \
+                        long(r.system_mean * 10**9), \
                         long(r.wall_mean * 10**9)))
         else:
             self.stream.write("{0:<20}{1:>15}{2:>15}{3:>15}\n".format(value, "user (ns)", "sys (ns)", "real (ns)"))
             self.stream.write("=" * 65 + "\n")
             for r in results:
-                if (hasattr(r, "user_mean") and
-                    hasattr(r, "system_mean") and hasattr(r, "wall_mean")):
-                    self.stream.write("{0:<20} {1:>14,} {2:>14,} {3:>14,}\n".format(r.name,
-                        long(r.user_mean * 10**9),
-                        long(r.system_mean * 10**9),
+                if hasattr(r, "user_mean") and \
+                   hasattr(r, "system_mean") and \
+                   hasattr(r, "wall_mean"):
+                    self.stream.write("{0:<20} {1:>14,} {2:>14,} {3:>14,}\n".format(r.name, \
+                        long(r.user_mean * 10**9), \
+                        long(r.system_mean * 10**9), \
                         long(r.wall_mean * 10**9)))
         self.stream.write("\n")
