@@ -6,13 +6,17 @@ from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
 from calendar import timegm
 from test import jwt_spec
+from threading import Lock
+
+lock = Lock()
 
 def spawn(cmd, parse_json):
     """ run node command """
     #pylint: disable=E1101
-    p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd],
-              stdout=PIPE, stderr=PIPE)
-    (stdout, stderr) = p.communicate()
+    with lock:
+        p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd],
+                  stdout=PIPE, stderr=PIPE)
+        (stdout, stderr) = p.communicate()
     if p.returncode == 0:
         return json.loads(stdout) if parse_json else stdout
     else:

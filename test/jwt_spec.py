@@ -89,12 +89,13 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 })
 
         class VerifyJWTWithGeneratedKey(Vows.Context):
-            """ Verify token doesn't sign with minted key """
+            """ Verify token doesn't verify with minted key """
+            @Vows.capture_error
             def topic(self, topic):
                 """ Set clock and verify token with minted key """
                 clock, sjwt = topic
                 clock_load(clock)
-                pubk = generated_keys[alg]
+                pubk = None if keyless else generated_keys[alg]
                 return jwt.verify_jwt(sjwt, pubk,
                                       timedelta(seconds=iat_skew))
 
@@ -107,6 +108,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
         class VerifyJWT(Vows.Context):
             """ Verify token with public key passed in """
+            @Vows.capture_error
             def topic(self, topic):
                 """ Set clock and verify token """
                 clock, sjwt = topic

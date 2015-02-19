@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>jwt module &mdash; python-jwt 0.3.4 documentation</title>
+    <title>jwt module &mdash; python-jwt 0.3.5 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.4',
+        VERSION:     '0.3.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-jwt 0.3.4 documentation" href="#" /> 
+    <link rel="top" title="python-jwt 0.3.5 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">python-jwt 0.3.4 documentation</a> &raquo;</li> 
+        <li><a href="#">python-jwt 0.3.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -120,7 +120,7 @@
 
 <dl class="function">
 <dt id="jwt.verify_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>allowed_algs=None</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -131,6 +131,7 @@
 <li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
 <li><strong>checks_optional</strong> (<em>bool</em>) &#8211; Whether the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
+<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token, or <tt class="docutils literal"><span class="pre">None</span></tt> if you don&#8217;t mind which algorithm is used.</li>
 </ul>
 </td>
 </tr>
@@ -147,6 +148,7 @@
 <li>If you <strong>don&#8217;t</strong> pass <tt class="docutils literal"><span class="pre">None</span></tt> for the public key then the token&#8217;s algorithm must <strong>not</strong> be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
 <li>If the corresponding property is present or <strong>checks_optional</strong> is <tt class="docutils literal"><span class="pre">False</span></tt>:<ul>
 <li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
+<li>If <strong>allowed_algs</strong> is not <tt class="docutils literal"><span class="pre">None</span></tt> then its header must contain a property <strong>alg</strong> with a value in <strong>allowed_algs</strong>.</li>
 <li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
 <li>Its claims must contain a property <strong>nbf</strong> which represents a date in the past.</li>
 <li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>
@@ -216,7 +218,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">python-jwt 0.3.4 documentation</a> &raquo;</li> 
+        <li><a href="#">python-jwt 0.3.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -16,6 +16,7 @@ class GoogleJWTOAuth(Vows.Context):
 
     class VerifyJWT(Vows.Context):
         """ Verify token """
+        @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
             return jwt.verify_jwt(topic, None)

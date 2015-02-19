@@ -75,12 +75,13 @@ def generate_jwt(claims, priv_key=None,
         '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key)
     )
 
-#pylint: disable=R0912
+#pylint: disable=R0912,too-many-locals
 
 def verify_jwt(jwt,
                pub_key=None,
                iat_skew=timedelta(),
-               checks_optional=False):
+               checks_optional=False,
+               allowed_algs=None):
     """
     Verify a JSON Web Token.
 
@@ -96,6 +97,9 @@ def verify_jwt(jwt,
     :param checks_optional: Whether the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
     :type checks_optional: bool
 
+    :param allowed_algs: Algorithms expected to be used to sign the token, or ``None`` if you don't mind which algorithm is used.
+    :type allowed_algs: list, dict or NoneType
+
     :rtype: tuple
     :returns: ``(header, claims)`` if the token was verified successfully. The token must pass the following tests:
 
@@ -104,6 +108,7 @@ def verify_jwt(jwt,
     - If the corresponding property is present or **checks_optional** is ``False``:
 
       - Its header must contain a property **typ** with the value ``JWT``.
+      - If **allowed_algs** is not ``None`` then its header must contain a property **alg** with a value in **allowed_algs**.
       - Its claims must contain a property **iat** which represents a date in the past (taking into account :obj:`iat_skew`).
       - Its claims must contain a property **nbf** which represents a date in the past.
       - Its claims must contain a property **exp** which represents a date in the future.
@@ -116,11 +121,23 @@ def verify_jwt(jwt,
     parsed_header = jws.utils.from_json(header)
     claims = jws.utils.from_base64(claims)
 
-    if pub_key:
-        if parsed_header['alg'] == 'none':
-            raise _JWTError('key specified but alg is none')
+    if allowed_algs is not None:
+        alg = parsed_header.get('alg')
+        if alg is None:
+            raise _JWTError('alg not present')
+        if alg not in allowed_algs:
+            raise _JWTError('algorithm not allowed: ' + alg)
 
-        jws.verify(header, claims, sig, pub_key, True)
+    if pub_key:
+        alg = parsed_header.get('alg')
+        if alg is None:
+            raise _JWTError('alg not present')
+        if alg == 'none':
+            if allowed_algs is None:
+                raise _JWTError('key specified but alg is none')
+            # 'none' must be in allowed_algs due to check above
+        else:
+            jws.verify(header, claims, sig, pub_key, True)
 
     header = parsed_header
     claims = jws.utils.from_json(claims)

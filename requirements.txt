@@ -1,5 +1,5 @@
 jws>=0.1.2
-pyvows>=2.0.4
+pyvows>=2.0.6
 pylint==1.1.0
 pycrypto>=2.6
 unitbench>=0.1

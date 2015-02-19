@@ -10,6 +10,7 @@ before_install:
 install:
   - pip install -r requirements.txt
 script:
+  - ( while true; do echo keep alive!; sleep 60; done ) &
   - make travis_test
 after_success:
   - coveralls
