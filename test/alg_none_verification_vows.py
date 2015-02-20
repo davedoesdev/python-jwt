@@ -32,7 +32,7 @@ class AlgNoneVerification(Vows.Context):
             return jwt.verify_jwt(topic, 'anysecrethere')
 
         def token_should_fail_to_verify_when_pub_key_specified(self, r):
-            """ Check it doesn't verify because key specified by alg is none """
+            """ Check it doesn't verify because alg is none """
             expect(r).to_be_an_error()
             expect(str(r)).to_equal('key specified but alg is none')
 

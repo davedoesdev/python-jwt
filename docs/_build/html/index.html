@@ -131,7 +131,7 @@
 <li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
 <li><strong>checks_optional</strong> (<em>bool</em>) &#8211; Whether the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
-<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token, or <tt class="docutils literal"><span class="pre">None</span></tt> if you don&#8217;t mind which algorithm is used.</li>
+<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token, or <tt class="docutils literal"><span class="pre">None</span></tt> if you don&#8217;t mind which algorithm is used. The <tt class="docutils literal"><span class="pre">in</span></tt> operator is used to test membership.</li>
 </ul>
 </td>
 </tr>

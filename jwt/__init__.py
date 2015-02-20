@@ -97,7 +97,7 @@ def verify_jwt(jwt,
     :param checks_optional: Whether the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
     :type checks_optional: bool
 
-    :param allowed_algs: Algorithms expected to be used to sign the token, or ``None`` if you don't mind which algorithm is used.
+    :param allowed_algs: Algorithms expected to be used to sign the token, or ``None`` if you don't mind which algorithm is used. The ``in`` operator is used to test membership.
     :type allowed_algs: list, dict or NoneType
 
     :rtype: tuple
