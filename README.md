@@ -6,6 +6,7 @@ Module for generating and verifying [JSON Web Tokens](http://self-issued.info/do
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
 - Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
 - Does _not_ support Python 3 (gated on [python-jws support for Python 3](https://github.com/brianloveswords/python-jws/issues/14)).
+- **Note:** Versions 0.3.5 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. [verify_jwt](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt) no longer accepts unsigned tokens when you supply a key and supports specifying which signature algorithms are allowed.
 
 Example:
 
