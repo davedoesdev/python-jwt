@@ -18,6 +18,13 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
 -  Does *not* support Python 3 (gated on `python-jws support for Python
    3 <https://github.com/brianloveswords/python-jws/issues/14>`__).
+-  **Note:** Versions 0.3.5 and later fix `a
+   vulnerability <https://www.timmclean.net/2015/02/25/jwt-alg-none.html>`__
+   in JSON Web Token verification so please upgrade if you're using this
+   functionality.
+   `verify\_jwt <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
+   no longer accepts unsigned tokens when you supply a key and supports
+   specifying which signature algorithms are allowed.
 
 Example:
 
