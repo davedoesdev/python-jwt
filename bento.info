@@ -1,5 +1,5 @@
 Name: python_jwt
-Version: 0.3.7
+Version: 0.3.8
 Summary: Module for generating and verifying JSON Web Tokens
 DescriptionFromFile: README.rst
 Url: https://github.com/davedoesdev/python-jwt
