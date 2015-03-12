@@ -30,7 +30,7 @@ class PEMAsHMACKey(Vows.Context):
             """ Verify the token """
             return jwt.verify_jwt(topic, pub_pem, ['HS256'])
 
-        def token_should_not_verify(self, r):
+        def token_should_verify(self, r):
             """ Should verify """
             expect(r).to_be_instance_of(tuple)
 
