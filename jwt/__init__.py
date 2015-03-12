@@ -118,7 +118,6 @@ def verify_jwt(jwt,
 
     header = jws.utils.from_base64(header).decode()
     parsed_header = jws.utils.from_json(header)
-    claims = jws.utils.from_base64(claims).decode()
 
     if allowed_algs is None:
         allowed_algs = []
@@ -129,46 +128,47 @@ def verify_jwt(jwt,
     if alg not in allowed_algs:
         raise _JWTError('algorithm not allowed: ' + alg)
 
+    claims = jws.utils.from_base64(claims).decode()
+
     if pub_key:
-        jws.verify(header, claims, sig, pub_key, True)
+        jws.verify(str(header), str(claims), str(sig), pub_key, True)
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
 
-    header = parsed_header
-    claims = jws.utils.from_json(claims)
+    parsed_claims = jws.utils.from_json(claims)
 
     utcnow = datetime.utcnow()
     now = timegm(utcnow.utctimetuple())
 
-    typ = header.get('typ')
+    typ = parsed_header.get('typ')
     if typ is None:
         if not checks_optional:
             raise _JWTError('type not present')
     elif typ != 'JWT':
         raise _JWTError('type is not JWT')
 
-    iat = claims.get('iat')
+    iat = parsed_claims.get('iat')
     if iat is None:
         if not checks_optional:
             raise _JWTError('iat claim not present')
     elif iat > timegm((utcnow + iat_skew).utctimetuple()):
         raise _JWTError('issued in the future')
 
-    nbf = claims.get('nbf')
+    nbf = parsed_claims.get('nbf')
     if nbf is None:
         if not checks_optional:
             raise _JWTError('nbf claim not present')
     elif nbf > now:
         raise _JWTError('not yet valid')
 
-    exp = claims.get('exp')
+    exp = parsed_claims.get('exp')
     if exp is None:
         if not checks_optional:
             raise _JWTError('exp claim not present')
     elif exp <= now:
         raise _JWTError('expired')
 
-    return header, claims
+    return parsed_header, parsed_claims
 
 #pylint: enable=R0912
 
