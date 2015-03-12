@@ -41,7 +41,7 @@ def generate_jwt(claims, priv_key=None,
     :param jti_size: Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or ``None`` to omit the JTI from the token.
     :type jti_size: int
 
-    :rtype: str
+    :rtype: unicode
     :returns: The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the `JWT spec <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`_:
 
     - **exp** (*IntDate*) -- The UTC expiry date and time of the token, in number of seconds from 1970-01-01T0:0:0Z UTC.
@@ -59,7 +59,7 @@ def generate_jwt(claims, priv_key=None,
     now = datetime.utcnow()
 
     if jti_size:
-        claims['jti'] = urlsafe_b64encode(urandom(jti_size))
+        claims['jti'] = urlsafe_b64encode(urandom(jti_size)).decode()
 
     claims['nbf'] = timegm((not_before or now).utctimetuple())
     claims['iat'] = timegm(now.utctimetuple())
@@ -70,26 +70,29 @@ def generate_jwt(claims, priv_key=None,
         claims['exp'] = timegm(expires.utctimetuple())
 
     return "%s.%s.%s" % (
-        jws.utils.encode(header),
-        jws.utils.encode(claims),
-        '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key)
+        jws.utils.encode(header).decode(),
+        jws.utils.encode(claims).decode(),
+        '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key).decode()
     )
 
 #pylint: disable=R0912,too-many-locals
 
 def verify_jwt(jwt,
                pub_key=None,
+               allowed_algs=None,
                iat_skew=timedelta(),
-               checks_optional=False,
-               allowed_algs=None):
+               checks_optional=False):
     """
     Verify a JSON Web Token.
 
     :param jwt: The JSON Web Token to verify.
-    :type jwt: str
+    :type jwt: str or unicode
 
-    :param pub_key: The public key to be used to verify the token. Note: if you pass ``None`` then the token's signature will not be verified.
+    :param pub_key: The public key to be used to verify the token. Note: if you pass ``None`` and **allowed_algs** contains ``none`` then the token's signature will not be verified.
     :type pub_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_, `VerifyingKey <https://github.com/warner/python-ecdsa>`_, str or NoneType
+
+    :param allowed_algs: Algorithms expected to be used to sign the token. The ``in`` operator is used to test membership.
+    :type allowed_algs: list, dict or NoneType
 
     :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifiying that the token was generated in the past. Defaults to no leeway.
     :type iat_skew: datetime.timedelta
@@ -97,47 +100,39 @@ def verify_jwt(jwt,
     :param checks_optional: Whether the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
     :type checks_optional: bool
 
-    :param allowed_algs: Algorithms expected to be used to sign the token, or ``None`` if you don't mind which algorithm is used. The ``in`` operator is used to test membership.
-    :type allowed_algs: list, dict or NoneType
-
     :rtype: tuple
     :returns: ``(header, claims)`` if the token was verified successfully. The token must pass the following tests:
 
-    - Its signature must verify using the public key or its algorithm must be ``none``.
-    - If you **don't** pass ``None`` for the public key then the token's algorithm must **not** be ``none``.
+    - Its header must contain a property **alg** with a value in **allowed_algs**.
+    - Its signature must verify using **pub_key** (unless its algorithm is ``none`` and ``none`` is in **allowed_algs**).
     - If the corresponding property is present or **checks_optional** is ``False``:
 
       - Its header must contain a property **typ** with the value ``JWT``.
-      - If **allowed_algs** is not ``None`` then its header must contain a property **alg** with a value in **allowed_algs**.
       - Its claims must contain a property **iat** which represents a date in the past (taking into account :obj:`iat_skew`).
       - Its claims must contain a property **nbf** which represents a date in the past.
       - Its claims must contain a property **exp** which represents a date in the future.
 
     :raises: If the token failed to verify.
     """
-    header, claims, sig = jwt.split('.')
+    header, claims, sig = str(jwt).split('.')
 
-    header = jws.utils.from_base64(header)
+    header = jws.utils.from_base64(header).decode()
     parsed_header = jws.utils.from_json(header)
-    claims = jws.utils.from_base64(claims)
+    claims = jws.utils.from_base64(claims).decode()
 
-    if allowed_algs is not None:
-        alg = parsed_header.get('alg')
-        if alg is None:
-            raise _JWTError('alg not present')
-        if alg not in allowed_algs:
-            raise _JWTError('algorithm not allowed: ' + alg)
+    if allowed_algs is None:
+        allowed_algs = []
+
+    alg = parsed_header.get('alg')
+    if alg is None:
+        raise _JWTError('alg not present')
+    if alg not in allowed_algs:
+        raise _JWTError('algorithm not allowed: ' + alg)
 
     if pub_key:
-        alg = parsed_header.get('alg')
-        if alg is None:
-            raise _JWTError('alg not present')
-        if alg == 'none':
-            if allowed_algs is None:
-                raise _JWTError('key specified but alg is none')
-            # 'none' must be in allowed_algs due to check above
-        else:
-            jws.verify(header, claims, sig, pub_key, True)
+        jws.verify(header, claims, sig, pub_key, True)
+    elif 'none' not in allowed_algs:
+        raise _JWTError('no key but none alg not allowed')
 
     header = parsed_header
     claims = jws.utils.from_json(claims)
@@ -184,13 +179,13 @@ def process_jwt(jwt):
     Call this before :func:`verify_jwt` if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.
 
     :param jwt: The JSON Web Token to verify.
-    :type jwt: str
+    :type jwt: str or unicode
 
     :rtype: tuple
     :returns: ``(header, claims)``
     """
-    header, claims, _ = jwt.split('.')
-    header = jws.utils.decode(header)
-    claims = jws.utils.decode(claims)
+    header, claims, _ = str(jwt).split('.')
+    header = jws.utils.from_json(jws.utils.from_base64(header).decode())
+    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode())
     return header, claims
 

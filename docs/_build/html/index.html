@@ -58,7 +58,7 @@
 <tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></tt></a>(jwt)</td>
 <td>Process a JSON Web Token without verifying it.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;iat_skew,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;allowed_algs,&nbsp;...])</td>
 <td>Verify a JSON Web Token.</td>
 </tr>
 </tbody>
@@ -83,7 +83,7 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">unicode</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the <a class="reference external" href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">JWT spec</a>:</p>
@@ -108,7 +108,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jwt</strong> (<em>str</em>) &#8211; The JSON Web Token to verify.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jwt</strong> (<em>str or unicode</em>) &#8211; The JSON Web Token to verify.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
 </tr>
@@ -120,18 +120,18 @@
 
 <dl class="function">
 <dt id="jwt.verify_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>allowed_algs=None</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>jwt</strong> (<em>str</em>) &#8211; The JSON Web Token to verify.</li>
-<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token&#8217;s signature will not be verified.</li>
+<li><strong>jwt</strong> (<em>str or unicode</em>) &#8211; The JSON Web Token to verify.</li>
+<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> and <strong>allowed_algs</strong> contains <tt class="docutils literal"><span class="pre">none</span></tt> then the token&#8217;s signature will not be verified.</li>
+<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token. The <tt class="docutils literal"><span class="pre">in</span></tt> operator is used to test membership.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
 <li><strong>checks_optional</strong> (<em>bool</em>) &#8211; Whether the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
-<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token, or <tt class="docutils literal"><span class="pre">None</span></tt> if you don&#8217;t mind which algorithm is used. The <tt class="docutils literal"><span class="pre">in</span></tt> operator is used to test membership.</li>
 </ul>
 </td>
 </tr>
@@ -144,11 +144,10 @@
 </tbody>
 </table>
 <ul class="simple">
-<li>Its signature must verify using the public key or its algorithm must be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
-<li>If you <strong>don&#8217;t</strong> pass <tt class="docutils literal"><span class="pre">None</span></tt> for the public key then the token&#8217;s algorithm must <strong>not</strong> be <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
+<li>Its header must contain a property <strong>alg</strong> with a value in <strong>allowed_algs</strong>.</li>
+<li>Its signature must verify using <strong>pub_key</strong> (unless its algorithm is <tt class="docutils literal"><span class="pre">none</span></tt> and <tt class="docutils literal"><span class="pre">none</span></tt> is in <strong>allowed_algs</strong>).</li>
 <li>If the corresponding property is present or <strong>checks_optional</strong> is <tt class="docutils literal"><span class="pre">False</span></tt>:<ul>
 <li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
-<li>If <strong>allowed_algs</strong> is not <tt class="docutils literal"><span class="pre">None</span></tt> then its header must contain a property <strong>alg</strong> with a value in <strong>allowed_algs</strong>.</li>
 <li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
 <li>Its claims must contain a property <strong>nbf</strong> which represents a date in the past.</li>
 <li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>

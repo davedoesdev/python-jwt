@@ -26,7 +26,7 @@ function generate(time, header, claims, expires, not_before, key)
     }
 }
 
-function verify(time, sjwt, iat_skew, key)
+function verify(time, sjwt, iat_skew, key, alg)
 {
     if (key.indexOf('-----BEGIN') === 0)
     {
@@ -39,7 +39,7 @@ function verify(time, sjwt, iat_skew, key)
     {
         jwt = new jsjws.JWT();
 
-        jwt.verifyJWTByKey(sjwt, {iat_skew: iat_skew}, key);
+        jwt.verifyJWTByKey(sjwt, {iat_skew: iat_skew}, key, [alg]);
 
         process.stdout.write(JSON.stringify([jwt.getParsedHeader(), jwt.getParsedPayload()]));
     }

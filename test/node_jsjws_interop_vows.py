@@ -47,11 +47,12 @@ def verify(alg):
     def f(sjwt, iat_skew=timedelta()):
         """ verify token using node-jsjws """
         r = spawn(
-            "fixtures.verify({now}, {sjwt}, {iat_skew}, {key})".format(
+            "fixtures.verify({now}, {sjwt}, {iat_skew}, {key}, {alg})".format(
                 now=timegm(datetime.utcnow().utctimetuple()),
                 sjwt=json.dumps(sjwt),
                 iat_skew=iat_skew.total_seconds(),
-                key=json.dumps(key)),
+                key=json.dumps(key),
+                alg=json.dumps(alg)),
             True)
         return tuple(r)
     return f

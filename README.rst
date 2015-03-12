@@ -3,6 +3,13 @@
 Module for generating and verifying `JSON Web
 Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
 
+-  **Note:** Versions 1.0.0 and later fix `a
+   vulnerability <https://www.timmclean.net/2015/02/25/jwt-alg-none.html>`__
+   in JSON Web Token verification so please upgrade if you're using this
+   functionality. The API has changed so you will need to update your
+   application.
+   `verify\_jwt <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
+   now requires you to specify which signature algorithms are allowed.
 -  Uses `python-jws <https://github.com/brianloveswords/python-jws>`__
    to do the heavy lifting.
 -  Supports `**RS256**, **RS384**,
@@ -16,15 +23,13 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    signature algorithms.
 -  Unit tests, including tests for interoperability with
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
--  Does *not* support Python 3 (gated on `python-jws support for Python
-   3 <https://github.com/brianloveswords/python-jws/issues/14>`__).
--  **Note:** Versions 0.3.5 and later fix `a
-   vulnerability <https://www.timmclean.net/2015/02/25/jwt-alg-none.html>`__
-   in JSON Web Token verification so please upgrade if you're using this
-   functionality.
+-  Tentative support for Python 3.4. Although the examples below work,
+   the unit tests are blocked on
+   `PyVows <https://github.com/heynemann/pyvows/issues/23>`__ and
+   `gevent <https://github.com/gevent/gevent/issues/38>`__ support for
+   Python 3.4. **Note:**
    `verify\_jwt <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
-   no longer accepts unsigned tokens when you supply a key and supports
-   specifying which signature algorithms are allowed.
+   now returns the token as a Unicode string, even on Python 2.7.
 
 Example:
 
@@ -34,7 +39,7 @@ Example:
     key = RSA.generate(2048)
     payload = { 'foo': 'bar', 'wup': 90 };
     token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
-    header, claims = jwt.verify_jwt(token, key)
+    header, claims = jwt.verify_jwt(token, key, ['PS256'])
     for k in payload: assert claims[k] == payload[k]
 
 The API is described
@@ -63,7 +68,7 @@ You can read and write keys from and to
     priv_key = RSA.importKey(priv_pem)
     pub_key = RSA.importKey(pub_pem)
     token = jwt.generate_jwt(payload, priv_key, 'RS256', datetime.timedelta(minutes=5))
-    header, claims = jwt.verify_jwt(token, pub_key)
+    header, claims = jwt.verify_jwt(token, pub_key, ['RS256'])
     for k in payload: assert claims[k] == payload[k]
 
 Licence

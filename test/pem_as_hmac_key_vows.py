@@ -13,20 +13,33 @@ class PEMAsHMACKey(Vows.Context):
 
     class VerifyTokenUsingPublicPEMNoAllowedAlgsSpecified(Vows.Context):
         """ Verify token, allowed algorithms not specified """
+        @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
             return jwt.verify_jwt(topic, pub_pem)
 
-        def token_should_verify(self, r):
-            """ Should verify """
-            expect(r).to_be_instance_of(tuple)
+        def token_should_not_verify(self, r):
+            """ Should not verify """
+            expect(r).to_be_an_error()
+            expect(str(r)).to_equal('algorithm not allowed: HS256')
 
-    class VerifyTokenUsingPublicPEMAllowedAlgSpecified(Vows.Context):
+    class VerifyTokenUsingPublicPEMHS256AlgAllowed(Vows.Context):
         """ Verify token, specifiy allowed alg """
         @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
-            return jwt.verify_jwt(topic, pub_pem, allowed_algs=['RS256'])
+            return jwt.verify_jwt(topic, pub_pem, ['HS256'])
+
+        def token_should_not_verify(self, r):
+            """ Should verify """
+            expect(r).to_be_instance_of(tuple)
+
+    class VerifyTokenUsingPublicPEMRS256AlgAllowed(Vows.Context):
+        """ Verify token, specifiy allowed alg """
+        @Vows.capture_error
+        def topic(self, topic):
+            """ Verify the token """
+            return jwt.verify_jwt(topic, pub_pem, ['RS256'])
 
         def token_should_not_verify(self, r):
             """ Should not verify """

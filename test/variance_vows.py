@@ -18,7 +18,7 @@ def check_different(alg, priv_type):
             """ Generate 10 tokens """
             #pylint: disable=W0201
             self.tokens = {}
-            for _ in xrange(10):
+            for _ in range(10):
                 #pylint: disable=W0631
                 yield jwt.generate_jwt(payload, privk, alg, timedelta(seconds=5))
 

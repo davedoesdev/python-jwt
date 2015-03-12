@@ -1,6 +1,6 @@
 """ Test Google OAuth token """
 
-from test.common import clock_tick, orig_datetime
+from test.common import clock_tick, orig_datetime, clock_reset
 from pyvows import Vows, expect
 import jwt
 
@@ -19,7 +19,7 @@ class GoogleJWTOAuth(Vows.Context):
         @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
-            return jwt.verify_jwt(topic, None)
+            return jwt.verify_jwt(topic, None, ['RS256', 'none'])
 
         def token_should_fail_to_verify(self, r):
             """ Check it doesn't verify because of missing claims """
@@ -32,10 +32,13 @@ class GoogleJWTOAuth(Vows.Context):
             """ Verify the token without requiring all claims """
             adjust = orig_datetime.utcnow() - orig_datetime.utcfromtimestamp(0)
             clock_tick(-adjust)
-            return jwt.verify_jwt(topic,
-                                  None,
-                                  iat_skew=adjust,
-                                  checks_optional=True)
+            r = jwt.verify_jwt(topic,
+                               None,
+                               ['RS256', 'none'],
+                               iat_skew=adjust,
+                               checks_optional=True)
+            clock_reset()
+            return r
 
         def token_should_verify(self, r):
             """ Should verify and match expected claims """

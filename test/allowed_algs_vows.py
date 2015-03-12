@@ -18,23 +18,23 @@ def check_allowed(alg, key):
             """ Generate token """
             return jwt.generate_jwt(payload, key, alg, timedelta(seconds=60))
 
-        class VerifyJWTDefault(Vows.Context):
+        class VerifyJWTNoAlgsSpecified(Vows.Context):
             """ Verify token, allowed algorithms not specified """
+            @Vows.capture_error
             def topic(self, topic):
                 """ Verify the token """
                 return jwt.verify_jwt(topic, key)
 
-            def token_should_verify(self, r):
-                """ Should verify """
-                expect(r).to_be_instance_of(tuple)
-                header, _ = r
-                expect(header).to_equal({'alg': alg, 'typ': 'JWT'})
+            def token_should_not_verify(self, r):
+                """ Should not verify """
+                expect(r).to_be_an_error()
+                expect(str(r)).to_equal('algorithm not allowed: ' + alg)
 
         class VerifyJWTAllAlgsAllowed(Vows.Context):
             """ Verify token, all algorithms allowed """
             def topic(self, topic):
                 """ Verify the token """
-                return jwt.verify_jwt(topic, key, allowed_algs=all_algs)
+                return jwt.verify_jwt(topic, key, all_algs)
 
             def token_should_verify(self, r):
                 """ Should verify """
@@ -47,7 +47,7 @@ def check_allowed(alg, key):
             @Vows.capture_error
             def topic(self, topic):
                 """ Verify the token """
-                return jwt.verify_jwt(topic, key, allowed_algs=[])
+                return jwt.verify_jwt(topic, key, [])
 
             def token_should_not_verify(self, r):
                 """ Should not verify """
@@ -59,8 +59,7 @@ def check_allowed(alg, key):
             @Vows.capture_error
             def topic(self, topic):
                 """ Verify the token """
-                return jwt.verify_jwt(topic, key, allowed_algs=[
-                    a for a in all_algs if a != alg])
+                return jwt.verify_jwt(topic, key, [a for a in all_algs if a != alg])
 
             def token_should_not_verify(self, r):
                 """ Should not verify """

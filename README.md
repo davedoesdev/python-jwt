@@ -2,11 +2,11 @@
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
+- **Note:** Versions 1.0.0 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. The API has changed so you will need to update your application. [verify_jwt](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt) now requires you to specify which signature algorithms are allowed.
 - Uses [python-jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
 - Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
-- Does _not_ support Python 3 (gated on [python-jws support for Python 3](https://github.com/brianloveswords/python-jws/issues/14)).
-- **Note:** Versions 0.3.5 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. [verify_jwt](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt) no longer accepts unsigned tokens when you supply a key and supports specifying which signature algorithms are allowed.
+- Tentative support for Python 3.4. Although the examples below work, the unit tests are blocked on [PyVows](https://github.com/heynemann/pyvows/issues/23) and [gevent](https://github.com/gevent/gevent/issues/38) support for Python 3.4. **Note:** [verify_jwt](http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt) now returns the token as a Unicode string, even on Python 2.7.
 
 Example:
 
@@ -15,7 +15,7 @@ import jwt, Crypto.PublicKey.RSA as RSA, datetime
 key = RSA.generate(2048)
 payload = { 'foo': 'bar', 'wup': 90 };
 token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
-header, claims = jwt.verify_jwt(token, key)
+header, claims = jwt.verify_jwt(token, key, ['PS256'])
 for k in payload: assert claims[k] == payload[k]
 ```
 
@@ -41,7 +41,7 @@ payload = { 'foo': 'bar', 'wup': 90 };
 priv_key = RSA.importKey(priv_pem)
 pub_key = RSA.importKey(pub_pem)
 token = jwt.generate_jwt(payload, priv_key, 'RS256', datetime.timedelta(minutes=5))
-header, claims = jwt.verify_jwt(token, pub_key)
+header, claims = jwt.verify_jwt(token, pub_key, ['RS256'])
 for k in payload: assert claims[k] == payload[k]
 ```
 

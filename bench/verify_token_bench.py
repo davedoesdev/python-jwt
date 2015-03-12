@@ -27,7 +27,7 @@ def make_bench_verify_token(alg):
     def f(_):
         """ Verify token """
         pubk = pub_keys[alg].get('default', pub_key)
-        jwt.verify_jwt(token, pubk)
+        jwt.verify_jwt(token, pubk, [alg])
     return f
 
 for alg in algs:

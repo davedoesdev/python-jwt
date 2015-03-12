@@ -9,6 +9,15 @@ import jwt
 keys = payload.keys()
 keys += ['exp', 'nbf', 'iat', 'jti']
 
+def is_string(obj):
+    """ Duck type detect string """
+    try:
+        #pylint: disable=unused-variable
+        obj2 = obj + ''
+        return True
+    except TypeError:
+        return False
+
 #pylint: disable=R0912
 def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expected):
     """ setup tests """
@@ -71,7 +80,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 def jtis_should_be_unique(self, claims):
                     """ Check jtis """
                     if jti_size or callable(privk):
-                        expect(isinstance(claims['jti'], unicode)).to_be_true()
+                        expect(is_string(claims['jti'])).to_be_true()
                         expect(jtis).Not.to_include(claims['jti'])
                         jtis[claims['jti']] = True
 
@@ -96,7 +105,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 clock, sjwt = topic
                 clock_load(clock)
                 pubk = None if keyless else generated_keys[alg]
-                return jwt.verify_jwt(sjwt, pubk,
+                return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
                                       timedelta(seconds=iat_skew))
 
             def should_fail_to_verify(self, r):
@@ -116,7 +125,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 if callable(pubk):
                     return pubk(sjwt, timedelta(seconds=iat_skew))
                 else:
-                    return jwt.verify_jwt(sjwt, pubk,
+                    return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
                                           timedelta(seconds=iat_skew))
 
             def should_verify_as_expected(self, r):
@@ -125,7 +134,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                     try:
                         expect(r).to_be_instance_of(tuple)
                     except:
-                        print alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected
+                        print(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected)
                         raise
                 else:
                     expect(r).to_be_an_error()
