@@ -32,7 +32,6 @@ def clock_reset():
     if hasattr(_thread_state, 'utcnow'):
         delattr(_thread_state, 'utcnow')
 
-#pylint: disable=W0142
 _config = {'utcnow.side_effect': _new_utcnow,
            'now.side_effect': _new_now}
 _patcher = patch('datetime.datetime', **_config)
