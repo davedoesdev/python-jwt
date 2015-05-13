@@ -1,9 +1,19 @@
-import dist.bentomaker
-import setuptools
-from bento.distutils.monkey_patch import monkey_patch
-monkey_patch()
-
+import os
 from setuptools import setup
 
-if __name__ == '__main__':
-    setup()
+def read(name):
+    return open(os.path.join(os.path.dirname(__file__), name)).read()
+
+setup(
+    name='python_jwt',
+    version='1.0.0',
+    description="Module for generating and verifying JSON Web Tokens",
+    long_description=read('README.rst'),
+    keywords='',
+    author='David Halls',
+    author_email='dave@davedoesdev.com',
+    url='https://github.com/davedoesdev/python-jwt',
+    license='MIT',
+    packages=['jwt'],
+    install_requires=['jws>=0.1.2'],
+)
