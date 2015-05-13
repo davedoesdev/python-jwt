@@ -1,9 +1,8 @@
 
 export PYTHONPATH=.
 
-name=$(shell grep Name: bento.info | awk '{print $$NF}')
-version=$(shell grep Version: bento.info | awk '{print $$NF}')
-distfile=dist/$(name)-$(version).tar.gz	
+name=$(shell grep name= setup.py | awk -F "'" '{print $$2}')
+version=$(shell grep version= setup.py | awk -F "'" '{print $$2}')
 
 all: lint test
 
@@ -40,16 +39,11 @@ node_deps:
 dist: make_dist
 
 make_dist:
-	rm -f $(distfile)
-	./dist/bentomaker.py --build-directory=dist/build \
-                             sdist \
-                             --output-dir=dist
+	python setup.py sdist
+	python setup.py bdist_wheel
 
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows -v test
 
-register:
-	./dist/bentomaker.py --build-directory=dist/build register_pypi
-
 upload:
-	./dist/bentomaker.py --build-directory=dist/build upload_pypi -t source $(distfile)
+	twine upload dist/$(name)-$(version)*

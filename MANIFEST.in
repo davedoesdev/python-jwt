@@ -1,8 +1,10 @@
-include docs/*
-include LICENSE
+include LICENCE
 include README.md
 include README.rst
-recursive-include jwt/ *
-recursive-include bench/ *
-global-exclude .gitignore
-global-exclude .git
+recursive-include bench *
+recursive-include docs *
+recursive-include jwt *
+recursive-include test *
+include .coveragerc
+include Makefile
+include pylintrc
