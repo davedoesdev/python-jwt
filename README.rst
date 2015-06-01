@@ -8,7 +8,7 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    in JSON Web Token verification so please upgrade if you're using this
    functionality. The API has changed so you will need to update your
    application.
-   `verify\_jwt <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
+   `verify\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
    now requires you to specify which signature algorithms are allowed.
 -  Uses `python-jws <https://github.com/brianloveswords/python-jws>`__
    to do the heavy lifting.
@@ -28,7 +28,7 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    `PyVows <https://github.com/heynemann/pyvows/issues/23>`__ and
    `gevent <https://github.com/gevent/gevent/issues/38>`__ support for
    Python 3.4. **Note:**
-   `verify\_jwt <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
+   `verify\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
    now returns the token as a Unicode string, even on Python 2.7.
 
 Example:
@@ -43,7 +43,7 @@ Example:
     for k in payload: assert claims[k] == payload[k]
 
 The API is described
-`here <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/docs/_build/html/index.html>`__.
+`here <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html>`__.
 
 Installation
 ------------
@@ -99,7 +99,7 @@ Code Coverage
 
 `coverage.py <http://nedbatchelder.com/code/coverage/>`__ results are
 available
-`here <http://githubraw.herokuapp.com/davedoesdev/python-jwt/master/coverage/html/index.html>`__.
+`here <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/coverage/html/index.html>`__.
 
 Coveralls page is
 `here <https://coveralls.io/r/davedoesdev/python-jwt>`__.
