@@ -81,7 +81,8 @@ def verify_jwt(jwt,
                pub_key=None,
                allowed_algs=None,
                iat_skew=timedelta(),
-               checks_optional=False):
+               checks_optional=False,
+               encoding='utf-8'):
     """
     Verify a JSON Web Token.
 
@@ -116,7 +117,7 @@ def verify_jwt(jwt,
     """
     header, claims, sig = str(jwt).split('.')
 
-    header = jws.utils.from_base64(header).decode()
+    header = jws.utils.from_base64(header).decode(encoding)
     parsed_header = jws.utils.from_json(header)
 
     if allowed_algs is None:
@@ -128,10 +129,11 @@ def verify_jwt(jwt,
     if alg not in allowed_algs:
         raise _JWTError('algorithm not allowed: ' + alg)
 
-    claims = jws.utils.from_base64(claims).decode()
+    claims = jws.utils.from_base64(claims).decode(encoding)
 
     if pub_key:
-        jws.verify(str(header), str(claims), str(sig), pub_key, True)
+        jws.verify(header.encode(encoding), claims.encode(encoding),
+                   sig.encode(encoding), pub_key, True)
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
 
@@ -172,7 +174,7 @@ def verify_jwt(jwt,
 
 #pylint: enable=R0912
 
-def process_jwt(jwt):
+def process_jwt(jwt, encoding='utf-8'):
     """
     Process a JSON Web Token without verifying it.
 
@@ -185,7 +187,7 @@ def process_jwt(jwt):
     :returns: ``(header, claims)``
     """
     header, claims, _ = str(jwt).split('.')
-    header = jws.utils.from_json(jws.utils.from_base64(header).decode())
-    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode())
+    header = jws.utils.from_json(jws.utils.from_base64(header).decode(encoding))
+    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode(encoding))
     return header, claims
 
