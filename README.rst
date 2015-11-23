@@ -28,7 +28,7 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    `PyVows <https://github.com/heynemann/pyvows/issues/23>`__ and
    `gevent <https://github.com/gevent/gevent/issues/38>`__ support for
    Python 3.4. **Note:**
-   `verify\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.verify_jwt>`__
+   `generate\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.generate_jwt>`__
    now returns the token as a Unicode string, even on Python 2.7.
 
 Example:
