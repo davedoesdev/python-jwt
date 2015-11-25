@@ -34,7 +34,7 @@ bench_gfm:
 	for b in ./bench/*_bench.py; do $$b --gfm; done
 
 node_deps:
-	mkdir -p node_modules && npm install jsjws sinon
+	mkdir -p node_modules && npm install --python=2.7 jsjws sinon
 
 dist: make_dist
 
