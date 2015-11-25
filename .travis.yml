@@ -11,8 +11,6 @@ addons:
   apt:
     packages:
       - libevent-dev
-install:
-  - pip install --user -r requirements.txt
 script:
   - ( while true; do echo keep alive!; sleep 60; done ) &
   - make travis_test
