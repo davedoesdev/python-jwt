@@ -1,14 +1,18 @@
+sudo: false
 language: python
 python:
   - "2.7"
+  - "3.4"
 node_js:
   - "0.12"
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install libevent-dev
   - make node_deps
+addons:
+  apt:
+    packages:
+      - libevent-dev
 install:
-  - pip install -r requirements.txt
+  - pip install --user -r requirements.txt
 script:
   - ( while true; do echo keep alive!; sleep 60; done ) &
   - make travis_test

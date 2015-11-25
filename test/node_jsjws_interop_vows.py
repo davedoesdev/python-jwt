@@ -17,6 +17,8 @@ def spawn(cmd, parse_json):
         p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd],
                   stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = p.communicate()
+    stdout = stdout.decode('utf-8')
+    stderr = stderr.decode('utf-8')
     if p.returncode == 0:
         return json.loads(stdout) if parse_json else stdout
     else:

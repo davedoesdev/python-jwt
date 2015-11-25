@@ -7,6 +7,15 @@ import pyvows
 import gevent.pool
 pyvows.runner.gevent.VowsParallelRunner.pool = gevent.pool.Pool(50000)
 
+import sys
+if sys.version_info >= (3, 0):
+    import pyvows.reporting.common
+    pyvows.reporting.common.unicode = str
+
+import inspect
+_orig_ismethod = inspect.ismethod
+inspect.ismethod = lambda o: _orig_ismethod(o) or inspect.isfunction(o)
+
 import coverage
 import types
 orig_coverage = coverage.coverage

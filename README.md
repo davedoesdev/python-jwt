@@ -6,7 +6,7 @@ Module for generating and verifying [JSON Web Tokens](http://self-issued.info/do
 - Uses [python-jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
 - Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
-- Tentative support for Python 3.4. Although the examples below work, the unit tests are blocked on [PyVows](https://github.com/heynemann/pyvows/issues/23) and [gevent](https://github.com/gevent/gevent/issues/38) support for Python 3.4. **Note:** [generate_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.generate_jwt) now returns the token as a Unicode string, even on Python 2.7.
+- Supports Python 3.4. **Note:** [generate_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.generate_jwt) returns the token as a Unicode string, even on Python 2.7.
 
 Example:
 

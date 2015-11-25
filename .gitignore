@@ -1,6 +1,7 @@
 *.pyc
-node_modules/
-dist/
-.coverage/
-build/
-python_jwt.egg-info/
+/node_modules
+/dist
+/.coverage
+/build
+/python_jwt.egg-info
+/python

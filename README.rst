@@ -23,13 +23,9 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    signature algorithms.
 -  Unit tests, including tests for interoperability with
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
--  Tentative support for Python 3.4. Although the examples below work,
-   the unit tests are blocked on
-   `PyVows <https://github.com/heynemann/pyvows/issues/23>`__ and
-   `gevent <https://github.com/gevent/gevent/issues/38>`__ support for
-   Python 3.4. **Note:**
+-  Supports Python 3.4. **Note:**
    `generate\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#jwt.generate_jwt>`__
-   now returns the token as a Unicode string, even on Python 2.7.
+   returns the token as a Unicode string, even on Python 2.7.
 
 Example:
 

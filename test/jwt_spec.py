@@ -6,7 +6,7 @@ from base64 import urlsafe_b64decode
 from pyvows import Vows, expect
 import jwt
 
-keys = payload.keys()
+keys = list(payload.keys())
 keys += ['exp', 'nbf', 'iat', 'jti']
 
 def is_string(obj):
@@ -70,7 +70,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
                 def payload_keys_should_be_as_expected(self, claims):
                     """ Check keys """
-                    expect(claims.keys()).to_be_like(keys if jti_size or callable(privk) else [key for key in keys if key != 'jti'])
+                    expect(list(claims.keys())).to_be_like(keys if jti_size or callable(privk) else [key for key in keys if key != 'jti'])
 
                 def payload_values_should_match(self, claims):
                     """ Check values """
@@ -139,7 +139,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 else:
                     expect(r).to_be_an_error()
 
-#pylint: disable=W0621
+#pylint: disable=W0621,dangerous-default-value
 def setup(algs=algs):
     """ Setup all the tests for each alg """
     for alg in algs:

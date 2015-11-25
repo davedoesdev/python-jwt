@@ -6,7 +6,7 @@ def read(name):
 
 setup(
     name='python_jwt',
-    version='1.0.3',
+    version='1.1.0',
     description="Module for generating and verifying JSON Web Tokens",
     long_description=read('README.rst'),
     keywords='',

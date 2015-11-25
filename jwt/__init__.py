@@ -8,6 +8,15 @@ from base64 import urlsafe_b64encode
 from os import urandom
 import jws
 
+jws.utils.to_bytes_2and3 = lambda s: \
+    s if isinstance(s, jws.utils.binary_type) else s.encode('utf-8')
+
+#pylint: disable=bad-builtin, protected-access
+jws._signing_input = lambda head, payload, is_json=False: \
+    '.'.join([b.decode('utf-8') for b in
+              map(jws.utils.to_base64 if is_json else jws.utils.encode,
+                  [head, payload])])
+
 class _JWTError(Exception):
     """ Exception raised if claim doesn't pass. Private to this module because
         jws throws many exceptions too. """
@@ -59,7 +68,7 @@ def generate_jwt(claims, priv_key=None,
     now = datetime.utcnow()
 
     if jti_size:
-        claims['jti'] = urlsafe_b64encode(urandom(jti_size)).decode()
+        claims['jti'] = urlsafe_b64encode(urandom(jti_size)).decode('utf-8')
 
     claims['nbf'] = timegm((not_before or now).utctimetuple())
     claims['iat'] = timegm(now.utctimetuple())
@@ -69,10 +78,10 @@ def generate_jwt(claims, priv_key=None,
     elif expires:
         claims['exp'] = timegm(expires.utctimetuple())
 
-    return "%s.%s.%s" % (
-        jws.utils.encode(header).decode(),
-        jws.utils.encode(claims).decode(),
-        '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key).decode()
+    return u'%s.%s.%s' % (
+        jws.utils.encode(header).decode('utf-8'),
+        jws.utils.encode(claims).decode('utf-8'),
+        '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key).decode('utf-8')
     )
 
 #pylint: disable=R0912,too-many-locals
@@ -114,9 +123,9 @@ def verify_jwt(jwt,
 
     :raises: If the token failed to verify.
     """
-    header, claims, sig = str(jwt).split('.')
+    header, claims, sig = jwt.split('.')
 
-    header = jws.utils.from_base64(header).decode()
+    header = jws.utils.from_base64(header).decode('utf-8')
     parsed_header = jws.utils.from_json(header)
 
     if allowed_algs is None:
@@ -128,10 +137,10 @@ def verify_jwt(jwt,
     if alg not in allowed_algs:
         raise _JWTError('algorithm not allowed: ' + alg)
 
-    claims = jws.utils.from_base64(claims).decode()
+    claims = jws.utils.from_base64(claims).decode('utf-8')
 
     if pub_key:
-        jws.verify(str(header), str(claims), str(sig), pub_key, True)
+        jws.verify(header, claims, sig, pub_key, True)
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
 
@@ -184,8 +193,8 @@ def process_jwt(jwt):
     :rtype: tuple
     :returns: ``(header, claims)``
     """
-    header, claims, _ = str(jwt).split('.')
-    header = jws.utils.from_json(jws.utils.from_base64(header).decode())
-    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode())
+    header, claims, _ = jwt.split('.')
+    header = jws.utils.from_json(jws.utils.from_base64(header).decode('utf-8'))
+    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode('utf-8'))
     return header, claims
 

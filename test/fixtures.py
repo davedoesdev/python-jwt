@@ -7,6 +7,7 @@ import Crypto.PublicKey.RSA as RSA
 
 payload = {
     "foo": "joe",
+    u"hell\u25C9": u"th\u0113re",
     "bar": 2398742.23092384,
     "http://example.com/is_root": True
 }
@@ -90,4 +91,4 @@ generated_keys = {
     'PS512': generated_key
 }
 
-algs = priv_keys.keys()
+algs = list(priv_keys.keys())
