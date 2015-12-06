@@ -1,5 +1,6 @@
 """ Test Google OAuth token """
 
+# pylint: disable=wrong-import-order
 from test.common import clock_tick, orig_datetime, clock_reset
 from pyvows import Vows, expect
 import jwt
