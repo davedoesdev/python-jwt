@@ -1,4 +1,5 @@
 """ test using PEM as key - we shouldn't validate a HMAC token instead """
+# pylint: disable=wrong-import-order
 from test.common import payload, pub_pem, pub_key
 from datetime import timedelta
 from pyvows import Vows, expect

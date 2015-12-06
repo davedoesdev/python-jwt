@@ -1,4 +1,5 @@
 """ test generation and verification of tokens """
+# pylint: disable=wrong-import-order
 from test.common import payload, pub_keys, priv_keys, algs, generated_keys, \
                         clock_tick, clock_load
 from datetime import timedelta, datetime

@@ -2,6 +2,7 @@
 
 """ Benchmark generating a JWT """
 
+# pylint: disable=wrong-import-position,wrong-import-order
 from datetime import timedelta
 from unitbench import Benchmark
 from test.fixtures import payload, priv_keys, priv_key, algs

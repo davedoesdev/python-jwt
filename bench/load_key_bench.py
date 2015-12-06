@@ -2,6 +2,7 @@
 
 """ Benchmark loading an RSA key from a PEM string """
 
+# pylint: disable=wrong-import-position,wrong-import-order
 import Crypto.PublicKey.RSA as RSA
 from unitbench import Benchmark
 from test.fixtures import priv_pem

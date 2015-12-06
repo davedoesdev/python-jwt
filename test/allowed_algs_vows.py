@@ -1,4 +1,5 @@
 """ test checking against set of allowed algorithms when verifying tokens """
+# pylint: disable=wrong-import-order
 from test.common import payload, algs, generated_keys
 from datetime import timedelta
 from pyvows import Vows, expect
@@ -10,9 +11,8 @@ all_algs = algs + ['none']
 def check_allowed(alg, key):
     """ setup tests """
     @Vows.batch
-    #pylint: disable=W0612
+    #pylint: disable=unused-variable
     class GenerateJWT(Vows.Context):
-    #pylint: enable=W0612
         """ Checks algorithm is allowed when in set of allowed algorithms """
         def topic(self):
             """ Generate token """

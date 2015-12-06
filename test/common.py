@@ -1,5 +1,6 @@
 """ Common setup and patching for tests """
 
+#pylint: disable=wrong-import-order
 from datetime import datetime as orig_datetime, timedelta
 from mock import patch
 import threading

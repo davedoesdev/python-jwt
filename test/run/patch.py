@@ -1,11 +1,36 @@
 #!/usr/bin/env python
 """ patch pyvows and coverage """
 
+# pylint: disable=wrong-import-position,wrong-import-order,ungrouped-imports
 import gevent.monkey
 gevent.monkey.patch_all()
-import pyvows
+import pyvows.runner
 import gevent.pool
 pyvows.runner.gevent.VowsParallelRunner.pool = gevent.pool.Pool(50000)
+
+from pyvows.core import Vows
+from pyvows.runner import VowsRunner
+from pyvows.result import VowsResult
+
+# pylint: disable=too-few-public-methods
+class _Dummy(object):
+    # pylint: disable=missing-docstring
+    @classmethod
+    def run(cls, on_vow_success, on_vow_error):
+        # Run batches in series
+        r = VowsResult()
+        for suite, batches in Vows.suites.items():
+            for batch in batches:
+                result = VowsRunner({suite: [batch]},
+                                    Vows.Context,
+                                    on_vow_success,
+                                    on_vow_error,
+                                    Vows.exclusion_patterns).run()
+                r.contexts += result.contexts
+                r.elapsed_time += result.elapsed_time
+        return r
+
+Vows.run = _Dummy.run
 
 import sys
 if sys.version_info >= (3, 0):

@@ -1,8 +1,8 @@
 """ Custom reporter to generate Github-flavoured markdown tables """
 
 import sys
-import unitbench
 import argparse
+import unitbench
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--gfm', dest='gfm', action='store_true')

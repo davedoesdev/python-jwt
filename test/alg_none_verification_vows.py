@@ -1,5 +1,6 @@
 """ Test verification of tokens with algorithms none """
 
+# pylint: disable=wrong-import-order
 from test.common import payload, generated_key
 from datetime import timedelta
 from pyvows import Vows, expect

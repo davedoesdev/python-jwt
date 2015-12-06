@@ -1,5 +1,6 @@
 """ Check generated tokens are all different """
 
+# pylint: disable=wrong-import-order
 from test.common import payload, priv_keys, algs
 from datetime import timedelta
 from pyvows import Vows, expect
@@ -10,9 +11,8 @@ def check_different(alg, priv_type):
     """ Check all different for an algorith and private key """
     privk = priv_keys[alg][priv_type]
     @Vows.batch
-    #pylint: disable=W0612
+    #pylint: disable=unused-variable
     class Variance(Vows.Context):
-    #pylint: enable=W0612
         """ Checks tokens are different """
         def topic(self):
             """ Generate 10 tokens """

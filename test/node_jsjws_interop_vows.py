@@ -1,5 +1,6 @@
 """ test interop with node-jsjws """
 
+# pylint: disable=wrong-import-order
 from test.common import pub_keys, priv_keys, algs, pub_pem, priv_pem
 import json
 from datetime import datetime, timedelta
