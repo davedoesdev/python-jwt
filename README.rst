@@ -46,7 +46,7 @@ Installation
 
 .. code:: shell
 
-    pip install python_jwt
+    pip install python-jwt
 
 Another Example
 ---------------

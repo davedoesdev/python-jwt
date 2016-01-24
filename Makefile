@@ -40,7 +40,7 @@ dist: make_dist
 
 make_dist:
 	python setup.py sdist
-	python setup.py bdist_wheel
+	python setup.py bdist_wheel --universal
 
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows -v test
