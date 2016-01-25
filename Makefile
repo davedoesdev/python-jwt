@@ -45,5 +45,8 @@ make_dist:
 travis_test: lint
 	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows -v test
 
+register:
+	twine register dist/$(name)-$(version).tar.gz
+
 upload:
 	twine upload dist/$(name)-$(version)*

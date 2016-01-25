@@ -5,8 +5,8 @@ def read(name):
     return open(os.path.join(os.path.dirname(__file__), name)).read()
 
 setup(
-    name='python-jwt',
-    version='1.1.3',
+    name='python_jwt',
+    version='1.1.5',
     description="Module for generating and verifying JSON Web Tokens",
     long_description=read('README.rst'),
     keywords='',

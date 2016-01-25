@@ -25,7 +25,7 @@ The API is described [here](http://rawgit.davedoesdev.com/davedoesdev/python-jwt
 ## Installation
 
 ```shell
-pip install python-jwt
+pip install python_jwt
 ```
 
 ## Another Example
