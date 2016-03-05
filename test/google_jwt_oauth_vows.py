@@ -2,8 +2,8 @@
 
 # pylint: disable=wrong-import-order
 from test.common import clock_tick, orig_datetime, clock_reset
+from test import jwt
 from pyvows import Vows, expect
-import jwt
 
 # JWT from https://developers.google.com/accounts/docs/OAuth2ServiceAccount
 google_jwt_example = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3NjEzMjY3OTgwNjktcjVtbGpsbG4xcmQ0bHJiaGc3NWVmZ2lncDM2bTc4ajVAZGV2ZWxvcGVyLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzY29wZSI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL2F1dGgvcHJlZGljdGlvbiIsImF1ZCI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi90b2tlbiIsImV4cCI6MTMyODU1NDM4NSwiaWF0IjoxMzI4NTUwNzg1fQ.ixOUGehweEVX_UKXv5BbbwVEdcz6AYS-6uQV6fGorGKrHf3LIJnyREw9evE-gs2bmMaQI5_UbabvI4k-mQE4kBqtmSpTzxYBL1TCd7Kv5nTZoUC1CmwmWCFqT9RE6D7XSgPUh_jF1qskLa2w0rxMSjwruNKbysgRNctZPln7cqQ"
@@ -28,7 +28,7 @@ class GoogleJWTOAuth(Vows.Context):
             expect(str(r)).to_equal('nbf claim not present')
 
     class VerifyJWTChecksOptional(Vows.Context):
-        """ Verify token, relax claim existence chacking """
+        """ Verify token, relax claim existence checking """
         def topic(self, topic):
             """ Verify the token without requiring all claims """
             adjust = orig_datetime.utcnow() - orig_datetime.utcfromtimestamp(0)

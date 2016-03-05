@@ -2,6 +2,7 @@
 Functions for generating and verifying JSON Web Tokens.
 """
 
+import threading
 from datetime import datetime, timedelta
 from calendar import timegm
 from base64 import urlsafe_b64encode
@@ -16,6 +17,19 @@ jws._signing_input = lambda head, payload, is_json=False: \
     '.'.join([b.decode('utf-8') for b in
               map(jws.utils.to_base64 if is_json else jws.utils.encode,
                   [head, payload])])
+
+_tls = threading.local()
+
+class _VerifyNotImplemented(jws.header.VerifyNotImplemented):
+    def verify(self):
+        if getattr(_tls, 'ignore_not_implemented', False):
+            return self.value
+        return super(_VerifyNotImplemented, self).verify()
+
+for _header in jws.header.KNOWN_HEADERS:
+    cls = jws.header.KNOWN_HEADERS[_header]
+    if cls == jws.header.VerifyNotImplemented:
+        jws.header.KNOWN_HEADERS[_header] = _VerifyNotImplemented
 
 class _JWTError(Exception):
     """ Exception raised if claim doesn't pass. Private to this module because
@@ -90,7 +104,8 @@ def verify_jwt(jwt,
                pub_key=None,
                allowed_algs=None,
                iat_skew=timedelta(),
-               checks_optional=False):
+               checks_optional=False,
+               ignore_not_implemented=False):
     """
     Verify a JSON Web Token.
 
@@ -106,8 +121,11 @@ def verify_jwt(jwt,
     :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifiying that the token was generated in the past. Defaults to no leeway.
     :type iat_skew: datetime.timedelta
 
-    :param checks_optional: Whether the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
+    :param checks_optional: If ``False``, then the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
     :type checks_optional: bool
+
+    :param ignore_not_implemented: If ``False``, then the token must *not* contain the **jku**, **kid**, **x5u** or **x5t** header properties.
+    :type ignore_not_implemented: bool
 
     :rtype: tuple
     :returns: ``(header, claims)`` if the token was verified successfully. The token must pass the following tests:
@@ -140,7 +158,11 @@ def verify_jwt(jwt,
     claims = jws.utils.from_base64(claims).decode('utf-8')
 
     if pub_key:
-        jws.verify(header, claims, sig, pub_key, True)
+        _tls.ignore_not_implemented = ignore_not_implemented
+        try:
+            jws.verify(header, claims, sig, pub_key, True)
+        finally:
+            _tls.ignore_not_implemented = False
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
 

@@ -20,7 +20,7 @@ def _new_now():
     return _new_utcnow() + (orig_datetime.now() - orig_datetime.utcnow())
 
 def clock_load(utcnow):
-    """ Set datetie """
+    """ Set datetime """
     _thread_state.utcnow = utcnow
     return _thread_state.utcnow
 

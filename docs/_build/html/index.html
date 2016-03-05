@@ -120,7 +120,7 @@
 
 <dl class="function">
 <dt id="jwt.verify_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>ignore_not_implemented=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -131,7 +131,8 @@
 <li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> and <strong>allowed_algs</strong> contains <tt class="docutils literal"><span class="pre">none</span></tt> then the token&#8217;s signature will not be verified.</li>
 <li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token. The <tt class="docutils literal"><span class="pre">in</span></tt> operator is used to test membership.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
-<li><strong>checks_optional</strong> (<em>bool</em>) &#8211; Whether the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
+<li><strong>checks_optional</strong> (<em>bool</em>) &#8211; If <tt class="docutils literal"><span class="pre">False</span></tt>, then the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
+<li><strong>ignore_not_implemented</strong> (<em>bool</em>) &#8211; If <tt class="docutils literal"><span class="pre">False</span></tt>, then the token must <em>not</em> contain the <strong>jku</strong>, <strong>kid</strong>, <strong>x5u</strong> or <strong>x5t</strong> header properties.</li>
 </ul>
 </td>
 </tr>
