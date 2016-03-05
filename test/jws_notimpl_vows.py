@@ -1,5 +1,6 @@
 """ Test JWS not-implemented errors """
 
+# pylint: disable=wrong-import-order
 from test.common import clock_load, orig_datetime, clock_reset
 from test import jwt
 from pyvows import Vows, expect
