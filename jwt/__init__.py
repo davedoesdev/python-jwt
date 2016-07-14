@@ -47,7 +47,7 @@ def generate_jwt(claims, priv_key=None,
     :type claims: dict
 
     :param priv_key: The private key to be used to sign the token. Note: if you pass ``None`` then the token will be returned with an empty cryptographic signature and :obj:`algorithm` will be forced to the value ``none``.
-    :type priv_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_, `SigningKey <https://github.com/warner/python-ecdsa>`_ or str
+    :type priv_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_ (for ``RSA*`` or ``PS*``), `SigningKey <https://github.com/warner/python-ecdsa>`_ (for ``ES*``) or str (for ``HS*``)
 
     :param algorithm: The algorithm to use for generating the signature. ``RS256``, ``RS384``, ``RS512``, ``PS256``, ``PS384``, ``PS512``, ``ES256``, ``ES384``, ``ES512``, ``HS256``, ``HS384``, ``HS512`` and ``none`` are supported.
     :type algorithm: str

@@ -343,7 +343,7 @@
 <p id="t47" class="pln"><span class="str">&nbsp; &nbsp; :type claims: dict</span><span class="strut">&nbsp;</span></p>
 <p id="t48" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t49" class="pln"><span class="str">&nbsp; &nbsp; :param priv_key: The private key to be used to sign the token. Note: if you pass ``None`` then the token will be returned with an empty cryptographic signature and :obj:`algorithm` will be forced to the value ``none``.</span><span class="strut">&nbsp;</span></p>
-<p id="t50" class="pln"><span class="str">&nbsp; &nbsp; :type priv_key: `_RSAobj &lt;https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html&gt;`_, `SigningKey &lt;https://github.com/warner/python-ecdsa&gt;`_ or str</span><span class="strut">&nbsp;</span></p>
+<p id="t50" class="pln"><span class="str">&nbsp; &nbsp; :type priv_key: `_RSAobj &lt;https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html&gt;`_ (for ``RSA*`` or ``PS*``), `SigningKey &lt;https://github.com/warner/python-ecdsa&gt;`_ (for ``ES*``) or str (for ``HS*``)</span><span class="strut">&nbsp;</span></p>
 <p id="t51" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t52" class="pln"><span class="str">&nbsp; &nbsp; :param algorithm: The algorithm to use for generating the signature. ``RS256``, ``RS384``, ``RS512``, ``PS256``, ``PS384``, ``PS512``, ``ES256``, ``ES384``, ``ES512``, ``HS256``, ``HS384``, ``HS512`` and ``none`` are supported.</span><span class="strut">&nbsp;</span></p>
 <p id="t53" class="pln"><span class="str">&nbsp; &nbsp; :type algorithm: str</span><span class="strut">&nbsp;</span></p>
@@ -526,7 +526,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.org">coverage.py v4.0.3</a>,
-            created at 2016-03-05 07:39
+            created at 2016-07-14 22:23
         </p>
     </div>
 </div>

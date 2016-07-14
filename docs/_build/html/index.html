@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="python-jwt 1.1.0 documentation" href="#" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -35,14 +35,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="jwt-module">
 <h1>jwt module<a class="headerlink" href="#jwt-module" title="Permalink to this headline">¶</a></h1>
@@ -52,13 +52,13 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.generate_jwt" title="jwt.generate_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.generate_jwt</span></tt></a>(claims[,&nbsp;priv_key,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.generate_jwt" title="jwt.generate_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.generate_jwt</span></code></a>(claims[,&nbsp;priv_key,&nbsp;...])</td>
 <td>Generate a JSON Web Token.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></tt></a>(jwt)</td>
+<tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></code></a>(jwt)</td>
 <td>Process a JSON Web Token without verifying it.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></tt></a>(jwt[,&nbsp;pub_key,&nbsp;allowed_algs,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></code></a>(jwt[,&nbsp;pub_key,&nbsp;allowed_algs,&nbsp;...])</td>
 <td>Verify a JSON Web Token.</td>
 </tr>
 </tbody>
@@ -66,7 +66,7 @@
 <span class="target" id="module-jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
 <dl class="function">
 <dt id="jwt.generate_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">generate_jwt</tt><big>(</big><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><big>)</big><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">jwt.</code><code class="descname">generate_jwt</code><span class="sig-paren">(</span><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -74,12 +74,12 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>claims</strong> (<em>dict</em>) &#8211; The claims you want included in the signature.</li>
-<li><strong>priv_key</strong> (<a class="reference external" href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html">_RSAobj</a>, <a class="reference external" href="https://github.com/warner/python-ecdsa">SigningKey</a> or str) &#8211; The private key to be used to sign the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> then the token will be returned with an empty cryptographic signature and <tt class="xref py py-obj docutils literal"><span class="pre">algorithm</span></tt> will be forced to the value <tt class="docutils literal"><span class="pre">none</span></tt>.</li>
-<li><strong>algorithm</strong> (<em>str</em>) &#8211; The algorithm to use for generating the signature. <tt class="docutils literal"><span class="pre">RS256</span></tt>, <tt class="docutils literal"><span class="pre">RS384</span></tt>, <tt class="docutils literal"><span class="pre">RS512</span></tt>, <tt class="docutils literal"><span class="pre">PS256</span></tt>, <tt class="docutils literal"><span class="pre">PS384</span></tt>, <tt class="docutils literal"><span class="pre">PS512</span></tt>, <tt class="docutils literal"><span class="pre">ES256</span></tt>, <tt class="docutils literal"><span class="pre">ES384</span></tt>, <tt class="docutils literal"><span class="pre">ES512</span></tt>, <tt class="docutils literal"><span class="pre">HS256</span></tt>, <tt class="docutils literal"><span class="pre">HS384</span></tt>, <tt class="docutils literal"><span class="pre">HS512</span></tt> and <tt class="docutils literal"><span class="pre">none</span></tt> are supported.</li>
+<li><strong>priv_key</strong> (<a class="reference external" href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html">_RSAobj</a> (for <code class="docutils literal"><span class="pre">RSA*</span></code> or <code class="docutils literal"><span class="pre">PS*</span></code>), <a class="reference external" href="https://github.com/warner/python-ecdsa">SigningKey</a> (for <code class="docutils literal"><span class="pre">ES*</span></code>) or str (for <code class="docutils literal"><span class="pre">HS*</span></code>)) &#8211; The private key to be used to sign the token. Note: if you pass <code class="docutils literal"><span class="pre">None</span></code> then the token will be returned with an empty cryptographic signature and <code class="xref py py-obj docutils literal"><span class="pre">algorithm</span></code> will be forced to the value <code class="docutils literal"><span class="pre">none</span></code>.</li>
+<li><strong>algorithm</strong> (<em>str</em>) &#8211; The algorithm to use for generating the signature. <code class="docutils literal"><span class="pre">RS256</span></code>, <code class="docutils literal"><span class="pre">RS384</span></code>, <code class="docutils literal"><span class="pre">RS512</span></code>, <code class="docutils literal"><span class="pre">PS256</span></code>, <code class="docutils literal"><span class="pre">PS384</span></code>, <code class="docutils literal"><span class="pre">PS512</span></code>, <code class="docutils literal"><span class="pre">ES256</span></code>, <code class="docutils literal"><span class="pre">ES384</span></code>, <code class="docutils literal"><span class="pre">ES512</span></code>, <code class="docutils literal"><span class="pre">HS256</span></code>, <code class="docutils literal"><span class="pre">HS384</span></code>, <code class="docutils literal"><span class="pre">HS512</span></code> and <code class="docutils literal"><span class="pre">none</span></code> are supported.</li>
 <li><strong>lifetime</strong> (<em>datetime.timedelta</em>) &#8211; How long the token is valid for.</li>
-<li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <tt class="xref py py-obj docutils literal"><span class="pre">lifetime</span></tt> isn&#8217;t specified)</li>
-<li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <tt class="docutils literal"><span class="pre">None</span></tt> is passed).</li>
-<li><strong>jti_size</strong> (<em>int</em>) &#8211; Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or <tt class="docutils literal"><span class="pre">None</span></tt> to omit the JTI from the token.</li>
+<li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <code class="xref py py-obj docutils literal"><span class="pre">lifetime</span></code> isn&#8217;t specified)</li>
+<li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <code class="docutils literal"><span class="pre">None</span></code> is passed).</li>
+<li><strong>jti_size</strong> (<em>int</em>) &#8211; Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or <code class="docutils literal"><span class="pre">None</span></code> to omit the JTI from the token.</li>
 </ul>
 </td>
 </tr>
@@ -101,9 +101,9 @@
 
 <dl class="function">
 <dt id="jwt.process_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">process_jwt</tt><big>(</big><em>jwt</em><big>)</big><a class="headerlink" href="#jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">jwt.</code><code class="descname">process_jwt</code><span class="sig-paren">(</span><em>jwt</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a JSON Web Token without verifying it.</p>
-<p>Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><tt class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></tt></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
+<p>Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><code class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></code></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -112,7 +112,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -120,7 +120,7 @@
 
 <dl class="function">
 <dt id="jwt.verify_jwt">
-<tt class="descclassname">jwt.</tt><tt class="descname">verify_jwt</tt><big>(</big><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>ignore_not_implemented=False</em><big>)</big><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">jwt.</code><code class="descname">verify_jwt</code><span class="sig-paren">(</span><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>ignore_not_implemented=False</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -128,28 +128,28 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>jwt</strong> (<em>str or unicode</em>) &#8211; The JSON Web Token to verify.</li>
-<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <tt class="docutils literal"><span class="pre">None</span></tt> and <strong>allowed_algs</strong> contains <tt class="docutils literal"><span class="pre">none</span></tt> then the token&#8217;s signature will not be verified.</li>
-<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token. The <tt class="docutils literal"><span class="pre">in</span></tt> operator is used to test membership.</li>
+<li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <code class="docutils literal"><span class="pre">None</span></code> and <strong>allowed_algs</strong> contains <code class="docutils literal"><span class="pre">none</span></code> then the token&#8217;s signature will not be verified.</li>
+<li><strong>allowed_algs</strong> (<em>list, dict or NoneType</em>) &#8211; Algorithms expected to be used to sign the token. The <code class="docutils literal"><span class="pre">in</span></code> operator is used to test membership.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
-<li><strong>checks_optional</strong> (<em>bool</em>) &#8211; If <tt class="docutils literal"><span class="pre">False</span></tt>, then the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
-<li><strong>ignore_not_implemented</strong> (<em>bool</em>) &#8211; If <tt class="docutils literal"><span class="pre">False</span></tt>, then the token must <em>not</em> contain the <strong>jku</strong>, <strong>kid</strong>, <strong>x5u</strong> or <strong>x5t</strong> header properties.</li>
+<li><strong>checks_optional</strong> (<em>bool</em>) &#8211; If <code class="docutils literal"><span class="pre">False</span></code>, then the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
+<li><strong>ignore_not_implemented</strong> (<em>bool</em>) &#8211; If <code class="docutils literal"><span class="pre">False</span></code>, then the token must <em>not</em> contain the <strong>jku</strong>, <strong>kid</strong>, <strong>x5u</strong> or <strong>x5t</strong> header properties.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></tt> if the token was verified successfully. The token must pass the following tests:</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(header,</span> <span class="pre">claims)</span></code> if the token was verified successfully. The token must pass the following tests:</p>
 </td>
 </tr>
 </tbody>
 </table>
 <ul class="simple">
 <li>Its header must contain a property <strong>alg</strong> with a value in <strong>allowed_algs</strong>.</li>
-<li>Its signature must verify using <strong>pub_key</strong> (unless its algorithm is <tt class="docutils literal"><span class="pre">none</span></tt> and <tt class="docutils literal"><span class="pre">none</span></tt> is in <strong>allowed_algs</strong>).</li>
-<li>If the corresponding property is present or <strong>checks_optional</strong> is <tt class="docutils literal"><span class="pre">False</span></tt>:<ul>
-<li>Its header must contain a property <strong>typ</strong> with the value <tt class="docutils literal"><span class="pre">JWT</span></tt>.</li>
-<li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <tt class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></tt>).</li>
+<li>Its signature must verify using <strong>pub_key</strong> (unless its algorithm is <code class="docutils literal"><span class="pre">none</span></code> and <code class="docutils literal"><span class="pre">none</span></code> is in <strong>allowed_algs</strong>).</li>
+<li>If the corresponding property is present or <strong>checks_optional</strong> is <code class="docutils literal"><span class="pre">False</span></code>:<ul>
+<li>Its header must contain a property <strong>typ</strong> with the value <code class="docutils literal"><span class="pre">JWT</span></code>.</li>
+<li>Its claims must contain a property <strong>iat</strong> which represents a date in the past (taking into account <code class="xref py py-obj docutils literal"><span class="pre">iat_skew</span></code>).</li>
 <li>Its claims must contain a property <strong>nbf</strong> which represents a date in the past.</li>
 <li>Its claims must contain a property <strong>exp</strong> which represents a date in the future.</li>
 </ul>
@@ -169,9 +169,9 @@
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
 </ul>
 </div>
 
@@ -179,7 +179,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
@@ -187,12 +187,14 @@
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -209,7 +211,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -218,12 +220,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, David Halls.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
     </div>
   </body>
 </html>
