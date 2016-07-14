@@ -290,7 +290,6 @@
 <p id="n219" class="stm run hide_run"><a href="#n219">219</a></p>
 <p id="n220" class="stm run hide_run"><a href="#n220">220</a></p>
 <p id="n221" class="stm run hide_run"><a href="#n221">221</a></p>
-<p id="n222" class="pln"><a href="#n222">222</a></p>
                 
             </td>
             <td class="text">
@@ -308,7 +307,7 @@
 <p id="t12" class="stm run hide_run"><span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">to_bytes_2and3</span> <span class="op">=</span> <span class="key">lambda</span> <span class="nam">s</span><span class="op">:</span> <span class="xx">\</span><span class="strut">&nbsp;</span></p>
 <p id="t13" class="pln">&nbsp; &nbsp; <span class="nam">s</span> <span class="key">if</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">s</span><span class="op">,</span> <span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">binary_type</span><span class="op">)</span> <span class="key">else</span> <span class="nam">s</span><span class="op">.</span><span class="nam">encode</span><span class="op">(</span><span class="str">&#39;utf-8&#39;</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t14" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t15" class="pln"><span class="com">#pylint: disable=bad-builtin, protected-access</span><span class="strut">&nbsp;</span></p>
+<p id="t15" class="pln"><span class="com">#pylint: disable=protected-access</span><span class="strut">&nbsp;</span></p>
 <p id="t16" class="stm run hide_run"><span class="nam">jws</span><span class="op">.</span><span class="nam">_signing_input</span> <span class="op">=</span> <span class="key">lambda</span> <span class="nam">head</span><span class="op">,</span> <span class="nam">payload</span><span class="op">,</span> <span class="nam">is_json</span><span class="op">=</span><span class="nam">False</span><span class="op">:</span> <span class="xx">\</span><span class="strut">&nbsp;</span></p>
 <p id="t17" class="pln">&nbsp; &nbsp; <span class="str">&#39;.&#39;</span><span class="op">.</span><span class="nam">join</span><span class="op">(</span><span class="op">[</span><span class="nam">b</span><span class="op">.</span><span class="nam">decode</span><span class="op">(</span><span class="str">&#39;utf-8&#39;</span><span class="op">)</span> <span class="key">for</span> <span class="nam">b</span> <span class="key">in</span><span class="strut">&nbsp;</span></p>
 <p id="t18" class="pln">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="nam">map</span><span class="op">(</span><span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">to_base64</span> <span class="key">if</span> <span class="nam">is_json</span> <span class="key">else</span> <span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">encode</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
@@ -515,7 +514,6 @@
 <p id="t219" class="stm run hide_run">&nbsp; &nbsp; <span class="nam">header</span> <span class="op">=</span> <span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">from_json</span><span class="op">(</span><span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">from_base64</span><span class="op">(</span><span class="nam">header</span><span class="op">)</span><span class="op">.</span><span class="nam">decode</span><span class="op">(</span><span class="str">&#39;utf-8&#39;</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t220" class="stm run hide_run">&nbsp; &nbsp; <span class="nam">claims</span> <span class="op">=</span> <span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">from_json</span><span class="op">(</span><span class="nam">jws</span><span class="op">.</span><span class="nam">utils</span><span class="op">.</span><span class="nam">from_base64</span><span class="op">(</span><span class="nam">claims</span><span class="op">)</span><span class="op">.</span><span class="nam">decode</span><span class="op">(</span><span class="str">&#39;utf-8&#39;</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t221" class="stm run hide_run">&nbsp; &nbsp; <span class="key">return</span> <span class="nam">header</span><span class="op">,</span> <span class="nam">claims</span><span class="strut">&nbsp;</span></p>
-<p id="t222" class="pln"><span class="strut">&nbsp;</span></p>
                 
             </td>
         </tr>
@@ -526,7 +524,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.org">coverage.py v4.0.3</a>,
-            created at 2016-07-14 22:23
+            created at 2016-07-14 23:09
         </p>
     </div>
 </div>

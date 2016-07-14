@@ -12,7 +12,7 @@ import jws
 jws.utils.to_bytes_2and3 = lambda s: \
     s if isinstance(s, jws.utils.binary_type) else s.encode('utf-8')
 
-#pylint: disable=bad-builtin, protected-access
+#pylint: disable=protected-access
 jws._signing_input = lambda head, payload, is_json=False: \
     '.'.join([b.decode('utf-8') for b in
               map(jws.utils.to_base64 if is_json else jws.utils.encode,
@@ -219,4 +219,3 @@ def process_jwt(jwt):
     header = jws.utils.from_json(jws.utils.from_base64(header).decode('utf-8'))
     claims = jws.utils.from_json(jws.utils.from_base64(claims).decode('utf-8'))
     return header, claims
-

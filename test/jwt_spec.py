@@ -176,4 +176,3 @@ def setup(algs=algs):
 
                         _setup(alg, priv_type, pub_type, 10, 10, -1, jti_size, keyless, True)
                         _setup(alg, priv_type, pub_type, 1, 10, -1, jti_size, keyless, False)
-
