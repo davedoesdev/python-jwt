@@ -1,7 +1,7 @@
 """ test checking against set of allowed algorithms when verifying tokens """
 # pylint: disable=wrong-import-order
 from test.common import payload, algs, generated_keys
-from test import jwt
+from test import python_jwt as jwt
 from datetime import timedelta
 from pyvows import Vows, expect
 

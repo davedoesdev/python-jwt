@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>jwt module &mdash; python-jwt 1.1.0 documentation</title>
+    <title>python_jwt module &mdash; python-jwt 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.1.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-jwt 1.1.0 documentation" href="#" /> 
+    <link rel="top" title="python-jwt 2.0.0 documentation" href="#" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 2.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -44,29 +44,29 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="jwt-module">
-<h1>jwt module<a class="headerlink" href="#jwt-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="python-jwt-module">
+<h1>python_jwt module<a class="headerlink" href="#python-jwt-module" title="Permalink to this headline">¶</a></h1>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.generate_jwt" title="jwt.generate_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.generate_jwt</span></code></a>(claims[,&nbsp;priv_key,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#python_jwt.generate_jwt" title="python_jwt.generate_jwt"><code class="xref py py-obj docutils literal"><span class="pre">python_jwt.generate_jwt</span></code></a>(claims[,&nbsp;priv_key,&nbsp;...])</td>
 <td>Generate a JSON Web Token.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#jwt.process_jwt" title="jwt.process_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.process_jwt</span></code></a>(jwt)</td>
+<tr class="row-even"><td><a class="reference internal" href="#python_jwt.process_jwt" title="python_jwt.process_jwt"><code class="xref py py-obj docutils literal"><span class="pre">python_jwt.process_jwt</span></code></a>(jwt)</td>
 <td>Process a JSON Web Token without verifying it.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><code class="xref py py-obj docutils literal"><span class="pre">jwt.verify_jwt</span></code></a>(jwt[,&nbsp;pub_key,&nbsp;allowed_algs,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#python_jwt.verify_jwt" title="python_jwt.verify_jwt"><code class="xref py py-obj docutils literal"><span class="pre">python_jwt.verify_jwt</span></code></a>(jwt[,&nbsp;pub_key,&nbsp;...])</td>
 <td>Verify a JSON Web Token.</td>
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
+<span class="target" id="module-python_jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
 <dl class="function">
-<dt id="jwt.generate_jwt">
-<code class="descclassname">jwt.</code><code class="descname">generate_jwt</code><span class="sig-paren">(</span><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
+<dt id="python_jwt.generate_jwt">
+<code class="descclassname">python_jwt.</code><code class="descname">generate_jwt</code><span class="sig-paren">(</span><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -100,10 +100,10 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="jwt.process_jwt">
-<code class="descclassname">jwt.</code><code class="descname">process_jwt</code><span class="sig-paren">(</span><em>jwt</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
+<dt id="python_jwt.process_jwt">
+<code class="descclassname">python_jwt.</code><code class="descname">process_jwt</code><span class="sig-paren">(</span><em>jwt</em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.process_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a JSON Web Token without verifying it.</p>
-<p>Call this before <a class="reference internal" href="#jwt.verify_jwt" title="jwt.verify_jwt"><code class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></code></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
+<p>Call this before <a class="reference internal" href="#python_jwt.verify_jwt" title="python_jwt.verify_jwt"><code class="xref py py-func docutils literal"><span class="pre">verify_jwt()</span></code></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -119,8 +119,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="jwt.verify_jwt">
-<code class="descclassname">jwt.</code><code class="descname">verify_jwt</code><span class="sig-paren">(</span><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>ignore_not_implemented=False</em><span class="sig-paren">)</span><a class="headerlink" href="#jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
+<dt id="python_jwt.verify_jwt">
+<code class="descclassname">python_jwt.</code><code class="descname">verify_jwt</code><span class="sig-paren">(</span><em>jwt</em>, <em>pub_key=None</em>, <em>allowed_algs=None</em>, <em>iat_skew=datetime.timedelta(0)</em>, <em>checks_optional=False</em>, <em>ignore_not_implemented=False</em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -183,7 +183,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">jwt module</a></li>
+<li><a class="reference internal" href="#">python_jwt module</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
@@ -220,7 +220,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">python-jwt 1.1.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 2.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

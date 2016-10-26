@@ -7,7 +7,7 @@ from datetime import timedelta
 from unitbench import Benchmark
 from test.fixtures import payload, priv_keys, priv_key, algs
 from bench.reporter import Reporter
-import jwt
+import python_jwt as jwt
 
 class GenerateTokenBenchmark(Benchmark):
     """ Generate JWT benchmark """

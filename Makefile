@@ -13,7 +13,7 @@ build_docs:
 	pandoc -t rst README.md | sed -e '1,1s/^[^\\]*//' -e '2d' > README.rst
 
 lint:
-	pylint jwt test bench
+	pylint python_jwt test bench
 
 test: run_test
 
@@ -23,7 +23,7 @@ run_test:
 coverage: run_coverage
 
 run_coverage:
-	./test/run/run_pyvows.py -v --cover --cover-package jwt --cover-report coverage/coverage.xml test
+	./test/run/run_pyvows.py -v --cover --cover-package python_jwt --cover-report coverage/coverage.xml test
 
 bench: run_bench
 
@@ -43,7 +43,7 @@ make_dist:
 	python setup.py bdist_wheel --universal
 
 travis_test: lint
-	./test/run/run_coverage.py run --source=jwt -m test.run.run_pyvows -v test
+	./test/run/run_coverage.py run --source=python_jwt -m test.run.run_pyvows -v test
 
 register:
 	twine register dist/$(name)-$(version).tar.gz

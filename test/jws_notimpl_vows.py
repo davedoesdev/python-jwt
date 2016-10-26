@@ -2,7 +2,7 @@
 
 # pylint: disable=wrong-import-order
 from test.common import clock_load, orig_datetime, clock_reset
-from test import jwt
+from test import python_jwt as jwt
 from pyvows import Vows, expect
 
 # Header:

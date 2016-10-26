@@ -3,6 +3,9 @@
 Module for generating and verifying `JSON Web
 Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
 
+-  **Note:** From version 2.0.0 the namespace has changed from ``jwt``
+   to ``python_jwt``, in order to avoid conflict with
+   `PyJWT <https://github.com/jpadilla/pyjwt>`__.
 -  **Note:** Versions 1.0.0 and later fix `a
    vulnerability <https://www.timmclean.net/2015/02/25/jwt-alg-none.html>`__
    in JSON Web Token verification so please upgrade if you're using this
@@ -31,7 +34,7 @@ Example:
 
 .. code:: python
 
-    import jwt, Crypto.PublicKey.RSA as RSA, datetime
+    import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
     key = RSA.generate(2048)
     payload = { 'foo': 'bar', 'wup': 90 };
     token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
@@ -56,7 +59,7 @@ You can read and write keys from and to
 
 .. code:: python
 
-    import jwt, Crypto.PublicKey.RSA as RSA, datetime
+    import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
     key = RSA.generate(2048)
     priv_pem = key.exportKey()
     pub_pem = key.publickey().exportKey()

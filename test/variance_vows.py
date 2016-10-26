@@ -2,7 +2,7 @@
 
 # pylint: disable=wrong-import-order
 from test.common import payload, priv_keys, algs
-from test import jwt
+from test import python_jwt as jwt
 from datetime import timedelta
 from pyvows import Vows, expect
 
