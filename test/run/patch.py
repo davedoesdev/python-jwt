@@ -11,21 +11,24 @@ pyvows.runner.gevent.VowsParallelRunner.pool = gevent.pool.Pool(50000)
 from pyvows.core import Vows
 from pyvows.runner import VowsRunner
 from pyvows.result import VowsResult
+from pyvows.runner.executionplan import ExecutionPlanner
 
 # pylint: disable=too-few-public-methods
 class _Dummy(object):
     # pylint: disable=missing-docstring
     @classmethod
-    def run(cls, on_vow_success, on_vow_error):
+    def run(cls, on_vow_success, on_vow_error, capture_error=False):
         # Run batches in series
         r = VowsResult()
         for suite, batches in Vows.suites.items():
             for batch in batches:
+                execution_plan = ExecutionPlanner({suite: [batch]}, set(Vows.exclusion_patterns), set(Vows.inclusion_patterns)).plan()
                 result = VowsRunner({suite: [batch]},
                                     Vows.Context,
                                     on_vow_success,
                                     on_vow_error,
-                                    Vows.exclusion_patterns).run()
+                                    execution_plan,
+                                    capture_error).run()
                 r.contexts += result.contexts
                 r.elapsed_time += result.elapsed_time
         return r
