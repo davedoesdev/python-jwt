@@ -2,7 +2,7 @@
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
-- **Note:** From version 2.0.0 the namespace has changed from `jwt` to `python_jwt`, in order to avoid conflict with [PyJWT](https://github.com/jpadilla/pyjwt).
+- **Note:** From version 2.0.1 the namespace has changed from `jwt` to `python_jwt`, in order to avoid conflict with [PyJWT](https://github.com/jpadilla/pyjwt).
 - **Note:** Versions 1.0.0 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. The API has changed so you will need to update your application. [verify_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.verify_jwt) now requires you to specify which signature algorithms are allowed.
 - Uses [python-jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.

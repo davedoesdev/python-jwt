@@ -3,7 +3,7 @@
 Module for generating and verifying `JSON Web
 Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
 
--  **Note:** From version 2.0.0 the namespace has changed from ``jwt``
+-  **Note:** From version 2.0.1 the namespace has changed from ``jwt``
    to ``python_jwt``, in order to avoid conflict with
    `PyJWT <https://github.com/jpadilla/pyjwt>`__.
 -  **Note:** Versions 1.0.0 and later fix `a

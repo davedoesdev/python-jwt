@@ -3,7 +3,7 @@ include README.md
 include README.rst
 recursive-include bench *
 recursive-include docs *
-recursive-include jwt *
+recursive-include python_jwt *
 recursive-include test *
 include .coveragerc
 include Makefile
