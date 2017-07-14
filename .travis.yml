@@ -1,10 +1,10 @@
 sudo: false
 language: python
 python:
-  - "2.7"
-  - "3.4"
+  - 2.7
+  - 3.4
 node_js:
-  - "0.12"
+  - 8
 before_install:
   - make node_deps
 addons:
