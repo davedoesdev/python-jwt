@@ -5,3 +5,4 @@
 /build
 /python_jwt.egg-info
 /python
+/package-lock.json

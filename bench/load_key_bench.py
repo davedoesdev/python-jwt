@@ -4,7 +4,7 @@
 
 # pylint: disable=wrong-import-position,wrong-import-order
 import Crypto.PublicKey.RSA as RSA
-from unitbench import Benchmark
+from bench.unitbench import Benchmark
 from test.fixtures import priv_pem
 from bench.reporter import Reporter
 

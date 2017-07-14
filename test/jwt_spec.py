@@ -125,9 +125,8 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 clock_load(clock)
                 if callable(pubk):
                     return pubk(sjwt, timedelta(seconds=iat_skew))
-                else:
-                    return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
-                                          timedelta(seconds=iat_skew))
+                return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
+                                      timedelta(seconds=iat_skew))
 
             def should_verify_as_expected(self, r):
                 """ Check verified or not, as per expected arg """

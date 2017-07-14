@@ -2,11 +2,11 @@
 
 # pylint: disable=wrong-import-order
 from test.common import pub_keys, priv_keys, algs, pub_pem, priv_pem
+from test import jwt_spec
 import json
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
 from calendar import timegm
-from test import jwt_spec
 from threading import Lock
 
 lock = Lock()

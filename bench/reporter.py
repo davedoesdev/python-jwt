@@ -2,13 +2,13 @@
 
 import sys
 import argparse
-import unitbench
+import bench.unitbench
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--gfm', dest='gfm', action='store_true')
 gfm = parser.parse_args().gfm
 
-class Reporter(unitbench.Reporter):
+class Reporter(bench.unitbench.Reporter):
     """ Custom reporter """
 
     def __init__(self, output_stream=sys.stdout):

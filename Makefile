@@ -13,7 +13,7 @@ build_docs:
 	pandoc -t rst README.md | sed -e '1,1s/^[^\\]*//' -e '2d' > README.rst
 
 lint:
-	pylint python_jwt test bench
+	pylint --ignore=unitbench.py python_jwt test bench
 
 test: run_test
 
