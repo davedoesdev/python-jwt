@@ -8,7 +8,7 @@ function generate(time, header, claims, expires, not_before, key)
 {
     if (key.indexOf('-----BEGIN') === 0)
     {
-        key = jsjws.createPrivateKey(key, 'utf8');
+        key = jsjws.createPrivateKey(key);
     }
 
     var clock = sinon.useFakeTimers(time * 1000);
@@ -30,7 +30,7 @@ function verify(time, sjwt, iat_skew, key, alg)
 {
     if (key.indexOf('-----BEGIN') === 0)
     {
-        key = jsjws.createPublicKey(key, 'utf8');
+        key = jsjws.createPublicKey(key);
     }
 
     var clock = sinon.useFakeTimers(time * 1000), jwt;
