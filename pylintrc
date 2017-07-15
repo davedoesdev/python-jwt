@@ -1,2 +1,5 @@
+[MASTER]
+ignore=unitbench.py
+
 [MESSAGES CONTROL]
 disable=R0913,C0301,C0103,R0201,R0801
