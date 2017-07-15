@@ -24,8 +24,8 @@ coverage: run_coverage
 
 run_coverage:
 	./test/run/run_coverage.py run --source=python_jwt -m test.run.run_pyvows -v test
-	./test/run/run_coverage.py html --fail-under=100 -d coverage/html
-	./test/run/run_coverage.py xml --fail-under=100 -o coverage/coverage.xml
+	./test/run/run_coverage.py html --fail-under=85 -d coverage/html
+	./test/run/run_coverage.py xml --fail-under=85 -o coverage/coverage.xml
 
 bench: run_bench
 
