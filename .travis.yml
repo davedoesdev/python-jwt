@@ -7,6 +7,7 @@ python:
 node_js:
   - 8
 before_install:
+  - nvm install 8
   - node --version
   - make node_deps
 addons:
@@ -15,6 +16,6 @@ addons:
       - libevent-dev
 script:
   - ( while true; do echo keep alive!; sleep 60; done ) &
-  - make travis_test
+  - make lint coverage
 after_success:
   - coveralls
