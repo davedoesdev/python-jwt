@@ -1,13 +1,14 @@
 """ test interop with node-jsjws """
 
 # pylint: disable=wrong-import-order
-from test.common import pub_keys, priv_keys, algs, pub_pem, priv_pem
+from test.common import pub_keys, priv_keys, algs, pub_key, priv_key
 from test import jwt_spec
 import json
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
 from calendar import timegm
 from threading import Lock
+from jwcrypto.common import base64url_decode
 
 lock = Lock()
 
@@ -29,7 +30,7 @@ def spawn(cmd, parse_json):
 #pylint: disable=W0621
 def generate(alg):
     """ return function which can generate token using node-jsjws """
-    key = priv_keys[alg].get('default', priv_pem)
+    key = priv_keys[alg].get('default', priv_key)
     def f(claims, alg, lifetime=None, expires=None, not_before=None):
         """ generate token using node-jsjws """
         now = datetime.utcnow()
@@ -40,13 +41,13 @@ def generate(alg):
                 claims=json.dumps(claims),
                 expires=timegm(((now + lifetime) if lifetime else expires).utctimetuple()),
                 not_before=timegm((not_before or now).utctimetuple()),
-                key=json.dumps(key)),
+                key=json.dumps(base64url_decode(json.loads(key.export())['k']) if key.is_symmetric else key.export_to_pem(True, None))),
             False)
     return f
 
 def verify(alg):
     """ return function which can verify token using node-jsjws """
-    key = pub_keys[alg].get('default', pub_pem)
+    key = pub_keys[alg].get('default', pub_key)
     def f(sjwt, iat_skew=timedelta()):
         """ verify token using node-jsjws """
         r = spawn(
@@ -54,7 +55,7 @@ def verify(alg):
                 now=timegm(datetime.utcnow().utctimetuple()),
                 sjwt=json.dumps(sjwt),
                 iat_skew=iat_skew.total_seconds(),
-                key=json.dumps(key),
+                key=json.dumps(base64url_decode(json.loads(key.export())['k']) if key.is_symmetric else key.export_to_pem()),
                 alg=json.dumps(alg)),
             True)
         return tuple(r)

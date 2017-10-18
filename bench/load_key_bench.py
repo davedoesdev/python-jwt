@@ -3,10 +3,10 @@
 """ Benchmark loading an RSA key from a PEM string """
 
 # pylint: disable=wrong-import-position,wrong-import-order
-import Crypto.PublicKey.RSA as RSA
 from bench.unitbench import Benchmark
 from test.fixtures import priv_pem
 from bench.reporter import Reporter
+from jwcrypto.jwk import JWK
 
 class LoadKeyBenchmark(Benchmark):
     """ Load key benchmark """
@@ -21,7 +21,7 @@ class LoadKeyBenchmark(Benchmark):
 
     def bench_RSA(self):
         """ Import key """
-        RSA.importKey(priv_pem)
+        JWK.from_pem(priv_pem)
 
 if __name__ == "__main__":
     #pylint: disable=W0402

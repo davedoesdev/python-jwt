@@ -54,7 +54,7 @@ def check_allowed(alg, key):
                 expect(r).to_be_an_error()
                 expect(str(r)).to_equal('algorithm not allowed: ' + alg)
 
-        class VerifyJWTAlgAllowed(Vows.Context):
+        class VerifyJWTAlgNotAllowed(Vows.Context):
             """ Verify token, algorithm not allowed """
             @Vows.capture_error
             def topic(self, topic):
@@ -65,6 +65,31 @@ def check_allowed(alg, key):
                 """ Should not verify """
                 expect(r).to_be_an_error()
                 expect(str(r)).to_equal('algorithm not allowed: ' + alg)
+
+        class VerifyJWTAlgAllowed(Vows.Context):
+            """ Verify token, algorithm allowed """
+            @Vows.capture_error
+            def topic(self, topic):
+                """ Verify the token """
+                return jwt.verify_jwt(topic, key, [alg])
+
+            def token_should_verify(self, r):
+                """ Should verify """
+                expect(r).to_be_instance_of(tuple)
+                header, _ = r
+                expect(header).to_equal({'alg': alg, 'typ': 'JWT'})
+
+        class VerifyJWTWrongType(Vows.Context):
+            """ Verify token, allowed algs not a list"""
+            @Vows.capture_error
+            def topic(self, topic):
+                """ Verify the token """
+                return jwt.verify_jwt(topic, key, {alg: True})
+
+            def token_should_verify(self, r):
+                """ Should not verify """
+                expect(r).to_be_an_error()
+                expect(str(r)).to_equal('allowed_algs must be a list')
 
 check_allowed('none', None)
 for _alg in algs:

@@ -3,7 +3,7 @@
 """ Benchmark generating an RSA key """
 
 # pylint: disable=wrong-import-position,wrong-import-order
-import Crypto.PublicKey.RSA as RSA
+from jwcrypto.jwk import JWK
 from bench.unitbench import Benchmark
 from bench.reporter import Reporter
 
@@ -20,7 +20,7 @@ class GenerateKeyBenchmark(Benchmark):
 
     def bench_RSA(self):
         """ Generate key """
-        RSA.generate(2048)
+        JWK.generate(kty='RSA', size=2048)
 
 if __name__ == "__main__":
     #pylint: disable=W0402

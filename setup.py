@@ -6,7 +6,7 @@ def read(name):
 
 setup(
     name='python_jwt',
-    version='2.0.2',
+    version='3.0.0',
     description="Module for generating and verifying JSON Web Tokens",
     long_description=read('README.rst'),
     keywords='',
@@ -15,5 +15,5 @@ setup(
     url='https://github.com/davedoesdev/python-jwt',
     license='MIT',
     packages=['python_jwt'],
-    install_requires=['jws>=0.1.3'],
+    install_requires=['jwcrypto>=0.4.2'],
 )

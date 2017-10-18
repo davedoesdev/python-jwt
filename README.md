@@ -4,16 +4,16 @@ Module for generating and verifying [JSON Web Tokens](http://self-issued.info/do
 
 - **Note:** From version 2.0.1 the namespace has changed from `jwt` to `python_jwt`, in order to avoid conflict with [PyJWT](https://github.com/jpadilla/pyjwt).
 - **Note:** Versions 1.0.0 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. The API has changed so you will need to update your application. [verify_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.verify_jwt) now requires you to specify which signature algorithms are allowed.
-- Uses [python-jws](https://github.com/brianloveswords/python-jws) to do the heavy lifting.
+- Uses [jwcrypto](https://jwcrypto.readthedocs.io) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
 - Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
-- Supports Python 3.4. **Note:** [generate_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.generate_jwt) returns the token as a Unicode string, even on Python 2.7.
+- Supports Python 3.6. **Note:** [generate_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.generate_jwt) returns the token as a Unicode string, even on Python 2.7.
 
 Example:
 
 ```python
-import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
-key = RSA.generate(2048)
+import python_jwt as jwt, jwcrypto.jwk as jwk, datetime
+key = jwk.JWK.generate(kty='RSA', size=2048)
 payload = { 'foo': 'bar', 'wup': 90 };
 token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
 header, claims = jwt.verify_jwt(token, key, ['PS256'])
@@ -34,13 +34,13 @@ pip install python_jwt
 You can read and write keys from and to [PEM-format](http://www.openssl.org/docs/crypto/pem.html) strings:
 
 ```python
-import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
-key = RSA.generate(2048)
-priv_pem = key.exportKey()
-pub_pem = key.publickey().exportKey()
+import python_jwt as jwt, jwcrypto.jwk as jwk, datetime
+key = jwk.JWK.generate(kty='RSA', size=2048)
+priv_pem = key.export_to_pem(private_key=True, password=None)
+pub_pem = key.export_to_pem()
 payload = { 'foo': 'bar', 'wup': 90 };
-priv_key = RSA.importKey(priv_pem)
-pub_key = RSA.importKey(pub_pem)
+priv_key = jwk.JWK.from_pem(priv_pem)
+pub_key = jwk.JWK.from_pem(pub_pem)
 token = jwt.generate_jwt(payload, priv_key, 'RS256', datetime.timedelta(minutes=5))
 header, claims = jwt.verify_jwt(token, pub_key, ['RS256'])
 for k in payload: assert claims[k] == payload[k]
@@ -78,37 +78,36 @@ Coveralls page is [here](https://coveralls.io/r/davedoesdev/python-jwt).
 make bench
 ```
 
-Here are some results on a laptop with an Intel Core i5-3210M 2.5Ghz CPU and 6Gb RAM running Ubuntu 13.04.
+Here are some results on a laptop with an Intel Core i5-4300M 2.6Ghz CPU and 8Gb RAM running Ubuntu 17.04.
 
 Generate Key|user (ns)|sys (ns)|real (ns)
 :--|--:|--:|--:
-RSA|152,700,000|300,000|152,906,095
+RSA|103,100,000|200,000|103,341,537
 
 Generate Token|user (ns)|sys (ns)|real (ns)
 :--|--:|--:|--:
-HS256|140,000|10,000|157,202
-HS384|160,000|10,000|156,403
-HS512|139,999|20,000|153,212
-PS256|3,159,999|49,999|3,218,649
-PS384|3,170,000|10,000|3,176,899
-PS512|3,120,000|9,999|3,141,219
-RS256|3,070,000|20,000|3,094,644
-RS384|3,090,000|0|3,092,471
-RS512|3,079,999|20,000|3,095,314
+HS256|220,000|0|226,478
+HS384|220,000|0|218,233
+HS512|230,000|0|225,823
+PS256|1,530,000|10,000|1,536,235
+PS384|1,550,000|0|1,549,844
+PS512|1,520,000|10,000|1,524,844
+RS256|1,520,000|10,000|1,524,565
+RS384|1,530,000|0|1,528,074
+RS512|1,510,000|0|1,526,089
 
 Load Key|user (ns)|sys (ns)|real (ns)
 :--|--:|--:|--:
-RSA|811,000|0|810,139
+RSA|210,000|3,000|210,791
 
 Verify Token|user (ns)|sys (ns)|real (ns)
 :--|--:|--:|--:
-HS256|140,000|0|129,947
-HS384|130,000|0|130,161
-HS512|119,999|0|128,850
-PS256|780,000|10,000|775,609
-PS384|759,999|0|752,933
-PS512|739,999|0|738,118
-RS256|700,000|0|719,365
-RS384|719,999|0|721,524
-RS512|730,000|0|719,706
-
+HS256|100,000|0|101,478
+HS384|100,000|10,000|103,014
+HS512|110,000|0|104,323
+PS256|230,000|0|231,058
+PS384|240,000|0|237,551
+PS512|240,000|0|232,450
+RS256|230,000|0|227,737
+RS384|230,000|0|230,698
+RS512|230,000|0|228,624

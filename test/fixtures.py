@@ -2,8 +2,8 @@
 
 from os import urandom
 from binascii import hexlify
-
-import Crypto.PublicKey.RSA as RSA
+from jwcrypto.jwk import JWK
+from jwcrypto.common import base64url_encode
 
 payload = {
     "foo": "joe",
@@ -50,13 +50,13 @@ LwZFSvZ9iddRPQK3CtgFiBnXbVwU5t67tn9pMizHgypgsfBoeoyBrpTuc4egSCpj\n\
 sQIDAQAB                                                        \n\
 -----END PUBLIC KEY-----"
 
-priv_key = RSA.importKey(priv_pem)
-pub_key = RSA.importKey(pub_pem)
+priv_key = JWK.from_pem(priv_pem)
+pub_key = JWK.from_pem(pub_pem)
 
 priv_keys = {
-    'HS256': {'default': 'some random key'},
-    'HS384': {'default': 'another one'},
-    'HS512': {'default': 'keys keys keys!'},
+    'HS256': {'default': JWK(kty='oct', k=base64url_encode('some random key'))},
+    'HS384': {'default': JWK(kty='oct', k=base64url_encode('another one'))},
+    'HS512': {'default': JWK(kty='oct', k=base64url_encode('keys keys keys!'))},
     'RS256': {'python-jwt': priv_key},
     'RS384': {'python-jwt': priv_key},
     'RS512': {'python-jwt': priv_key},
@@ -77,12 +77,12 @@ pub_keys = {
     'PS512': {'python-jwt': pub_key}
 }
 
-generated_key = RSA.generate(2048)
+generated_key = JWK.generate(kty='RSA', size=2048)
 
 generated_keys = {
-    'HS256': hexlify(urandom(16)),
-    'HS384': hexlify(urandom(16)),
-    'HS512': hexlify(urandom(16)),
+    'HS256': JWK(kty='oct', k=base64url_encode(hexlify(urandom(16)))),
+    'HS384': JWK(kty='oct', k=base64url_encode(hexlify(urandom(16)))),
+    'HS512': JWK(kty='oct', k=base64url_encode(hexlify(urandom(16)))),
     'RS256': generated_key,
     'RS384': generated_key,
     'RS512': generated_key,

@@ -4,12 +4,14 @@
 from test.common import clock_load, orig_datetime, clock_reset
 from test import python_jwt as jwt
 from pyvows import Vows, expect
+from jwcrypto.jwt import JWK
+from jwcrypto.common import base64url_encode
 
 # Header:
 # {
 #   "typ": "JWT",
 #   "alg": "HS256",
-#   "kid": "1234xbzsfgd54321"
+#   "jku": "https://server.example.com/keys.jwk"
 # }
 # Payload:
 # {
@@ -18,12 +20,12 @@ from pyvows import Vows, expect
 #   "nbf": 0,
 #   "exp": 1455050174
 # }
-jwt_example = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6IjEyMzR4YnpzZmdkNTQzMjEifQ.eyJhdWQiOiJodHRwOi8vZXhhbXBsZS5jb20vIiwiaWF0IjowLCJuYmYiOjAsImV4cCI6MTQ1NTA1MDE3NH0.Mtz8WAc3ufd-o7PzAQ49JouEfBZGhU9q3uLfSnz0Nzw"
+jwt_example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vc2VydmVyLmV4YW1wbGUuY29tL2tleXMuandrIn0.eyJhdWQiOiJodHRwOi8vZXhhbXBsZS5jb20vIiwiaWF0IjowLCJuYmYiOjAsImV4cCI6MTQ1NTA1MDE3NH0.3jyP-oEGkI-YDA-FpoRbzJxLbZ5OIOu4gbTOmPhGw3w"
 
 @Vows.batch
 class JWSNotImplemented(Vows.Context):
-    """ Generate token with a header not implemented by jws and check we get the
-        error with ignore_not_implemented=False (default) but not with
+    """ Generate token with a header not implemented by jwcrypto and check we
+        get the error with ignore_not_implemented=False (default) but not with
         ignore_not_implemented=True
     """
     def topic(self):
@@ -36,21 +38,25 @@ class JWSNotImplemented(Vows.Context):
         def topic(self, topic):
             """ Verify the token """
             clock_load(orig_datetime.utcfromtimestamp(0))
-            r = jwt.verify_jwt(topic, 'secret', ['HS256'])
+            r = jwt.verify_jwt(topic,
+                               JWK(kty='oct', k=base64url_encode('secret')),
+                               ['HS256'])
             clock_reset()
             return r
 
         def token_should_fail_to_verify(self, r):
-            """ Check it doesn't verify because JWS doesn't implement 'kid' """
+            """ Check it doesn't verify because JWS doesn't implement 'jku' """
             expect(r).to_be_an_error()
-            expect(str(r)).to_equal('Header Parameter kid not implemented in the context of verifying')
+            expect(str(r)).to_equal('header not implemented: jku')
 
     class VerifyJWTChecksOptional(Vows.Context):
         """ Verify token """
         def topic(self, topic):
             """ Verify the token """
             clock_load(orig_datetime.utcfromtimestamp(0))
-            r = jwt.verify_jwt(topic, 'secret', ['HS256'],
+            r = jwt.verify_jwt(topic,
+                               JWK(kty='oct', k=base64url_encode('secret')),
+                               ['HS256'],
                                ignore_not_implemented=True)
             clock_reset()
             return r
@@ -62,7 +68,7 @@ class JWSNotImplemented(Vows.Context):
             expect(header).to_equal({
                 "typ": "JWT",
                 "alg": "HS256",
-                "kid": "1234xbzsfgd54321"
+                "jku": "https://server.example.com/keys.jwk"
             })
             expect(claims).to_equal({
                 "aud": "http://example.com/",

@@ -13,8 +13,8 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    application.
    `verify\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.verify_jwt>`__
    now requires you to specify which signature algorithms are allowed.
--  Uses `python-jws <https://github.com/brianloveswords/python-jws>`__
-   to do the heavy lifting.
+-  Uses `jwcrypto <https://jwcrypto.readthedocs.io>`__ to do the heavy
+   lifting.
 -  Supports `**RS256**, **RS384**,
    **RS512** <http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3>`__,
    `**PS256**, **PS384**,
@@ -26,7 +26,7 @@ Tokens <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`__.
    signature algorithms.
 -  Unit tests, including tests for interoperability with
    `node-jsjws <https://github.com/davedoesdev/node-jsjws>`__.
--  Supports Python 3.4. **Note:**
+-  Supports Python 3.6. **Note:**
    `generate\_jwt <http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.generate_jwt>`__
    returns the token as a Unicode string, even on Python 2.7.
 
@@ -34,8 +34,8 @@ Example:
 
 .. code:: python
 
-    import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
-    key = RSA.generate(2048)
+    import python_jwt as jwt, jwcrypto.jwk as jwk, datetime
+    key = jwk.JWK.generate(kty='RSA', size=2048)
     payload = { 'foo': 'bar', 'wup': 90 };
     token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
     header, claims = jwt.verify_jwt(token, key, ['PS256'])
@@ -59,13 +59,13 @@ You can read and write keys from and to
 
 .. code:: python
 
-    import python_jwt as jwt, Crypto.PublicKey.RSA as RSA, datetime
-    key = RSA.generate(2048)
-    priv_pem = key.exportKey()
-    pub_pem = key.publickey().exportKey()
+    import python_jwt as jwt, jwcrypto.jwk as jwk, datetime
+    key = jwk.JWK.generate(kty='RSA', size=2048)
+    priv_pem = key.export_to_pem(private_key=True, password=None)
+    pub_pem = key.export_to_pem()
     payload = { 'foo': 'bar', 'wup': 90 };
-    priv_key = RSA.importKey(priv_pem)
-    pub_key = RSA.importKey(pub_pem)
+    priv_key = jwk.JWK.from_pem(priv_pem)
+    pub_key = jwk.JWK.from_pem(pub_pem)
     token = jwt.generate_jwt(payload, priv_key, 'RS256', datetime.timedelta(minutes=5))
     header, claims = jwt.verify_jwt(token, pub_key, ['RS256'])
     for k in payload: assert claims[k] == payload[k]
@@ -110,63 +110,63 @@ Benchmarks
 
     make bench
 
-Here are some results on a laptop with an Intel Core i5-3210M 2.5Ghz CPU
-and 6Gb RAM running Ubuntu 13.04.
+Here are some results on a laptop with an Intel Core i5-4300M 2.6Ghz CPU
+and 8Gb RAM running Ubuntu 17.04.
 
 +----------------+---------------+------------+---------------+
 | Generate Key   | user (ns)     | sys (ns)   | real (ns)     |
 +================+===============+============+===============+
-| RSA            | 152,700,000   | 300,000    | 152,906,095   |
+| RSA            | 103,100,000   | 200,000    | 103,341,537   |
 +----------------+---------------+------------+---------------+
 
 +------------------+-------------+------------+-------------+
 | Generate Token   | user (ns)   | sys (ns)   | real (ns)   |
 +==================+=============+============+=============+
-| HS256            | 140,000     | 10,000     | 157,202     |
+| HS256            | 220,000     | 0          | 226,478     |
 +------------------+-------------+------------+-------------+
-| HS384            | 160,000     | 10,000     | 156,403     |
+| HS384            | 220,000     | 0          | 218,233     |
 +------------------+-------------+------------+-------------+
-| HS512            | 139,999     | 20,000     | 153,212     |
+| HS512            | 230,000     | 0          | 225,823     |
 +------------------+-------------+------------+-------------+
-| PS256            | 3,159,999   | 49,999     | 3,218,649   |
+| PS256            | 1,530,000   | 10,000     | 1,536,235   |
 +------------------+-------------+------------+-------------+
-| PS384            | 3,170,000   | 10,000     | 3,176,899   |
+| PS384            | 1,550,000   | 0          | 1,549,844   |
 +------------------+-------------+------------+-------------+
-| PS512            | 3,120,000   | 9,999      | 3,141,219   |
+| PS512            | 1,520,000   | 10,000     | 1,524,844   |
 +------------------+-------------+------------+-------------+
-| RS256            | 3,070,000   | 20,000     | 3,094,644   |
+| RS256            | 1,520,000   | 10,000     | 1,524,565   |
 +------------------+-------------+------------+-------------+
-| RS384            | 3,090,000   | 0          | 3,092,471   |
+| RS384            | 1,530,000   | 0          | 1,528,074   |
 +------------------+-------------+------------+-------------+
-| RS512            | 3,079,999   | 20,000     | 3,095,314   |
+| RS512            | 1,510,000   | 0          | 1,526,089   |
 +------------------+-------------+------------+-------------+
 
 +------------+-------------+------------+-------------+
 | Load Key   | user (ns)   | sys (ns)   | real (ns)   |
 +============+=============+============+=============+
-| RSA        | 811,000     | 0          | 810,139     |
+| RSA        | 210,000     | 3,000      | 210,791     |
 +------------+-------------+------------+-------------+
 
 +----------------+-------------+------------+-------------+
 | Verify Token   | user (ns)   | sys (ns)   | real (ns)   |
 +================+=============+============+=============+
-| HS256          | 140,000     | 0          | 129,947     |
+| HS256          | 100,000     | 0          | 101,478     |
 +----------------+-------------+------------+-------------+
-| HS384          | 130,000     | 0          | 130,161     |
+| HS384          | 100,000     | 10,000     | 103,014     |
 +----------------+-------------+------------+-------------+
-| HS512          | 119,999     | 0          | 128,850     |
+| HS512          | 110,000     | 0          | 104,323     |
 +----------------+-------------+------------+-------------+
-| PS256          | 780,000     | 10,000     | 775,609     |
+| PS256          | 230,000     | 0          | 231,058     |
 +----------------+-------------+------------+-------------+
-| PS384          | 759,999     | 0          | 752,933     |
+| PS384          | 240,000     | 0          | 237,551     |
 +----------------+-------------+------------+-------------+
-| PS512          | 739,999     | 0          | 738,118     |
+| PS512          | 240,000     | 0          | 232,450     |
 +----------------+-------------+------------+-------------+
-| RS256          | 700,000     | 0          | 719,365     |
+| RS256          | 230,000     | 0          | 227,737     |
 +----------------+-------------+------------+-------------+
-| RS384          | 719,999     | 0          | 721,524     |
+| RS384          | 230,000     | 0          | 230,698     |
 +----------------+-------------+------------+-------------+
-| RS512          | 730,000     | 0          | 719,706     |
+| RS512          | 230,000     | 0          | 228,624     |
 +----------------+-------------+------------+-------------+
 
 .. |Build Status| image:: https://travis-ci.org/davedoesdev/python-jwt.png

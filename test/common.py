@@ -7,6 +7,8 @@ import threading
 #pylint: disable=W0401,W0614
 from test.fixtures import *
 
+_epoch = orig_datetime(1970, 1, 1)
+
 _thread_state = threading.local()
 
 def _new_utcnow():
@@ -18,6 +20,10 @@ def _new_utcnow():
 def _new_now():
     """ Work out current local datetime """
     return _new_utcnow() + (orig_datetime.now() - orig_datetime.utcnow())
+
+def _new_time():
+    """ Work out current time since epoch """
+    return (_new_utcnow() - _epoch).total_seconds()
 
 def clock_load(utcnow):
     """ Set datetime """
@@ -37,3 +43,7 @@ _config = {'utcnow.side_effect': _new_utcnow,
            'now.side_effect': _new_now}
 _patcher = patch('datetime.datetime', **_config)
 _mocker = _patcher.start()
+
+_config2 = {'side_effect': _new_time}
+_patcher2 = patch('time.time', **_config2)
+_mocker2 = _patcher2.start()

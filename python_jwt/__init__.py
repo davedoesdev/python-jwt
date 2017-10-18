@@ -2,38 +2,16 @@
 Functions for generating and verifying JSON Web Tokens.
 """
 
-import threading
 from datetime import datetime, timedelta
 from calendar import timegm
-from base64 import urlsafe_b64encode
 from os import urandom
-import jws
-
-jws.utils.to_bytes_2and3 = lambda s: \
-    s if isinstance(s, jws.utils.binary_type) else s.encode('utf-8')
-
-#pylint: disable=protected-access
-jws._signing_input = lambda head, payload, is_json=False: \
-    '.'.join([b.decode('utf-8') for b in
-              map(jws.utils.to_base64 if is_json else jws.utils.encode,
-                  [head, payload])])
-
-_tls = threading.local()
-
-class _VerifyNotImplemented(jws.header.VerifyNotImplemented):
-    def verify(self):
-        if getattr(_tls, 'ignore_not_implemented', False):
-            return self.value
-        return super(_VerifyNotImplemented, self).verify()
-
-for _header in jws.header.KNOWN_HEADERS:
-    cls = jws.header.KNOWN_HEADERS[_header]
-    if cls == jws.header.VerifyNotImplemented:
-        jws.header.KNOWN_HEADERS[_header] = _VerifyNotImplemented
+from jwcrypto.jws import JWS, JWSHeaderRegistry
+from jwcrypto.common import base64url_encode, base64url_decode, \
+                            json_encode, json_decode
 
 class _JWTError(Exception):
     """ Exception raised if claim doesn't pass. Private to this module because
-        jws throws many exceptions too. """
+        jwcrypto throws many exceptions too. """
     pass
 
 def generate_jwt(claims, priv_key=None,
@@ -47,7 +25,7 @@ def generate_jwt(claims, priv_key=None,
     :type claims: dict
 
     :param priv_key: The private key to be used to sign the token. Note: if you pass ``None`` then the token will be returned with an empty cryptographic signature and :obj:`algorithm` will be forced to the value ``none``.
-    :type priv_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_ (for ``RSA*`` or ``PS*``), `SigningKey <https://github.com/warner/python-ecdsa>`_ (for ``ES*``) or str (for ``HS*``)
+    :type priv_key: `jwcrypto.jwk.JWK <https://jwcrypto.readthedocs.io/en/latest/jwk.html>`_
 
     :param algorithm: The algorithm to use for generating the signature. ``RS256``, ``RS384``, ``RS512``, ``PS256``, ``PS384``, ``PS512``, ``ES256``, ``ES384``, ``ES512``, ``HS256``, ``HS384``, ``HS512`` and ``none`` are supported.
     :type algorithm: str
@@ -82,7 +60,7 @@ def generate_jwt(claims, priv_key=None,
     now = datetime.utcnow()
 
     if jti_size:
-        claims['jti'] = urlsafe_b64encode(urandom(jti_size)).decode('utf-8')
+        claims['jti'] = base64url_encode(urandom(jti_size))
 
     claims['nbf'] = timegm((not_before or now).utctimetuple())
     claims['iat'] = timegm(now.utctimetuple())
@@ -92,10 +70,17 @@ def generate_jwt(claims, priv_key=None,
     elif expires:
         claims['exp'] = timegm(expires.utctimetuple())
 
+    if header['alg'] == 'none':
+        signature = ''
+    else:
+        token = JWS(json_encode(claims))
+        token.add_signature(priv_key, protected=header)
+        signature = json_decode(token.serialize())['signature']
+
     return u'%s.%s.%s' % (
-        jws.utils.encode(header).decode('utf-8'),
-        jws.utils.encode(claims).decode('utf-8'),
-        '' if header['alg'] == 'none' else jws.sign(header, claims, priv_key).decode('utf-8')
+        base64url_encode(json_encode(header)),
+        base64url_encode(json_encode(claims)),
+        signature
     )
 
 #pylint: disable=R0912,too-many-locals
@@ -113,10 +98,10 @@ def verify_jwt(jwt,
     :type jwt: str or unicode
 
     :param pub_key: The public key to be used to verify the token. Note: if you pass ``None`` and **allowed_algs** contains ``none`` then the token's signature will not be verified.
-    :type pub_key: `_RSAobj <https://www.dlitz.net/software/pycrypto/api/current/Crypto.PublicKey.RSA._RSAobj-class.html>`_, `VerifyingKey <https://github.com/warner/python-ecdsa>`_, str or NoneType
+    :type pub_key: `jwcrypto.jwk.JWK <https://jwcrypto.readthedocs.io/en/latest/jwk.html>`_
 
     :param allowed_algs: Algorithms expected to be used to sign the token. The ``in`` operator is used to test membership.
-    :type allowed_algs: list, dict or NoneType
+    :type allowed_algs: list or NoneType (meaning an empty list)
 
     :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifiying that the token was generated in the past. Defaults to no leeway.
     :type iat_skew: datetime.timedelta
@@ -124,7 +109,7 @@ def verify_jwt(jwt,
     :param checks_optional: If ``False``, then the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.
     :type checks_optional: bool
 
-    :param ignore_not_implemented: If ``False``, then the token must *not* contain the **jku**, **kid**, **x5u** or **x5t** header properties.
+    :param ignore_not_implemented: If ``False``, then the token must *not* contain the **jku**, **jwk**, **x5u**, **x5c** or **x5t** header properties.
     :type ignore_not_implemented: bool
 
     :rtype: tuple
@@ -141,32 +126,38 @@ def verify_jwt(jwt,
 
     :raises: If the token failed to verify.
     """
-    header, claims, sig = jwt.split('.')
-
-    header = jws.utils.from_base64(header).decode('utf-8')
-    parsed_header = jws.utils.from_json(header)
-
     if allowed_algs is None:
         allowed_algs = []
 
+    if not isinstance(allowed_algs, list):
+        # jwcrypto only supports list of allowed algorithms
+        raise _JWTError('allowed_algs must be a list')
+
+    header, claims, _ = jwt.split('.')
+
+    parsed_header = json_decode(base64url_decode(header))
+
     alg = parsed_header.get('alg')
     if alg is None:
-        raise _JWTError('alg not present')
+        raise _JWTError('alg header not present')
     if alg not in allowed_algs:
         raise _JWTError('algorithm not allowed: ' + alg)
 
-    claims = jws.utils.from_base64(claims).decode('utf-8')
+    if not ignore_not_implemented:
+        for k in parsed_header:
+            if k not in JWSHeaderRegistry:
+                raise _JWTError('unknown header: ' + k)
+            if not JWSHeaderRegistry[k][1]:
+                raise _JWTError('header not implemented: ' + k)
 
     if pub_key:
-        _tls.ignore_not_implemented = ignore_not_implemented
-        try:
-            jws.verify(header, claims, sig, pub_key, True)
-        finally:
-            _tls.ignore_not_implemented = False
+        token = JWS()
+        token.allowed_algs = allowed_algs
+        token.deserialize(jwt, pub_key)
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
 
-    parsed_claims = jws.utils.from_json(claims)
+    parsed_claims = json_decode(base64url_decode(claims))
 
     utcnow = datetime.utcnow()
     now = timegm(utcnow.utctimetuple())
@@ -174,9 +165,9 @@ def verify_jwt(jwt,
     typ = parsed_header.get('typ')
     if typ is None:
         if not checks_optional:
-            raise _JWTError('type not present')
+            raise _JWTError('typ header not present')
     elif typ != 'JWT':
-        raise _JWTError('type is not JWT')
+        raise _JWTError('typ header is not JWT')
 
     iat = parsed_claims.get('iat')
     if iat is None:
@@ -216,6 +207,6 @@ def process_jwt(jwt):
     :returns: ``(header, claims)``
     """
     header, claims, _ = jwt.split('.')
-    header = jws.utils.from_json(jws.utils.from_base64(header).decode('utf-8'))
-    claims = jws.utils.from_json(jws.utils.from_base64(claims).decode('utf-8'))
-    return header, claims
+    parsed_header = json_decode(base64url_decode(header))
+    parsed_claims = json_decode(base64url_decode(claims))
+    return parsed_header, parsed_claims

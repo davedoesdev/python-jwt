@@ -4,8 +4,8 @@ from test.common import payload, pub_keys, priv_keys, algs, generated_keys, \
                         clock_tick, clock_load
 from test import python_jwt as jwt
 from datetime import timedelta, datetime
-from base64 import urlsafe_b64decode
 from pyvows import Vows, expect
+from jwcrypto.common import base64url_decode
 
 keys = list(payload.keys())
 keys += ['exp', 'nbf', 'iat', 'jti']
@@ -88,7 +88,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 def jti_size_should_be_as_expected(self, claims):
                     """ Check jti size """
                     if jti_size and not callable(privk): # don't assume format of externally-generated JTIs
-                        expect(len(urlsafe_b64decode(claims['jti'].encode('utf-8')))).to_equal(jti_size)
+                        expect(len(base64url_decode(claims['jti'].encode('utf-8')))).to_equal(jti_size)
 
             def header_should_be_as_expected(self, token):
                 """ Check header """
