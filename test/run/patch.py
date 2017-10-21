@@ -14,25 +14,6 @@ from pyvows.runner import VowsRunner
 from pyvows.runner.executionplan import ExecutionPlanner
 from pyvows.result import VowsResult
 
-VowsParallelRunner.orig_run_context = VowsParallelRunner.run_context
-
-def new_run_context(self,
-                    ctx_collection,
-                    ctx_name,
-                    ctx_obj,
-                    execution_plan,
-                    index=-1,
-                    suite=None,
-                    skipReason=None):
-    """ Make sure exceptions in topic are caught """
-    try:
-        return self.orig_run_context(ctx_collection, ctx_name, ctx_obj, execution_plan, index, suite, skipReason)
-    # pylint: disable=broad-except
-    except Exception, e:
-        ctx_collection[-1]['error'] = e
-
-VowsParallelRunner.run_context = new_run_context
-
 # pylint: disable=too-few-public-methods
 class _Dummy(object):
     # pylint: disable=missing-docstring

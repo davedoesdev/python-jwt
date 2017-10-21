@@ -1,7 +1,7 @@
 jwcrypto>=0.4.2
 
 gevent>=1.2.2
-pyvows>=2.1.0
+git+https://github.com/davedoesdev/pyvows.git
 pylint>=1.4.4
 coverage>=4.0.3
 coveralls>=1.1
