@@ -1,9 +1,18 @@
 """ Common globals """
 
+import sys
 from os import urandom
 from binascii import hexlify
 from jwcrypto.jwk import JWK
 from jwcrypto.common import base64url_encode
+
+if sys.version_info < (3, 0):
+    _binary_type = str
+else:
+    _binary_type = bytes
+
+def to_bytes_2and3(s):
+    return s if isinstance(s, _binary_type) else s.encode('utf-8')
 
 payload = {
     "foo": "joe",
@@ -12,7 +21,7 @@ payload = {
     "http://example.com/is_root": True
 }
 
-priv_pem = b"-----BEGIN RSA PRIVATE KEY-----                 \n\
+priv_pem = "-----BEGIN RSA PRIVATE KEY-----                 \n\
 MIIEogIBAAKCAQEA4qiw8PWs7PpnnC2BUEoDRcwXF8pq8XT1/3Hc3cuUJwX/otNe\n\
 fr/Bomr3dtM0ERLN3DrepCXvuzEU5FcJVDUB3sI+pFtjjLBXD/zJmuL3Afg91J9p\n\
 79+Dm+43cR6wuKywVJx5DJIdswF6oQDDzhwu89d2V5x02aXB9LqdXkPwiO0eR5s/\n\
@@ -40,7 +49,7 @@ T4mvpSeYDJkBD8Hxr3fB1YNDWNbgwrNPGZnUTBNhxIsNLPnV8WySiW57LqVXlggH\n\
 vjFmyDdU5Hh6ma4q+BeAqbXZSJz0cfkBcBLCSe2gIJ/QJ3YJVQI=            \n\
 -----END RSA PRIVATE KEY-----"
 
-pub_pem = b"-----BEGIN PUBLIC KEY-----                       \n\
+pub_pem = "-----BEGIN PUBLIC KEY-----                       \n\
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4qiw8PWs7PpnnC2BUEoD\n\
 RcwXF8pq8XT1/3Hc3cuUJwX/otNefr/Bomr3dtM0ERLN3DrepCXvuzEU5FcJVDUB\n\
 3sI+pFtjjLBXD/zJmuL3Afg91J9p79+Dm+43cR6wuKywVJx5DJIdswF6oQDDzhwu\n\
@@ -50,8 +59,8 @@ LwZFSvZ9iddRPQK3CtgFiBnXbVwU5t67tn9pMizHgypgsfBoeoyBrpTuc4egSCpj\n\
 sQIDAQAB                                                        \n\
 -----END PUBLIC KEY-----"
 
-priv_key = JWK.from_pem(priv_pem)
-pub_key = JWK.from_pem(pub_pem)
+priv_key = JWK.from_pem(to_bytes_2and3(priv_pem))
+pub_key = JWK.from_pem(to_bytes_2and3(pub_pem))
 
 priv_keys = {
     'HS256': {'default': JWK(kty='oct', k=base64url_encode('some random key'))},

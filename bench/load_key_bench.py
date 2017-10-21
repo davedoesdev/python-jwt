@@ -4,7 +4,7 @@
 
 # pylint: disable=wrong-import-position,wrong-import-order
 from bench.unitbench import Benchmark
-from test.fixtures import priv_pem
+from test.fixtures import priv_pem, to_bytes_2and3
 from bench.reporter import Reporter
 from jwcrypto.jwk import JWK
 
@@ -21,7 +21,7 @@ class LoadKeyBenchmark(Benchmark):
 
     def bench_RSA(self):
         """ Import key """
-        JWK.from_pem(priv_pem)
+        JWK.from_pem(to_bytes_2and3(priv_pem))
 
 if __name__ == "__main__":
     #pylint: disable=W0402
