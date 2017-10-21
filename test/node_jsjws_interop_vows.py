@@ -3,12 +3,11 @@
 # pylint: disable=wrong-import-order
 from test.common import pub_keys, priv_keys, algs, pub_key, priv_key
 from test import jwt_spec
-import json
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
 from calendar import timegm
 from threading import Lock
-from jwcrypto.common import base64url_decode
+from jwcrypto.common import base64url_decode, json_encode, json_decode
 
 lock = Lock()
 
@@ -22,7 +21,7 @@ def spawn(cmd, parse_json):
     stdout = stdout.decode('utf-8')
     stderr = stderr.decode('utf-8')
     if p.returncode == 0:
-        return json.loads(stdout) if parse_json else stdout
+        return json_decode(stdout) if parse_json else stdout
     else:
         raise Exception(stderr if stderr else ('exited with {}'.format(p.returncode)))
     #pylint: enable=E1101
@@ -37,11 +36,11 @@ def generate(alg):
         return spawn(
             "fixtures.generate({now}, {header}, {claims}, {expires}, {not_before}, {key})".format(
                 now=timegm(now.utctimetuple()),
-                header=json.dumps({'alg': alg}),
-                claims=json.dumps(claims),
+                header=json_encode({'alg': alg}),
+                claims=json_encode(claims),
                 expires=timegm(((now + lifetime) if lifetime else expires).utctimetuple()),
                 not_before=timegm((not_before or now).utctimetuple()),
-                key=json.dumps(base64url_decode(json.loads(key.export())['k']) if key.is_symmetric else key.export_to_pem(True, None))),
+                key=json_encode(base64url_decode(json_decode(key.export())['k']) if key.is_symmetric else key.export_to_pem(True, None))),
             False)
     return f
 
@@ -53,10 +52,10 @@ def verify(alg):
         r = spawn(
             "fixtures.verify({now}, {sjwt}, {iat_skew}, {key}, {alg})".format(
                 now=timegm(datetime.utcnow().utctimetuple()),
-                sjwt=json.dumps(sjwt),
+                sjwt=json_encode(sjwt),
                 iat_skew=iat_skew.total_seconds(),
-                key=json.dumps(base64url_decode(json.loads(key.export())['k']) if key.is_symmetric else key.export_to_pem()),
-                alg=json.dumps(alg)),
+                key=json_encode(base64url_decode(json_decode(key.export())['k']) if key.is_symmetric else key.export_to_pem()),
+                alg=json_encode(alg)),
             True)
         return tuple(r)
     return f
