@@ -12,6 +12,7 @@ else:
     _binary_type = bytes
 
 def to_bytes_2and3(s):
+    """ Ensure string is binary """
     return s if isinstance(s, _binary_type) else s.encode('utf-8')
 
 payload = {
