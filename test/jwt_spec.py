@@ -88,7 +88,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 def jti_size_should_be_as_expected(self, claims):
                     """ Check jti size """
                     if jti_size and not callable(privk): # don't assume format of externally-generated JTIs
-                        expect(len(base64url_decode(claims['jti'].encode('utf-8')))).to_equal(jti_size)
+                        expect(len(base64url_decode(claims['jti']))).to_equal(jti_size)
 
             def header_should_be_as_expected(self, token):
                 """ Check header """

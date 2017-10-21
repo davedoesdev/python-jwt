@@ -16,6 +16,6 @@ addons:
       - libevent-dev
 script:
   - ( while true; do echo keep alive!; sleep 60; done ) &
-  - make lint coverage
+  - make lint coverage bench
 after_success:
   - coveralls
