@@ -45,7 +45,7 @@ def other_headers(alg, key):
         def should_not_generated_token(self, r):
             """ Should not generate """
             expect(r).to_be_an_error()
-            expect(str(r)).to_equal("other_headers re-specified the headers: set(['typ'])")
+            expect(str(r)).to_equal("other_headers re-specified the headers: typ")
 
     @Vows.batch
     #pylint: disable=unused-variable
@@ -60,7 +60,7 @@ def other_headers(alg, key):
         def should_not_generated_token(self, r):
             """ Should not generate """
             expect(r).to_be_an_error()
-            expect(str(r)).to_equal("other_headers re-specified the headers: set(['alg'])")
+            expect(str(r)).to_equal("other_headers re-specified the headers: alg")
 
 other_headers('none', None)
 for _alg in algs:
