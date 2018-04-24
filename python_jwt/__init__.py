@@ -61,11 +61,11 @@ def generate_jwt(claims, priv_key=None,
         'alg': algorithm if priv_key else 'none'
     }
 
-    redefined_keys = set(header.keys()) & set(other_headers.keys())
-    if redefined_keys:
-        raise ValueError('other_headers re-specified the headers: {}'.format(redefined_keys))
-
-    header.update(other_headers)
+    if other_headers is not None:
+        redefined_keys = set(header.keys()) & set(other_headers.keys())
+        if redefined_keys:
+            raise ValueError('other_headers re-specified the headers: {}'.format(redefined_keys))
+        header.update(other_headers)
 
     claims = dict(claims)
 
