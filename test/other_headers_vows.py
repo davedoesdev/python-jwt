@@ -8,12 +8,13 @@ from pyvows import Vows, expect
 def other_headers(alg, key):
     """ setup tests """
     @Vows.batch
+    #pylint: disable=unused-variable
     class OtherHeaders(Vows.Context):
         """ Check extra header value is set in token """
         def topic(self):
             """ Generate token """
             return jwt.generate_jwt(payload, key, alg, timedelta(seconds=60),
-                                    other_headers={ 'kid': '0123456789abcdef' })
+                                    other_headers={'kid': '0123456789abcdef'})
 
         class Verify(Vows.Context):
             """ Verify token """
@@ -32,13 +33,14 @@ def other_headers(alg, key):
                 })
 
     @Vows.batch
+    #pylint: disable=unused-variable
     class RedefinedTypHeader(Vows.Context):
         """ Check typ other header raises exception """
         @Vows.capture_error
         def topic(self):
             """ Generate token """
             return jwt.generate_jwt(payload, key, alg, timedelta(seconds=60),
-                                    other_headers={ 'typ': 'JWT' })
+                                    other_headers={'typ': 'JWT'})
 
         def should_not_generated_token(self, r):
             """ Should not generate """
@@ -46,13 +48,14 @@ def other_headers(alg, key):
             expect(str(r)).to_equal("other_headers re-specified the headers: set(['typ'])")
 
     @Vows.batch
+    #pylint: disable=unused-variable
     class RedefinedAlgHeader(Vows.Context):
         """ Check alg other header raises exception """
         @Vows.capture_error
         def topic(self):
             """ Generate token """
             return jwt.generate_jwt(payload, key, alg, timedelta(seconds=60),
-                                    other_headers={ 'alg': 'JWT' })
+                                    other_headers={'alg': 'JWT'})
 
         def should_not_generated_token(self, r):
             """ Should not generate """
