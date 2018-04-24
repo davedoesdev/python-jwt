@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>python_jwt module &#8212; python-jwt 3.0.0 documentation</title>
+    <title>python_jwt module &#8212; python-jwt 3.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.0.0',
+        VERSION:     '3.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">python-jwt 3.0.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -68,7 +68,7 @@
 <span class="target" id="module-python_jwt"></span><p>Functions for generating and verifying JSON Web Tokens.</p>
 <dl class="function">
 <dt id="python_jwt.generate_jwt">
-<code class="descclassname">python_jwt.</code><code class="descname">generate_jwt</code><span class="sig-paren">(</span><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">python_jwt.</code><code class="descname">generate_jwt</code><span class="sig-paren">(</span><em>claims</em>, <em>priv_key=None</em>, <em>algorithm='PS512'</em>, <em>lifetime=None</em>, <em>expires=None</em>, <em>not_before=None</em>, <em>jti_size=16</em>, <em>other_headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a JSON Web Token.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -82,6 +82,7 @@
 <li><strong>expires</strong> (<em>datetime.datetime</em>) &#8211; When the token expires (if <code class="xref py py-obj docutils literal"><span class="pre">lifetime</span></code> isn&#8217;t specified)</li>
 <li><strong>not_before</strong> (<em>datetime.datetime</em>) &#8211; When the token is valid from. Defaults to current time (if <code class="docutils literal"><span class="pre">None</span></code> is passed).</li>
 <li><strong>jti_size</strong> (<em>int</em>) &#8211; Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or <code class="docutils literal"><span class="pre">None</span></code> to omit the JTI from the token.</li>
+<li><strong>other_headers</strong> (<em>dict</em>) &#8211; Any headers other than &#8220;typ&#8221; and &#8220;alg&#8221; may be specified, they will be included in the header.</li>
 </ul>
 </td>
 </tr>
@@ -99,6 +100,14 @@
 <li><strong>nbf</strong> (<em>IntDate</em>) &#8211; The UTC valid-from date and time of the token.</li>
 <li><strong>jti</strong> (<em>str</em>) &#8211; A unique identifier for the token.</li>
 </ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">ValueError: If other_headers contains either the &#8220;typ&#8221; or &#8220;alg&#8221; header</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -131,7 +140,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>jwt</strong> (<em>str</em><em> or </em><em>unicode</em>) &#8211; The JSON Web Token to verify.</li>
 <li><strong>pub_key</strong> &#8211; The public key to be used to verify the token. Note: if you pass <code class="docutils literal"><span class="pre">None</span></code> and <strong>allowed_algs</strong> contains <code class="docutils literal"><span class="pre">none</span></code> then the token&#8217;s signature will not be verified.</li>
-<li><strong>allowed_algs</strong> (<em>list</em><em> or </em><em>NoneType</em><em> (</em><em>meaning an empty list</em><em>)</em><em></em>) &#8211; Algorithms expected to be used to sign the token. The <code class="docutils literal"><span class="pre">in</span></code> operator is used to test membership.</li>
+<li><strong>allowed_algs</strong> (<em>list</em><em> or </em><em>NoneType</em><em> (</em><em>meaning an empty list</em><em>)</em>) &#8211; Algorithms expected to be used to sign the token. The <code class="docutils literal"><span class="pre">in</span></code> operator is used to test membership.</li>
 <li><strong>iat_skew</strong> (<em>datetime.timedelta</em>) &#8211; The amount of leeway to allow between the issuer&#8217;s clock and the verifier&#8217;s clock when verifiying that the token was generated in the past. Defaults to no leeway.</li>
 <li><strong>checks_optional</strong> (<em>bool</em>) &#8211; If <code class="docutils literal"><span class="pre">False</span></code>, then the token must contain the <strong>typ</strong> header property and the <strong>iat</strong>, <strong>nbf</strong> and <strong>exp</strong> claim properties.</li>
 <li><strong>ignore_not_implemented</strong> (<em>bool</em>) &#8211; If <code class="docutils literal"><span class="pre">False</span></code>, then the token must <em>not</em> contain the <strong>jku</strong>, <strong>jwk</strong>, <strong>x5u</strong>, <strong>x5c</strong> or <strong>x5t</strong> header properties.</li>
@@ -219,12 +228,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">python-jwt 3.0.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">python-jwt 3.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, David Halls.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>
 </html>
