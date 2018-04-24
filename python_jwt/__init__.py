@@ -17,7 +17,7 @@ class _JWTError(Exception):
 def generate_jwt(claims, priv_key=None,
                  algorithm='PS512', lifetime=None, expires=None,
                  not_before=None,
-                 jti_size=16):
+                 jti_size=16, other_headers=None):
     """
     Generate a JSON Web Token.
 
@@ -42,6 +42,9 @@ def generate_jwt(claims, priv_key=None,
     :param jti_size: Size in bytes of the unique token ID to put into the token (can be used to detect replay attacks). Defaults to 16 (128 bits). Specify 0 or ``None`` to omit the JTI from the token.
     :type jti_size: int
 
+    :param other_headers: Any headers other than "typ" and "alg" may be specified, they will be included in the header.
+    :type other_headers: dict
+
     :rtype: unicode
     :returns: The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the `JWT spec <http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html>`_:
 
@@ -49,11 +52,20 @@ def generate_jwt(claims, priv_key=None,
     - **iat** (*IntDate*) -- The UTC date and time at which the token was generated.
     - **nbf** (*IntDate*) -- The UTC valid-from date and time of the token.
     - **jti** (*str*) -- A unique identifier for the token.
+
+    :raises:
+        ValueError: If other_headers contains either the "typ" or "alg" header
     """
     header = {
         'typ': 'JWT',
         'alg': algorithm if priv_key else 'none'
     }
+
+    redefined_keys = set(header.keys()) & set(other_headers.keys())
+    if redefined_keys:
+        raise ValueError('other_headers re-specified the headers: {}'.format(redefined_keys))
+
+    header.update(other_headers)
 
     claims = dict(claims)
 
