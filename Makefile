@@ -10,7 +10,6 @@ docs: build_docs
 
 build_docs:
 	cd docs && make html
-	pandoc -t rst README.md | sed -e '1,1s/^[^\\]*//' -e '2d' > README.rst
 
 lint:
 	pylint python_jwt test bench
