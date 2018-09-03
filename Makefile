@@ -40,8 +40,8 @@ node_deps:
 dist: make_dist
 
 make_dist:
-	python setup.py sdist
-	python setup.py bdist_wheel --universal
+	python3 setup.py sdist
+	python3 setup.py bdist_wheel --universal
 
 upload:
-	twine upload dist/$(name)-$(version)*
+	python3 -m twine upload dist/$(name)-$(version)*
