@@ -14,7 +14,7 @@ from pyvows.runner import VowsRunner
 from pyvows.runner.executionplan import ExecutionPlanner
 from pyvows.result import VowsResult
 
-# pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods,useless-object-inheritance
 class _Dummy(object):
     # pylint: disable=missing-docstring
     @classmethod

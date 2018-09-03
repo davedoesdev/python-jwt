@@ -22,8 +22,7 @@ def spawn(cmd, parse_json):
     stderr = stderr.decode('utf-8')
     if p.returncode == 0:
         return json_decode(stdout) if parse_json else stdout
-    else:
-        raise Exception(stderr if stderr else ('exited with {}'.format(p.returncode)))
+    raise Exception(stderr if stderr else ('exited with {}'.format(p.returncode)))
     #pylint: enable=E1101
 
 #pylint: disable=W0621

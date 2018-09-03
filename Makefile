@@ -12,7 +12,7 @@ build_docs:
 	cd docs && make html
 
 lint:
-	pylint python_jwt test bench
+	python3 `which pylint` python_jwt test bench
 
 test: run_test
 
