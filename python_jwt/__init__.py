@@ -159,7 +159,7 @@ def verify_jwt(jwt,
         for k in parsed_header:
             if k not in JWSHeaderRegistry:
                 raise _JWTError('unknown header: ' + k)
-            if not JWSHeaderRegistry[k][1]:
+            if not JWSHeaderRegistry[k].supported:
                 raise _JWTError('header not implemented: ' + k)
 
     if pub_key:

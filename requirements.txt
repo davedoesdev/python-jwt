@@ -1,4 +1,4 @@
-jwcrypto>=0.4.2
+jwcrypto>=0.6.0
 
 gevent>=1.2.2
 git+https://github.com/davedoesdev/pyvows.git

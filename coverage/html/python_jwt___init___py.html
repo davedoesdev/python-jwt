@@ -457,7 +457,7 @@
 <p id="t159" class="stm run hide_run">        <span class="key">for</span> <span class="nam">k</span> <span class="key">in</span> <span class="nam">parsed_header</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t160" class="stm run hide_run">            <span class="key">if</span> <span class="nam">k</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">JWSHeaderRegistry</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t161" class="stm run hide_run">                <span class="key">raise</span> <span class="nam">_JWTError</span><span class="op">(</span><span class="str">'unknown header: '</span> <span class="op">+</span> <span class="nam">k</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t162" class="stm run hide_run">            <span class="key">if</span> <span class="key">not</span> <span class="nam">JWSHeaderRegistry</span><span class="op">[</span><span class="nam">k</span><span class="op">]</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t162" class="stm run hide_run">            <span class="key">if</span> <span class="key">not</span> <span class="nam">JWSHeaderRegistry</span><span class="op">[</span><span class="nam">k</span><span class="op">]</span><span class="op">.</span><span class="nam">supported</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t163" class="stm run hide_run">                <span class="key">raise</span> <span class="nam">_JWTError</span><span class="op">(</span><span class="str">'header not implemented: '</span> <span class="op">+</span> <span class="nam">k</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t164" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t165" class="stm run hide_run">    <span class="key">if</span> <span class="nam">pub_key</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
@@ -530,7 +530,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.2</a>,
-            created at 2018-04-25 00:00
+            created at 2018-11-09 20:49
         </p>
     </div>
 </div>
