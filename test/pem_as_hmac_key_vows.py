@@ -29,7 +29,7 @@ class PEMAsHMACKey(Vows.Context):
             expect(str(r)).to_equal('algorithm not allowed: HS256')
 
     class VerifyTokenUsingPublicPEMHS256AlgAllowed(Vows.Context):
-        """ Verify token, specifiy allowed alg """
+        """ Verify token, specify allowed alg """
         @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
@@ -40,7 +40,7 @@ class PEMAsHMACKey(Vows.Context):
             expect(r).to_be_instance_of(tuple)
 
     class VerifyTokenUsingPublicPEMRS256AlgAllowed(Vows.Context):
-        """ Verify token, specifiy allowed alg """
+        """ Verify token, specify allowed alg """
         @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
