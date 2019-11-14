@@ -12,7 +12,7 @@ build_docs:
 	cd docs && make html
 
 lint:
-	pylint --disable=bad-option-value python_jwt test bench
+	pylint python_jwt test bench
 
 test: run_test
 
