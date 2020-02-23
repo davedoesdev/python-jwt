@@ -36,10 +36,13 @@ class AlgNoneVerification(Vows.Context):
             """ Verify the token with some public key and none alg allowed """
             return jwt.verify_jwt(topic, JWK(kty='oct', k=base64url_encode('anysecrethere')), ['none'])
 
-        def token_should_verify(self, r):
+        def token_should_not_verify(self, r):
             """ Should not verify because jwcrypto doesn't support verifying none alg """
             expect(r).to_be_an_error()
-            expect(str(r)).to_equal('Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\',)}\\\',)]\']')
+            expect([
+                'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\',)}\\\',)]\']',
+                'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\')}\\\')]\']'
+            ]).to_include(str(r))
 
     class VerifyJWTPublicKeyNoneNotAllowed(Vows.Context):
         """ Verify token with public key """
