@@ -26,7 +26,8 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
     pubk = None if keyless else pub_keys[alg][pub_type]
     jtis = {}
     @Vows.batch
-    #pylint: disable=W0612,unused-variable
+    #pylint: disable=W0612
+    #pylint: disable=unused-variable
     class GenerateJWT(Vows.Context):
     #pylint: enable=W0612
         """ generate token """
