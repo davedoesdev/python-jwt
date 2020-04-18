@@ -1,4 +1,4 @@
-""" test interop with node-jsjws """
+""" test interop with jose for node """
 
 # pylint: disable=wrong-import-order
 from test.common import pub_keys, priv_keys, algs, pub_key, priv_key
@@ -27,10 +27,10 @@ def spawn(cmd, parse_json):
 
 #pylint: disable=W0621
 def generate(alg):
-    """ return function which can generate token using node-jsjws """
+    """ return function which can generate token using jose """
     key = priv_keys[alg].get('default', priv_key)
     def f(claims, alg, lifetime=None, expires=None, not_before=None):
-        """ generate token using node-jsjws """
+        """ generate token using jose """
         now = datetime.utcnow()
         return spawn(
             "fixtures.generate({now}, {header}, {claims}, {expires}, {not_before}, {key})".format(
@@ -44,10 +44,10 @@ def generate(alg):
     return f
 
 def verify(alg):
-    """ return function which can verify token using node-jsjws """
+    """ return function which can verify token using jose """
     key = pub_keys[alg].get('default', pub_key)
     def f(sjwt, iat_skew=timedelta()):
-        """ verify token using node-jsjws """
+        """ verify token using jose """
         r = spawn(
             "fixtures.verify({now}, {sjwt}, {iat_skew}, {key}, {alg})".format(
                 now=timegm(datetime.utcnow().utctimetuple()),
@@ -60,11 +60,11 @@ def verify(alg):
     return f
 
 for alg in algs:
-    priv_keys[alg]['node_jsjws'] = generate(alg)
-    pub_keys[alg]['node_jsjws'] = verify(alg)
+    priv_keys[alg]['jose'] = generate(alg)
+    pub_keys[alg]['jose'] = verify(alg)
 
 jwt_spec.setup(['HS256', 'HS512', 'RS256', 'RS512', 'PS256', 'PS512'])
 
 for alg in algs:
-    del priv_keys[alg]['node_jsjws']
-    del pub_keys[alg]['node_jsjws']
+    del priv_keys[alg]['jose']
+    del pub_keys[alg]['jose']

@@ -6,7 +6,7 @@ Module for generating and verifying [JSON Web Tokens](http://self-issued.info/do
 - **Note:** Versions 1.0.0 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. The API has changed so you will need to update your application. [verify_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.verify_jwt) now requires you to specify which signature algorithms are allowed.
 - Uses [jwcrypto](https://jwcrypto.readthedocs.io) to do the heavy lifting.
 - Supports [__RS256__, __RS384__, __RS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.3), [__PS256__, __PS384__, __PS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.5), [__HS256__, __HS384__, __HS512__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.2) and [__none__](http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-14#section-3.6) signature algorithms.
-- Unit tests, including tests for interoperability with [node-jsjws](https://github.com/davedoesdev/node-jsjws).
+- Unit tests, including tests for interoperability with [jose](https://github.com/panva/jose).
 - Supports Python 2,7 and 3.6+. **Note:** [generate_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.generate_jwt) returns the token as a Unicode string, even on Python 2.7.
 
 Example:
