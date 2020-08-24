@@ -5,7 +5,7 @@
 # pylint: disable=wrong-import-position,wrong-import-order
 from datetime import timedelta
 from bench.unitbench import Benchmark
-from test.fixtures import payload, priv_keys, priv_key, pub_keys, pub_key, algs
+from test.fixtures import payload, priv_keys, pub_keys, algs
 from bench.reporter import Reporter
 import python_jwt as jwt
 
@@ -23,11 +23,11 @@ class VerifyTokenBenchmark(Benchmark):
 #pylint: disable=W0621
 def make_bench_verify_token(alg):
     """ Return function which will generate token for particular algorithm """
-    privk = priv_keys[alg].get('default', priv_key)
+    privk = priv_keys[alg]['python-jwt']
     token = jwt.generate_jwt(payload, privk, alg, timedelta(days=1))
     def f(_):
         """ Verify token """
-        pubk = pub_keys[alg].get('default', pub_key)
+        pubk = pub_keys[alg]['python-jwt']
         jwt.verify_jwt(token, pubk, [alg])
     return f
 

@@ -1,7 +1,7 @@
 """ test interop with jose for node """
 
 # pylint: disable=wrong-import-order
-from test.common import pub_keys, priv_keys, algs, pub_key, priv_key
+from test.common import pub_keys, priv_keys, algs
 from test import jwt_spec
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE
@@ -28,7 +28,7 @@ def spawn(cmd, parse_json):
 #pylint: disable=W0621
 def generate(alg):
     """ return function which can generate token using jose """
-    key = priv_keys[alg].get('default', priv_key)
+    key = priv_keys[alg]['python-jwt']
     def f(claims, alg, lifetime=None, expires=None, not_before=None):
         """ generate token using jose """
         now = datetime.utcnow()
@@ -45,7 +45,7 @@ def generate(alg):
 
 def verify(alg):
     """ return function which can verify token using jose """
-    key = pub_keys[alg].get('default', pub_key)
+    key = pub_keys[alg]['python-jwt']
     def f(sjwt, iat_skew=timedelta()):
         """ verify token using jose """
         r = spawn(
@@ -63,7 +63,14 @@ for alg in algs:
     priv_keys[alg]['jose'] = generate(alg)
     pub_keys[alg]['jose'] = verify(alg)
 
-jwt_spec.setup(['HS256', 'HS512', 'RS256', 'RS512', 'PS256', 'PS512'])
+jwt_spec.setup([
+    'HS256',
+    'RS256',
+    'PS256',
+    'ES256',
+    'ES256K',
+    'EdDSA'
+])
 
 for alg in algs:
     del priv_keys[alg]['jose']

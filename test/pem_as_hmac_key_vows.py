@@ -1,13 +1,13 @@
 """ test using PEM as key - we shouldn't validate a HMAC token instead """
 # pylint: disable=wrong-import-order
-from test.common import payload, pub_pem, pub_key
+from test.common import payload, rsa_pub_pem, rsa_pub_key
 from test import python_jwt as jwt
 from datetime import timedelta
 from pyvows import Vows, expect
 from jwcrypto.jwk import JWK
 from jwcrypto.common import base64url_encode
 
-pem_key = JWK(kty='oct', k=base64url_encode(pub_pem))
+pem_key = JWK(kty='oct', k=base64url_encode(rsa_pub_pem))
 
 @Vows.batch
 class PEMAsHMACKey(Vows.Context):
@@ -56,7 +56,7 @@ class PEMAsHMACKey(Vows.Context):
         @Vows.capture_error
         def topic(self, topic):
             """ Verify the token """
-            return jwt.verify_jwt(topic, pub_key)
+            return jwt.verify_jwt(topic, rsa_pub_key)
 
         def token_should_not_verify(self, r):
             """ Should not verify """

@@ -86,6 +86,7 @@ def generate_jwt(claims, priv_key=None,
         signature = ''
     else:
         token = JWS(json_encode(claims))
+        token.allowed_algs = [header['alg']]
         token.add_signature(priv_key, protected=header)
         signature = json_decode(token.serialize())['signature']
 

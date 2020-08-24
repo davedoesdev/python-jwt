@@ -1,4 +1,4 @@
-jwcrypto>=0.6.0
+jwcrypto>=0.8
 
 gevent>=1.2.2
 pyVows>=3.0.0

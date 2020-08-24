@@ -5,7 +5,7 @@
 # pylint: disable=wrong-import-position,wrong-import-order
 from datetime import timedelta
 from bench.unitbench import Benchmark
-from test.fixtures import payload, priv_keys, priv_key, algs
+from test.fixtures import payload, priv_keys, algs
 from bench.reporter import Reporter
 import python_jwt as jwt
 
@@ -25,7 +25,7 @@ def make_bench_generate_token(alg):
     """ Return function which will generate token for particular algorithm """
     def f(_):
         """ Generate token """
-        privk = priv_keys[alg].get('default', priv_key)
+        privk = priv_keys[alg]['python-jwt']
         jwt.generate_jwt(payload, privk, alg, timedelta(seconds=5))
     return f
 

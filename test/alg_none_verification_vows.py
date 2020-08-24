@@ -1,7 +1,7 @@
 """ Test verification of tokens with algorithms none """
 
 # pylint: disable=wrong-import-order
-from test.common import payload, generated_key
+from test.common import payload, generated_rsa_key
 from test import python_jwt as jwt
 from datetime import timedelta
 from pyvows import Vows, expect
@@ -74,7 +74,7 @@ class AlgNoneVerification2(Vows.Context):
         no public key """
     def topic(self):
         """ Generate the token """
-        return jwt.generate_jwt(payload, generated_key, 'RS256', timedelta(seconds=10))
+        return jwt.generate_jwt(payload, generated_rsa_key, 'RS256', timedelta(seconds=10))
 
     class VerifyJWTNoPublicKeyAlgButNotNoneAllowed(Vows.Context):
         """ Verify token with no public key """
