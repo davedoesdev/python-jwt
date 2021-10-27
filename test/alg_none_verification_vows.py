@@ -42,7 +42,8 @@ class AlgNoneVerification(Vows.Context):
             expect([
                 'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\',)}\\\',)]\']',
                 'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\')}\\\')]\']',
-                'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\')]"]' # python3 uses raise from and doesn't put reason in exception
+                'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\')]"]', # python3 uses raise from and doesn't put reason in exception
+                'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\',)]"]'
             ]).to_include(str(r))
 
     class VerifyJWTPublicKeyNoneNotAllowed(Vows.Context):
