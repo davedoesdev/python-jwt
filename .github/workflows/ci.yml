@@ -23,9 +23,6 @@ jobs:
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v2
 
-      - name: Test Node exit status
-        run: node -e 'throw new Error("foo")' || echo $?
-
       - name: Install requirements
         run: |
           pip install -r requirements.txt

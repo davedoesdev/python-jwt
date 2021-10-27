@@ -15,14 +15,11 @@ def spawn(cmd, parse_json):
     """ run node command """
     #pylint: disable=E1101
     with lock:
-        p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd], #pylint: disable=consider-using-with
+        p = Popen(["node", "--unhandled-rejections=strict", "-e", "fixtures=require('./test/fixtures');" + cmd], #pylint: disable=consider-using-with
                   stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = p.communicate()
     stdout = stdout.decode('utf-8')
     stderr = stderr.decode('utf-8')
-    print("stdout: %s" % stdout)
-    print("stderr: %s" % stderr)
-    print("returncode: %d" % p.returncode)
     if p.returncode == 0:
         return json_decode(stdout) if parse_json else stdout
     raise Exception(stderr if stderr else ('exited with {}'.format(p.returncode)))
