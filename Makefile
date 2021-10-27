@@ -35,7 +35,7 @@ bench_gfm:
 	for b in ./bench/*_bench.py; do $$b --gfm; done
 
 node_deps:
-	mkdir -p node_modules && npm install --python=python2.7 jose sinon
+	mkdir -p node_modules && npm install jose
 
 dist: make_dist
 

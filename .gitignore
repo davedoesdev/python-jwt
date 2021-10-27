@@ -1,5 +1,6 @@
 *.pyc
 /node_modules
+/package.json
 /dist
 /.coverage
 /build

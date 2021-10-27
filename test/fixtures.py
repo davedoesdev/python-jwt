@@ -137,9 +137,9 @@ okp_ed25519_priv_key = JWK.from_pem(to_bytes_2and3(okp_ed25519_priv_pem))
 okp_ed25519_pub_key = JWK.from_pem(to_bytes_2and3(okp_ed25519_pub_pem))
 
 priv_keys = {
-    'HS256': {'python-jwt': JWK(kty='oct', k=base64url_encode('some random key'))},
-    'HS384': {'python-jwt': JWK(kty='oct', k=base64url_encode('another one'))},
-    'HS512': {'python-jwt': JWK(kty='oct', k=base64url_encode('keys keys keys!'))},
+    'HS256': {'python-jwt': JWK(kty='oct', k=base64url_encode('some random key some random key some random key'))},
+    'HS384': {'python-jwt': JWK(kty='oct', k=base64url_encode('another one another one another one another one another one'))},
+    'HS512': {'python-jwt': JWK(kty='oct', k=base64url_encode('keys keys keys! keys keys keys! keys keys keys! keys keys keys! keys keys keys!'))},
     'RS256': {'python-jwt': rsa_priv_key},
     'RS384': {'python-jwt': rsa_priv_key},
     'RS512': {'python-jwt': rsa_priv_key},

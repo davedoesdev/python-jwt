@@ -15,7 +15,7 @@ def spawn(cmd, parse_json):
     """ run node command """
     #pylint: disable=E1101
     with lock:
-        p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd],
+        p = Popen(["node", "-e", "fixtures=require('./test/fixtures');" + cmd], #pylint: disable=consider-using-with
                   stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = p.communicate()
     stdout = stdout.decode('utf-8')

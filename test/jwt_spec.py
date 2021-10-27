@@ -25,10 +25,9 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
     privk = None if keyless else priv_keys[alg][priv_type]
     pubk = None if keyless else pub_keys[alg][pub_type]
     jtis = {}
+    tick = timedelta(milliseconds=15000 if pub_type == 'jose' and exp < iat_skew else 1500)
     @Vows.batch
-    #pylint: disable=unused-variable
     class GenerateJWT(Vows.Context): #pylint: disable=unused-variable
-    #pylint: enable=unused-variable
         """ generate token """
         def topic(self):
             """ generate tokens, one with lifetime, one with expires """
@@ -41,7 +40,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 token = jwt.generate_jwt(payload, privk, alg, lt,
                                          not_before=not_before,
                                          jti_size=jti_size)
-            yield clock_tick(timedelta(milliseconds=1500)), token
+            yield clock_tick(tick), token
             now = datetime.utcnow()
             not_before = (now + timedelta(minutes=nbf)) if nbf else None
             if callable(privk):
@@ -53,7 +52,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                                          expires=(now + lt),
                                          not_before=not_before,
                                          jti_size=jti_size)
-            yield clock_tick(timedelta(milliseconds=1500)), token
+            yield clock_tick(tick), token
 
         class ProcessJWT(Vows.Context):
             """ Parse the token, check contents """
@@ -75,7 +74,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
                 def payload_values_should_match(self, claims):
                     """ Check values """
-                    for x in payload:
+                    for x in payload: #pylint: disable=consider-using-dict-items
                         expect(claims[x]).to_equal(payload[x])
 
                 def jtis_should_be_unique(self, claims):
@@ -130,14 +129,14 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
             def should_verify_as_expected(self, r):
                 """ Check verified or not, as per expected arg """
-                if expected:
-                    try:
+                try:
+                    if expected:
                         expect(r).to_be_instance_of(tuple)
-                    except:
-                        print(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected)
-                        raise
-                else:
-                    expect(r).to_be_an_error()
+                    else:
+                        expect(r).to_be_an_error()
+                except:
+                    print(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected)
+                    raise
 
 #pylint: disable=W0621,dangerous-default-value
 def setup(algs=algs):
