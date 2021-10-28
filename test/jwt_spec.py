@@ -26,7 +26,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
     pubk = None if keyless else pub_keys[alg][pub_type]
     jtis = {}
     tick = timedelta(milliseconds=15000 if pub_type == 'jose' and exp < iat_skew else 1500)
-    @Vows.batch
+    @Vows.batch #pylint: disable=unused-variable
     class GenerateJWT(Vows.Context): #pylint: disable=unused-variable
         """ generate token """
         def topic(self):
