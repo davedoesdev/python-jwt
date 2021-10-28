@@ -42,7 +42,9 @@ class AlgNoneVerification(Vows.Context):
             expect([
                 'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\',)}\\\',)]\']',
                 'Verification failed for all signatures[\'Failed: [InvalidJWSSignature(\\\'Verification failed {InvalidSignature(\\\\\\\'The "none" signature cannot be verified\\\\\\\')}\\\')]\']',
-                'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\')]"]', # python3 uses raise from and doesn't put reason in exception
+                # On Python3, jwcrypto uses raise from and doesn't put the reason in exception.
+                # It also uses repr() on the exception so loses the cause attribute.
+                'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\')]"]',
                 'Verification failed for all signatures["Failed: [InvalidJWSSignature(\'Verification failed\',)]"]'
             ]).to_include(str(r))
 
