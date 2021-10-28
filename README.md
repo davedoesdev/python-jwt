@@ -1,4 +1,4 @@
-# python-jwt&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/davedoesdev/python-jwt.svg?branch=master)](https://travis-ci.org/davedoesdev/python-jwt) [![Coverage Status](https://coveralls.io/repos/github/davedoesdev/python-jwt/badge.svg?branch=master)](https://coveralls.io/github/davedoesdev/python-jwt?branch=master) [![PyPI version](https://badge.fury.io/py/python-jwt.svg)](https://badge.fury.io/py/python-jwt)
+# python-jwt&nbsp;&nbsp;&nbsp;[![Build Status](https://github.com/davedoesdev/python-jwt/actions/workflows/ci.yml/badge.svg)](https://github.com/davedoesdev/python-jwt/actions/workflows/ci.yml) [![Coverage Status](https://coveralls.io/repos/github/davedoesdev/python-jwt/badge.svg?branch=master)](https://coveralls.io/github/davedoesdev/python-jwt?branch=master) [![PyPI version](https://badge.fury.io/py/python-jwt.svg)](https://badge.fury.io/py/python-jwt)
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
