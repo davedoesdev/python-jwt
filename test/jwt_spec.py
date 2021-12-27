@@ -19,7 +19,7 @@ def is_string(obj):
     except TypeError:
         return False
 
-#pylint: disable=R0912
+#pylint: disable=R0912,too-many-locals,too-many-statements
 def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expected):
     """ setup tests """
     privk = None if keyless else priv_keys[alg][priv_type]
@@ -49,6 +49,7 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 expect(len(base64url_decode(claims['jti']))).to_equal(jti_size)
 
     class UniqueClaimsChecker(ClaimsChecker):
+        """ Check JTIs in token are unique """
         def jtis_should_be_unique(self, claims):
             """ Check jtis """
             if jti_size or callable(privk):
@@ -106,8 +107,10 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 return jwt.process_jwt(sjwt)
 
             class CheckClaims(UniqueClaimsChecker):
+                """ Check claims """
                 pass
             class CheckHeader(HeaderChecker):
+                """ Check header """
                 pass
 
         class VerifyJWTWithGeneratedKey(Vows.Context):
@@ -128,8 +131,10 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
             if keyless and expected:
                 class CheckClaims(ClaimsChecker):
+                    """ Check claims """
                     pass
                 class CheckHeader(HeaderChecker):
+                    """ Check header """
                     pass
             else:
                 def should_fail_to_verify(self, r):
@@ -150,8 +155,10 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
 
             if expected:
                 class CheckClaims(ClaimsChecker):
+                    """ Check claims """
                     pass
                 class CheckHeader(HeaderChecker):
+                    """ Check header """
                     pass
             else:
                 def should_fail_to_verify(self, r):
