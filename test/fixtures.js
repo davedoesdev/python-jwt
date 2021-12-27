@@ -32,12 +32,12 @@ async function generate(time, header, claims, expires, not_before, key) {
 }
 
 async function verify(time, sjwt, iat_skew, key, alg) {
-    const { header, payload } = jwtVerify(sjwt, await import_key(key, alg), {
+    const { protectedHeader, payload } = await jwtVerify(sjwt, await import_key(key, alg), {
         algorithms: [ alg ],
         clockTolerance: iat_skew,
         currentDate: new Date(time * 1000)
     });
-    process.stdout.write(JSON.stringify([header, payload]));
+    process.stdout.write(JSON.stringify([protectedHeader, payload]));
 }
 
 exports.generate = generate;

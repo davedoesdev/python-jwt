@@ -26,6 +26,50 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
     pubk = None if keyless else pub_keys[alg][pub_type]
     jtis = {}
     tick = timedelta(milliseconds=15000 if pub_type == 'jose' and exp < iat_skew else 1500)
+
+    class ClaimsChecker(Vows.Context):
+        """ Check claims in token """
+        def topic(self, token):
+            """ Get just the claims """
+            _, claims = token
+            return claims
+
+        def payload_keys_should_be_as_expected(self, claims):
+            """ Check keys """
+            expect(list(claims.keys())).to_be_like(keys if jti_size or callable(privk) else [key for key in keys if key != 'jti'])
+
+        def payload_values_should_match(self, claims):
+            """ Check values """
+            for x in payload: #pylint: disable=consider-using-dict-items
+                expect(claims[x]).to_equal(payload[x])
+
+        def jti_size_should_be_as_expected(self, claims):
+            """ Check jti size """
+            if jti_size and not callable(privk): # don't assume format of externally-generated JTIs
+                expect(len(base64url_decode(claims['jti']))).to_equal(jti_size)
+
+    class UniqueClaimsChecker(ClaimsChecker):
+        def jtis_should_be_unique(self, claims):
+            """ Check jtis """
+            if jti_size or callable(privk):
+                expect(is_string(claims['jti'])).to_be_true()
+                expect(jtis).Not.to_include(claims['jti'])
+                jtis[claims['jti']] = True
+
+    class HeaderChecker(Vows.Context):
+        """ Check header in token """
+        def topic(self, token):
+            """ Get just the header """
+            header, _ = token
+            return header
+
+        def header_should_be_as_expected(self, header):
+            """ Check header """
+            expect(header).to_equal({
+                'alg': 'none' if keyless else alg,
+                'typ': 'JWT'
+            })
+
     @Vows.batch #pylint: disable=unused-variable
     class GenerateJWT(Vows.Context): #pylint: disable=unused-variable
         """ generate token """
@@ -61,41 +105,10 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 _, sjwt = topic
                 return jwt.process_jwt(sjwt)
 
-            class CheckClaims(Vows.Context):
-                """ Check claims in token """
-                def topic(self, token):
-                    """ Get just the claims """
-                    _, claims = token
-                    return claims
-
-                def payload_keys_should_be_as_expected(self, claims):
-                    """ Check keys """
-                    expect(list(claims.keys())).to_be_like(keys if jti_size or callable(privk) else [key for key in keys if key != 'jti'])
-
-                def payload_values_should_match(self, claims):
-                    """ Check values """
-                    for x in payload: #pylint: disable=consider-using-dict-items
-                        expect(claims[x]).to_equal(payload[x])
-
-                def jtis_should_be_unique(self, claims):
-                    """ Check jtis """
-                    if jti_size or callable(privk):
-                        expect(is_string(claims['jti'])).to_be_true()
-                        expect(jtis).Not.to_include(claims['jti'])
-                        jtis[claims['jti']] = True
-
-                def jti_size_should_be_as_expected(self, claims):
-                    """ Check jti size """
-                    if jti_size and not callable(privk): # don't assume format of externally-generated JTIs
-                        expect(len(base64url_decode(claims['jti']))).to_equal(jti_size)
-
-            def header_should_be_as_expected(self, token):
-                """ Check header """
-                header, _ = token
-                expect(header).to_equal({
-                    'alg': 'none' if keyless else alg,
-                    'typ': 'JWT'
-                })
+            class CheckClaims(UniqueClaimsChecker):
+                pass
+            class CheckHeader(HeaderChecker):
+                pass
 
         class VerifyJWTWithGeneratedKey(Vows.Context):
             """ Verify token doesn't verify with minted key """
@@ -105,14 +118,22 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 clock, sjwt = topic
                 clock_load(clock)
                 pubk = None if keyless else generated_keys[alg]
-                return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
-                                      timedelta(seconds=iat_skew))
+                try:
+                    return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
+                                          timedelta(seconds=iat_skew))
+                except:
+                    if keyless and expected:
+                        print(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected)
+                    raise
 
-            def should_fail_to_verify(self, r):
-                """ Should fail to verify with minted key """
-                if keyless and expected:
-                    expect(r).to_be_instance_of(tuple)
-                else:
+            if keyless and expected:
+                class CheckClaims(ClaimsChecker):
+                    pass
+                class CheckHeader(HeaderChecker):
+                    pass
+            else:
+                def should_fail_to_verify(self, r):
+                    """ Should fail to verify with minted key """
                     expect(r).to_be_an_error()
 
         class VerifyJWT(Vows.Context):
@@ -127,16 +148,15 @@ def _setup(alg, priv_type, pub_type, exp, iat_skew, nbf, jti_size, keyless, expe
                 return jwt.verify_jwt(sjwt, pubk, ['none'] if keyless else [alg],
                                       timedelta(seconds=iat_skew))
 
-            def should_verify_as_expected(self, r):
-                """ Check verified or not, as per expected arg """
-                try:
-                    if expected:
-                        expect(r).to_be_instance_of(tuple)
-                    else:
-                        expect(r).to_be_an_error()
-                except:
-                    print(alg, priv_type, pub_type, exp, iat_skew, nbf, keyless, expected)
-                    raise
+            if expected:
+                class CheckClaims(ClaimsChecker):
+                    pass
+                class CheckHeader(HeaderChecker):
+                    pass
+            else:
+                def should_fail_to_verify(self, r):
+                    """ Should fail to verify, per expected arg """
+                    expect(r).to_be_an_error()
 
 #pylint: disable=W0621,dangerous-default-value
 def setup(algs=algs):
