@@ -5,7 +5,7 @@ from test.common import payload, generated_rsa_key
 from test import python_jwt as jwt
 from datetime import timedelta
 from pyvows import Vows, expect
-from jwcrypto.jwt import JWK
+from jwcrypto.jwk import JWK
 from jwcrypto.common import base64url_encode
 
 # JWT from @timmclean

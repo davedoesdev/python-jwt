@@ -116,7 +116,7 @@ def verify_jwt(jwt,
     :param allowed_algs: Algorithms expected to be used to sign the token. The ``in`` operator is used to test membership.
     :type allowed_algs: list or NoneType (meaning an empty list)
 
-    :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifiying that the token was generated in the past. Defaults to no leeway.
+    :param iat_skew: The amount of leeway to allow between the issuer's clock and the verifier's clock when verifying that the token was generated in the past. Defaults to no leeway.
     :type iat_skew: datetime.timedelta
 
     :param checks_optional: If ``False``, then the token must contain the **typ** header property and the **iat**, **nbf** and **exp** claim properties.

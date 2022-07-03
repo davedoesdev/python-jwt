@@ -4,7 +4,7 @@
 from test.common import clock_load, orig_datetime, clock_reset
 from test import python_jwt as jwt
 from pyvows import Vows, expect
-from jwcrypto.jwt import JWK
+from jwcrypto.jwk import JWK
 from jwcrypto.common import base64url_encode
 
 # Header:
