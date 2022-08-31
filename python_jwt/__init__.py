@@ -2,6 +2,7 @@
 Functions for generating and verifying JSON Web Tokens.
 """
 
+import re
 from datetime import datetime, timedelta
 from calendar import timegm
 from os import urandom
@@ -98,6 +99,11 @@ def generate_jwt(claims, priv_key=None,
 
 #pylint: disable=R0912,too-many-locals
 
+_jwt_re = re.compile(r'^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]*$')
+def _check_jwt_format(jwt):
+    if not _jwt_re.match(jwt):
+        raise _JWTError('invalid JWT format')
+
 def verify_jwt(jwt,
                pub_key=None,
                allowed_algs=None,
@@ -139,6 +145,10 @@ def verify_jwt(jwt,
 
     :raises: If the token failed to verify.
     """
+    #pylint: disable=too-many-statements
+
+    _check_jwt_format(jwt)
+
     if allowed_algs is None:
         allowed_algs = []
 
@@ -167,10 +177,11 @@ def verify_jwt(jwt,
         token = JWS()
         token.allowed_algs = allowed_algs
         token.deserialize(jwt, pub_key)
+        parsed_claims = json_decode(token.payload)
     elif 'none' not in allowed_algs:
         raise _JWTError('no key but none alg not allowed')
-
-    parsed_claims = json_decode(base64url_decode(claims))
+    else:
+        parsed_claims = json_decode(base64url_decode(claims))
 
     utcnow = datetime.utcnow()
     now = timegm(utcnow.utctimetuple())
@@ -219,6 +230,7 @@ def process_jwt(jwt):
     :rtype: tuple
     :returns: ``(header, claims)``
     """
+    _check_jwt_format(jwt)
     header, claims, _ = jwt.split('.')
     parsed_header = json_decode(base64url_decode(header))
     parsed_claims = json_decode(base64url_decode(claims))

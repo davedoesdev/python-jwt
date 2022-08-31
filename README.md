@@ -2,6 +2,7 @@
 
 Module for generating and verifying [JSON Web Tokens](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
 
+- **Note:** Versions 3.3.4 and later fix a vulnerability in JSON Web Token verification which lets an attacker with a valid token to re-use its signature with modified claims. CVE to follow. Please upgrade!
 - **Note:** From version 2.0.1 the namespace has changed from `jwt` to `python_jwt`, in order to avoid conflict with [PyJWT](https://github.com/jpadilla/pyjwt).
 - **Note:** Versions 1.0.0 and later fix [a vulnerability](https://www.timmclean.net/2015/02/25/jwt-alg-none.html) in JSON Web Token verification so please upgrade if you're using this functionality. The API has changed so you will need to update your application. [verify_jwt](http://rawgit.davedoesdev.com/davedoesdev/python-jwt/master/docs/_build/html/index.html#python_jwt.verify_jwt) now requires you to specify which signature algorithms are allowed.
 - Uses [jwcrypto](https://jwcrypto.readthedocs.io) to do the heavy lifting.
