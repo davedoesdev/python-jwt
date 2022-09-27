@@ -1,5 +1,4 @@
-jwcrypto>=0.4.2,<1.0.0; python_version < '3.0'
-jwcrypto>=1.0.0; python_version >= '3.0'
+jwcrypto>=1.4.2
 
 gevent>=1.2.2
 pyVows>=3.0.0
