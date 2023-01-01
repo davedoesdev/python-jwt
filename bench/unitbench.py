@@ -175,7 +175,7 @@ class Benchmark(object):
             for b in benchmarks:
                 
                 method = getattr(self, b)
-                arg_count = len(inspect.getargspec(method)[0])
+                arg_count = len(inspect.getfullargspec(method)[0])
                 
                 if arg_count == 2:
                     results.append(self._run_benchmark(method, value))
