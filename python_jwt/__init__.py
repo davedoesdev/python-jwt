@@ -2,6 +2,7 @@
 Functions for generating and verifying JSON Web Tokens.
 """
 
+import warnings
 import re
 from datetime import datetime, timedelta
 from calendar import timegm
@@ -9,6 +10,8 @@ from os import urandom
 from jwcrypto.jws import JWS, JWSHeaderRegistry
 from jwcrypto.common import base64url_encode, base64url_decode, \
                             json_encode, json_decode
+
+warnings.warn('The python_jwt module is deprecated', DeprecationWarning, stacklevel=2)
 
 class _JWTError(Exception):
     """ Exception raised if claim doesn't pass. Private to this module because

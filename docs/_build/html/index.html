@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>python_jwt module &#8212; python-jwt 4.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   </head><body>
@@ -36,12 +38,8 @@
           <div class="body" role="main">
             
   <section id="python-jwt-module">
-<h1>python_jwt module<a class="headerlink" href="#python-jwt-module" title="Permalink to this headline">¶</a></h1>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<h1>python_jwt module<a class="headerlink" href="#python-jwt-module" title="Permalink to this heading">¶</a></h1>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#python_jwt.generate_jwt" title="python_jwt.generate_jwt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">python_jwt.generate_jwt</span></code></a>(claims[, priv_key, ...])</p></td>
 <td><p>Generate a JSON Web Token.</p></td>
@@ -60,7 +58,7 @@
 <span class="sig-prename descclassname"><span class="pre">python_jwt.</span></span><span class="sig-name descname"><span class="pre">generate_jwt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">claims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priv_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PS512'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifetime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">not_before</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jti_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.generate_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a JSON Web Token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>claims</strong> (<em>dict</em>) – The claims you want included in the signature.</p></li>
 <li><p><strong>priv_key</strong> (<a class="reference external" href="https://jwcrypto.readthedocs.io/en/latest/jwk.html">jwcrypto.jwk.JWK</a>) – The private key to be used to sign the token. Note: if you pass <code class="docutils literal notranslate"><span class="pre">None</span></code> then the token will be returned with an empty cryptographic signature and <code class="xref py py-obj docutils literal notranslate"><span class="pre">algorithm</span></code> will be forced to the value <code class="docutils literal notranslate"><span class="pre">none</span></code>.</p></li>
@@ -72,10 +70,10 @@
 <li><p><strong>other_headers</strong> (<em>dict</em>) – Any headers other than “typ” and “alg” may be specified, they will be included in the header.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>unicode</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The JSON Web Token. Note this includes a header, the claims and a cryptographic signature. The following extra claims are added, per the <a class="reference external" href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">JWT spec</a>:</p>
 </dd>
 </dl>
@@ -86,7 +84,7 @@
 <li><p><strong>jti</strong> (<em>str</em>) – A unique identifier for the token.</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ValueError: If other_headers contains either the “typ” or “alg” header</p>
 </dd>
 </dl>
@@ -98,13 +96,13 @@
 <dd><p>Process a JSON Web Token without verifying it.</p>
 <p>Call this before <a class="reference internal" href="#python_jwt.verify_jwt" title="python_jwt.verify_jwt"><code class="xref py py-func docutils literal notranslate"><span class="pre">verify_jwt()</span></code></a> if you need access to the header or claims in the token before verifying it. For example, the claims might identify the issuer such that you can retrieve the appropriate public key.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>jwt</strong> (<em>str</em><em> or </em><em>unicode</em>) – The JSON Web Token to verify.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(header,</span> <span class="pre">claims)</span></code></p>
 </dd>
 </dl>
@@ -115,7 +113,7 @@
 <span class="sig-prename descclassname"><span class="pre">python_jwt.</span></span><span class="sig-name descname"><span class="pre">verify_jwt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jwt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pub_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_algs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iat_skew</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">datetime.timedelta(0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checks_optional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_not_implemented</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#python_jwt.verify_jwt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify a JSON Web Token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>jwt</strong> (<em>str</em><em> or </em><em>unicode</em>) – The JSON Web Token to verify.</p></li>
 <li><p><strong>pub_key</strong> – The public key to be used to verify the token. Note: if you pass <code class="docutils literal notranslate"><span class="pre">None</span></code> and <strong>allowed_algs</strong> contains <code class="docutils literal notranslate"><span class="pre">none</span></code> then the token’s signature will not be verified.</p></li>
@@ -125,10 +123,10 @@
 <li><p><strong>ignore_not_implemented</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, then the token must <em>not</em> contain the <strong>jku</strong>, <strong>jwk</strong>, <strong>x5u</strong>, <strong>x5c</strong> or <strong>x5t</strong> header properties.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(header,</span> <span class="pre">claims)</span></code> if the token was verified successfully. The token must pass the following tests:</p>
 </dd>
 </dl>
@@ -145,7 +143,7 @@
 </li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p>If the token failed to verify.</p>
 </dd>
 </dl>
@@ -153,7 +151,7 @@
 
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -168,12 +166,19 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">python_jwt module</a></li>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">python_jwt module</a><ul>
+<li><a class="reference internal" href="#python_jwt.generate_jwt"><code class="docutils literal notranslate"><span class="pre">generate_jwt()</span></code></a></li>
+<li><a class="reference internal" href="#python_jwt.process_jwt"><code class="docutils literal notranslate"><span class="pre">process_jwt()</span></code></a></li>
+<li><a class="reference internal" href="#python_jwt.verify_jwt"><code class="docutils literal notranslate"><span class="pre">verify_jwt()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -190,7 +195,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -210,7 +215,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, David Halls.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
